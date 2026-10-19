@@ -1,0 +1,227 @@
+# Ambiente local completo: Supabase enxuto (só o que o app usa) + Next.js em dev.
+#
+#   docker compose up -d        # sobe tudo (app em http://localhost:3000)
+#   docker compose down         # derruba, mantendo os dados
+#   docker compose down -v      # derruba e apaga o banco (equivale ao `supabase db reset`)
+#
+# Os segredos abaixo são os de demonstração da Supabase, iguais para qualquer
+# instalação local. Nunca use estes valores fora da sua máquina.
+#
+# As credenciais do Google e o ALLOWED_EMAIL vêm do .env.local.
+
+x-secrets:
+  postgres-password: &postgres-password postgres
+  jwt-secret: &jwt-secret super-secret-jwt-token-with-at-least-32-characters-long
+  anon-key: &anon-key eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+  service-role-key: &service-role-key eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+  # URL pública da API: a mesma no navegador, no Next (que compartilha a rede do
+  # Kong) e no callback do Google.
+  api-url: &api-url http://127.0.0.1:54321
+
+name: homebase
+
+services:
+  db:
+    image: public.ecr.aws/supabase/postgres:17.11.0.004
+    restart: unless-stopped
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_PASSWORD: *postgres-password
+      JWT_SECRET: *jwt-secret
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      # Rodado pela imagem ao fim da inicialização: senhas dos papéis internos.
+      - ./docker/db/roles.sql:/etc/postgresql.schema.sql:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  auth:
+    image: public.ecr.aws/supabase/gotrue:v2.197.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - path: .env.local
+        required: false
+    # O .env.local usa os nomes da Supabase CLI; o GoTrue espera GOTRUE_*.
+    command:
+      - /bin/sh
+      - -c
+      - |
+        export GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID="$$SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID"
+        export GOTRUE_EXTERNAL_GOOGLE_SECRET="$$SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_SECRET"
+        exec auth
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: *api-url
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:postgres@db:5432/postgres
+      GOTRUE_SITE_URL: http://localhost:3000
+      GOTRUE_URI_ALLOW_LIST: http://localhost:3000/auth/callback,http://127.0.0.1:3000/auth/callback
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_SECRET: *jwt-secret
+      GOTRUE_JWT_ISSUER: http://127.0.0.1:54321/auth/v1
+      GOTRUE_JWT_EXP: 3600
+      GOTRUE_JWT_AUD: authenticated
+      # O log diz que está depreciada, mas é ela que preenche auth.users.role.
+      # Sem ela o JWT sai com role "" e o PostgREST responde `role "" does not exist`.
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_SECURITY_REFRESH_TOKEN_ROTATION_ENABLED: "true"
+      GOTRUE_SECURITY_REFRESH_TOKEN_REUSE_INTERVAL: 10
+      GOTRUE_SESSIONS_TIMEBOX: 720h
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "false"
+      GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
+      GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED: "false"
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_SMTP_HOST: mailpit
+      GOTRUE_SMTP_PORT: 1025
+      GOTRUE_SMTP_ADMIN_EMAIL: admin@homebase.local
+      GOTRUE_EXTERNAL_GOOGLE_ENABLED: "true"
+      GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: http://127.0.0.1:54321/auth/v1/callback
+      GOTRUE_HOOK_BEFORE_USER_CREATED_ENABLED: "true"
+      GOTRUE_HOOK_BEFORE_USER_CREATED_URI: pg-functions://postgres/public/hook_before_user_created
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # Aplica supabase/migrations depois que o GoTrue criou o schema auth, e sai.
+  migrate:
+    image: public.ecr.aws/supabase/postgres:17.11.0.004
+    depends_on:
+      auth:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/migrate.sh"]
+    healthcheck:
+      disable: true
+    environment:
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: *postgres-password
+      PGDATABASE: postgres
+    volumes:
+      - ./docker/db/migrate.sh:/migrate.sh:ro
+      - ./supabase/migrations:/migrations:ro
+      - ./supabase/seed.sql:/seed.sql:ro
+
+  rest:
+    image: public.ecr.aws/supabase/postgrest:v16.4
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://authenticator:postgres@db:5432/postgres
+      PGRST_DB_SCHEMAS: public,graphql_public
+      PGRST_DB_EXTRA_SEARCH_PATH: public,extensions
+      PGRST_DB_MAX_ROWS: 1000
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: *jwt-secret
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+      PGRST_APP_SETTINGS_JWT_SECRET: *jwt-secret
+      PGRST_APP_SETTINGS_JWT_EXP: 3600
+
+  # Gateway em :54321 (/auth/v1, /rest/v1), como na Supabase CLI.
+  kong:
+    image: public.ecr.aws/supabase/kong:2.8.1
+    restart: unless-stopped
+    depends_on:
+      - auth
+      - rest
+    ports:
+      - "54321:54321"
+      # O Next roda na rede deste container, então a porta dele é publicada aqui.
+      - "3000:3000"
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /home/kong/kong.yml
+      KONG_PROXY_LISTEN: 0.0.0.0:54321
+      KONG_DNS_ORDER: LAST,A,CNAME
+      # Sem isso o Kong guarda o IP de um container recriado por até 10 min (502).
+      KONG_DNS_VALID_TTL: 5
+      KONG_PLUGINS: cors
+      KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
+      KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
+    volumes:
+      - ./docker/kong/kong.yml:/home/kong/kong.yml:ro
+
+  meta:
+    image: public.ecr.aws/supabase/postgres-meta:v0.100.0
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: db
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: postgres
+      PG_META_DB_USER: supabase_admin
+      PG_META_DB_PASSWORD: *postgres-password
+
+  studio:
+    image: public.ecr.aws/supabase/studio:2026.10.12-sha-3699278
+    restart: unless-stopped
+    depends_on:
+      - meta
+      - kong
+    ports:
+      - "54323:3000"
+    environment:
+      HOSTNAME: 0.0.0.0
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_PASSWORD: *postgres-password
+      DEFAULT_ORGANIZATION_NAME: Homebase
+      DEFAULT_PROJECT_NAME: homebase
+      SUPABASE_URL: http://kong:54321
+      SUPABASE_PUBLIC_URL: *api-url
+      SUPABASE_ANON_KEY: *anon-key
+      SUPABASE_SERVICE_KEY: *service-role-key
+      AUTH_JWT_SECRET: *jwt-secret
+      NEXT_PUBLIC_ENABLE_LOGS: "false"
+
+  mailpit:
+    image: public.ecr.aws/supabase/mailpit:v1.31.3
+    restart: unless-stopped
+    ports:
+      - "54324:8025"
+
+  next:
+    build: ./docker/next
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      kong:
+        condition: service_started
+    # Compartilha a rede do Kong: assim http://127.0.0.1:54321 funciona igual no
+    # servidor e no navegador, e o cookie de sessão tem o mesmo nome nos dois.
+    network_mode: service:kong
+    command: sh -c "pnpm install --frozen-lockfile && pnpm dev"
+    environment:
+      CI: "true"
+      # Sem isso o pnpm cria o store dentro do projeto (.pnpm-store/).
+      npm_config_store_dir: /home/node/.local/share/pnpm/store
+      # Têm precedência sobre o .env.local (Next e `tsx --env-file`).
+      NEXT_PUBLIC_SUPABASE_URL: *api-url
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: *anon-key
+      SUPABASE_SECRET_KEY: *service-role-key
+    volumes:
+      - .:/app
+      - next-node-modules:/app/node_modules
+      - next-build:/app/.next
+      - pnpm-store:/home/node/.local/share/pnpm/store
+
+volumes:
+  db-data:
+  next-node-modules:
+  next-build:
+  pnpm-store:

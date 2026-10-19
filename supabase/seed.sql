@@ -1,0 +1,3 @@
+-- Usuários do Google só existem após o primeiro login, então não há a quem
+-- atrelar dados aqui. Para contas de exemplo, faça login uma vez e rode:
+--   pnpm seed:dev
