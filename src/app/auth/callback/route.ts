@@ -6,15 +6,15 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
   const code = searchParams.get("code");
-  if (!code) return NextResponse.redirect(new URL("/login?erro=oauth", origin));
+  if (!code) return NextResponse.redirect(new URL("/login?error=oauth", origin));
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error || !data.user) return NextResponse.redirect(new URL("/login?erro=oauth", origin));
+  if (error || !data.user) return NextResponse.redirect(new URL("/login?error=oauth", origin));
 
   if (!isAllowedEmail(data.user.email)) {
     await supabase.auth.signOut();
-    return NextResponse.redirect(new URL("/acesso-negado", origin));
+    return NextResponse.redirect(new URL("/access-denied", origin));
   }
 
   return NextResponse.redirect(new URL("/", origin));

@@ -22,7 +22,7 @@ export function DeleteExpenseButton({ expenseId, description }: { expenseId: str
   const remove = () =>
     startTransition(async () => {
       const result = await deleteExpense(expenseId);
-      // Em caso de sucesso a action redireciona para /terceiros.
+      // Em caso de sucesso a action redireciona para /third-party.
       if (result && !result.ok) toast.error(result.message);
     });
 

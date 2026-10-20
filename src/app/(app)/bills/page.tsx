@@ -15,8 +15,8 @@ import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Contas" };
 
-export default async function BillsPage({ searchParams }: PageProps<"/contas">) {
-  const archived = (await searchParams).arquivadas === "1";
+export default async function BillsPage({ searchParams }: PageProps<"/bills">) {
+  const archived = (await searchParams).archived === "1";
   const today = await getToday();
   const [bills, payments] = await Promise.all([listBills({ archived }), listPayments()]);
 
@@ -25,7 +25,7 @@ export default async function BillsPage({ searchParams }: PageProps<"/contas">) 
       <PageHeader
         title="Contas"
         actions={
-          <Link href="/contas/nova" className={buttonVariants()}>
+          <Link href="/bills/new" className={buttonVariants()}>
             <PlusIcon aria-hidden /> Nova conta
           </Link>
         }
@@ -34,8 +34,8 @@ export default async function BillsPage({ searchParams }: PageProps<"/contas">) 
       <SegmentedNav
         label="Filtro"
         items={[
-          { href: "/contas", label: "Ativas", active: !archived },
-          { href: "/contas?arquivadas=1", label: "Arquivadas", active: archived },
+          { href: "/bills", label: "Ativas", active: !archived },
+          { href: "/bills?archived=1", label: "Arquivadas", active: archived },
         ]}
       />
 
@@ -48,7 +48,7 @@ export default async function BillsPage({ searchParams }: PageProps<"/contas">) 
             title="Nenhuma conta cadastrada ainda"
             description="Comece pela conta que mais costuma ser esquecida."
             action={
-              <Link href="/contas/nova" className={buttonVariants()}>
+              <Link href="/bills/new" className={buttonVariants()}>
                 <PlusIcon aria-hidden /> Cadastrar conta
               </Link>
             }
@@ -77,7 +77,7 @@ function BillCard({ bill, payments, today }: { bill: Bill; payments: Payment[]; 
 
   return (
     <Link
-      href={`/contas/${bill.id}`}
+      href={`/bills/${bill.id}`}
       className={cn(
         "flex items-center gap-3 rounded-xl bg-card p-4 ring-1 ring-foreground/10 transition-colors outline-none hover:bg-secondary/60 focus-visible:ring-3 focus-visible:ring-ring/50",
         pending.length > 0 && "ring-overdue/70",

@@ -59,7 +59,7 @@ export async function createExpense(_prev: ExpenseFormState, formData: FormData)
   if (error) return { values, message: "Não foi possível salvar o gasto. Tente novamente." };
 
   revalidateAll();
-  redirect("/terceiros");
+  redirect("/third-party");
 }
 
 export async function updateExpense(
@@ -100,7 +100,7 @@ export async function updateExpense(
   if (error || count !== 1) return { values, message: "Não foi possível salvar as alterações." };
 
   revalidateAll();
-  redirect(settledCount >= current.installments ? "/terceiros?acertados=1" : "/terceiros");
+  redirect(settledCount >= current.installments ? "/third-party?settled=1" : "/third-party");
 }
 
 export async function deleteExpense(expenseId: string): Promise<ActionResult> {
@@ -109,7 +109,7 @@ export async function deleteExpense(expenseId: string): Promise<ActionResult> {
   const { error, count } = await supabase.from("third_party_expenses").delete({ count: "exact" }).eq("id", expenseId);
   if (error || count !== 1) return { ok: false, message: "Não foi possível excluir o gasto." };
   revalidateAll();
-  redirect("/terceiros");
+  redirect("/third-party");
 }
 
 /**

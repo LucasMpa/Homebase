@@ -11,7 +11,7 @@ import type { Transaction } from "@/server/transactions";
  */
 export function TransactionRow({ transaction: t, showDate = false }: { transaction: Transaction; showDate?: boolean }) {
   const isBill = t.billId !== null;
-  const href = isBill ? `/contas/${t.billId}` : `/lancamentos/${t.id}/editar`;
+  const href = isBill ? `/bills/${t.billId}` : `/transactions/${t.id}/edit`;
 
   return (
     <li>

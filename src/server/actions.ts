@@ -54,7 +54,7 @@ export async function createBill(_prev: BillFormState, formData: FormData): Prom
   if (error) return { values, message: "Não foi possível salvar a conta. Tente novamente." };
 
   revalidateAll();
-  redirect(`/contas/${data.id}`);
+  redirect(`/bills/${data.id}`);
 }
 
 /**
@@ -82,7 +82,7 @@ export async function updateBill(billId: string, _prev: BillFormState, formData:
     });
     if (error || !newId) return { values, message: "Não foi possível arquivar e criar a nova conta." };
     revalidateAll();
-    redirect(`/contas/${newId}`);
+    redirect(`/bills/${newId}`);
   }
 
   // Contas arquivadas não são editáveis.
@@ -94,7 +94,7 @@ export async function updateBill(billId: string, _prev: BillFormState, formData:
   if (error || count !== 1) return { values, message: "Não foi possível salvar as alterações." };
 
   revalidateAll();
-  redirect(`/contas/${billId}`);
+  redirect(`/bills/${billId}`);
 }
 
 export async function setBillArchived(billId: string, archived: boolean): Promise<ActionResult> {
@@ -116,7 +116,7 @@ export async function deleteBill(billId: string): Promise<ActionResult> {
   const { error, count } = await supabase.from("bills").delete({ count: "exact" }).eq("id", billId);
   if (error || count !== 1) return { ok: false, message: "Não foi possível excluir a conta." };
   revalidateAll();
-  redirect("/contas");
+  redirect("/bills");
 }
 
 export async function markPaid(values: PaymentFormValues): Promise<ActionResult> {

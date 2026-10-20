@@ -40,14 +40,14 @@ export function BillActions({
   const remove = () =>
     startTransition(async () => {
       const result = await deleteBill(billId);
-      // Em caso de sucesso a action redireciona para /contas.
+      // Em caso de sucesso a action redireciona para /bills.
       if (result && !result.ok) toast.error(result.message);
     });
 
   return (
     <>
       {!archived && (
-        <Link href={`/contas/${billId}/editar`} className={buttonVariants({ variant: "outline", size: "sm" })}>
+        <Link href={`/bills/${billId}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })}>
           <PencilIcon aria-hidden /> Editar
         </Link>
       )}

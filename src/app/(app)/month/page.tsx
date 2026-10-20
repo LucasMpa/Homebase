@@ -13,7 +13,7 @@ import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Este mês" };
 
-/** "?mes=2026-09" → "2026-09-01"; inválido ou ausente → mês atual. */
+/** "?month=2026-09" → "2026-09-01"; inválido ou ausente → mês atual. */
 function resolveMonth(param: string | string[] | undefined, today: PlainDate): PlainDate {
   const candidate = typeof param === "string" ? `${param}-01` : "";
   return /^\d{4}-\d{2}-01$/.test(candidate) && isPlainDate(candidate) ? candidate : startOfMonth(today);
@@ -28,9 +28,9 @@ function monthLabel(date: PlainDate) {
 /** "outubro de 2026" → "Outubro de 2026" (o `capitalize` do CSS colocaria "De"). */
 const upperFirst = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export default async function MonthPage({ searchParams }: PageProps<"/mes">) {
+export default async function MonthPage({ searchParams }: PageProps<"/month">) {
   const today = await getToday();
-  const month = resolveMonth((await searchParams).mes, today);
+  const month = resolveMonth((await searchParams).month, today);
   const isCurrent = month === startOfMonth(today);
   const prev = startOfMonth(addDays(month, -1));
   const next = addDays(endOfMonth(month), 1);
@@ -50,19 +50,19 @@ export default async function MonthPage({ searchParams }: PageProps<"/mes">) {
   const monthNav = (
     <nav aria-label="Mês" className="mb-6 flex items-center justify-between gap-2">
       <Link
-        href={`/mes?mes=${monthParam(prev)}`}
+        href={`/month?month=${monthParam(prev)}`}
         className={buttonVariants({ variant: "outline", size: "sm" })}
         aria-label={`Mês anterior: ${monthLabel(prev)}`}
       >
         <ChevronLeftIcon aria-hidden /> <span className="capitalize">{monthName(prev)}</span>
       </Link>
       {!isCurrent && (
-        <Link href="/mes" className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+        <Link href="/month" className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
           Voltar ao mês atual
         </Link>
       )}
       <Link
-        href={`/mes?mes=${monthParam(next)}`}
+        href={`/month?month=${monthParam(next)}`}
         className={buttonVariants({ variant: "outline", size: "sm" })}
         aria-label={`Próximo mês: ${monthLabel(next)}`}
       >
@@ -87,7 +87,7 @@ export default async function MonthPage({ searchParams }: PageProps<"/mes">) {
           icon={ReceiptTextIcon}
           title="Nenhuma conta cadastrada ainda"
           action={
-            <Link href="/contas/nova" className={buttonVariants()}>
+            <Link href="/bills/new" className={buttonVariants()}>
               <PlusIcon aria-hidden /> Cadastrar conta
             </Link>
           }
@@ -187,7 +187,7 @@ export default async function MonthPage({ searchParams }: PageProps<"/mes">) {
                   <li key={`${p.billId}-${p.dueDate}`} className="flex items-center justify-between gap-3 py-3">
                     <div className="min-w-0">
                       <Link
-                        href={`/contas/${p.billId}`}
+                        href={`/bills/${p.billId}`}
                         className="block truncate font-medium underline-offset-4 hover:underline"
                       >
                         {bill?.name ?? "Conta"}

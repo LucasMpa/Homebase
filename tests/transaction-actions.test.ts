@@ -73,7 +73,7 @@ function form(values: Record<string, string>) {
 }
 
 const validForm = () =>
-  form({ description: "Ingresso do show", amount: "180", paidAt: "2026-01-10", category: "lazer", notes: "" });
+  form({ description: "Ingresso do show", amount: "180", paidAt: "2026-01-10", category: "leisure", notes: "" });
 
 beforeEach(() => {
   db.row = null;
@@ -105,14 +105,14 @@ describe("gasto avulso", () => {
 
   it("updateTransaction grava só avulsos e volta para o mês do gasto", async () => {
     await expect(updateTransaction(ID, {}, validForm())).rejects.toThrow(
-      "REDIRECT /lancamentos?mes=2026-10&aviso=atualizado",
+      "REDIRECT /transactions?month=2026-10&notice=updated",
     );
     // Sem o eq("id"), o update atingiria todos os avulsos.
     expect(db.calls).toEqual(["update", `update.eq(id, "${ID}")`, "update.is(bill_id, null)"]);
   });
 
   it("deleteTransaction apaga só avulsos e volta para o mês do gasto", async () => {
-    await expect(deleteTransaction(ID)).rejects.toThrow("REDIRECT /lancamentos?mes=2026-10&aviso=excluido");
+    await expect(deleteTransaction(ID)).rejects.toThrow("REDIRECT /transactions?month=2026-10&notice=deleted");
     expect(db.calls).toEqual(["delete", `delete.eq(id, "${ID}")`, "delete.is(bill_id, null)"]);
   });
 });

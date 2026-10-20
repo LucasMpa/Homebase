@@ -22,7 +22,7 @@ export function monthsEndingAt(last: YearMonth, count: number): YearMonth[] {
 const MONTH_PARAM_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
 
 /**
- * "?mes=2026-09" → "2026-09". Ausente, repetido, malformado, fora de
+ * "?month=2026-09" → "2026-09". Ausente, repetido, malformado, fora de
  * [MIN_YEAR, MAX_YEAR] ou depois de `max` → `fallback`.
  */
 export function parseMonthParam(

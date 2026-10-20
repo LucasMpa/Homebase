@@ -237,21 +237,21 @@ export type Database = {
     Enums: {
       bill_frequency: "once" | "weekly" | "monthly" | "yearly"
       category:
-        | "moradia"
-        | "consumo"
+        | "housing"
+        | "utilities"
         | "internet"
-        | "assinaturas"
-        | "alimentacao"
-        | "casa"
-        | "saude"
-        | "educacao"
-        | "transporte"
-        | "lazer"
-        | "compras"
-        | "viagem"
-        | "impostos"
-        | "seguros"
-        | "outros"
+        | "subscriptions"
+        | "food"
+        | "home"
+        | "health"
+        | "education"
+        | "transportation"
+        | "leisure"
+        | "shopping"
+        | "travel"
+        | "taxes"
+        | "insurance"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -384,21 +384,21 @@ export const Constants = {
     Enums: {
       bill_frequency: ["once", "weekly", "monthly", "yearly"],
       category: [
-        "moradia",
-        "consumo",
+        "housing",
+        "utilities",
         "internet",
-        "assinaturas",
-        "alimentacao",
-        "casa",
-        "saude",
-        "educacao",
-        "transporte",
-        "lazer",
-        "compras",
-        "viagem",
-        "impostos",
-        "seguros",
-        "outros",
+        "subscriptions",
+        "food",
+        "home",
+        "health",
+        "education",
+        "transportation",
+        "leisure",
+        "shopping",
+        "travel",
+        "taxes",
+        "insurance",
+        "other",
       ],
     },
   },

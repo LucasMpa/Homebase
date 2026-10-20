@@ -9,7 +9,7 @@ import { getBill, listPayments } from "@/server/bills";
 
 export const metadata: Metadata = { title: "Editar conta" };
 
-export default async function EditBillPage({ params }: PageProps<"/contas/[id]/editar">) {
+export default async function EditBillPage({ params }: PageProps<"/bills/[id]/edit">) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
   const [bill, payments] = await Promise.all([getBill(id), listPayments({ billId: id })]);
@@ -22,7 +22,7 @@ export default async function EditBillPage({ params }: PageProps<"/contas/[id]/e
         <BillForm
           action={updateBill.bind(null, bill.id)}
           submitLabel="Salvar alterações"
-          cancelHref={`/contas/${bill.id}`}
+          cancelHref={`/bills/${bill.id}`}
           original={{ frequency: bill.frequency, startDate: bill.startDate, hasPayments: payments.length > 0 }}
           initialValues={{
             name: bill.name,

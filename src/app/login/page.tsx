@@ -7,7 +7,7 @@ import { signInWithGoogle } from "./actions";
 export const metadata: Metadata = { title: "Entrar" };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  const { erro } = await searchParams;
+  const { error } = await searchParams;
   return (
     <main className="flex min-h-dvh items-center justify-center px-4">
       <div className="w-full max-w-sm space-y-8 rounded-2xl bg-card p-8 ring-1 ring-foreground/10">
@@ -15,7 +15,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           <Logo />
           <p className="text-sm text-muted-foreground">As contas da casa, sem esquecer nenhum vencimento.</p>
         </div>
-        {erro && (
+        {error && (
           <p role="alert" className="rounded-lg border border-overdue bg-secondary p-3 text-sm">
             Não foi possível entrar com o Google. Tente novamente.
           </p>

@@ -68,21 +68,21 @@ export const FREQUENCY_LABELS: Record<BillFrequency, string> = {
 
 /** Na ordem em que aparecem nos formulários. */
 export const CATEGORY_LABELS: Record<Category, string> = {
-  moradia: "Moradia",
-  consumo: "Contas de consumo",
+  housing: "Moradia",
+  utilities: "Contas de consumo",
   internet: "Internet e telefone",
-  assinaturas: "Assinaturas",
-  alimentacao: "Alimentação",
-  casa: "Casa e manutenção",
-  saude: "Saúde",
-  educacao: "Educação",
-  transporte: "Transporte",
-  lazer: "Lazer",
-  compras: "Compras",
-  viagem: "Viagem",
-  impostos: "Impostos",
-  seguros: "Seguros",
-  outros: "Outros",
+  subscriptions: "Assinaturas",
+  food: "Alimentação",
+  home: "Casa e manutenção",
+  health: "Saúde",
+  education: "Educação",
+  transportation: "Transporte",
+  leisure: "Lazer",
+  shopping: "Compras",
+  travel: "Viagem",
+  taxes: "Impostos",
+  insurance: "Seguros",
+  other: "Outros",
 };
 
 export const CATEGORIES = Object.keys(CATEGORY_LABELS) as [Category, ...Category[]];

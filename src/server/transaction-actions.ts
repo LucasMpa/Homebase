@@ -49,9 +49,9 @@ function revalidateAll() {
   revalidatePath("/", "layout");
 }
 
-/** Volta para o mês do gasto; `aviso` vira o toast na tela de Lançamentos. */
-const ledgerUrl = (paidAt: string, aviso: "registrado" | "atualizado" | "excluido") =>
-  `/lancamentos?mes=${monthOf(paidAt)}&aviso=${aviso}`;
+/** Volta para o mês do gasto; `notice` vira o toast na tela de Lançamentos. */
+const ledgerUrl = (paidAt: string, notice: "created" | "updated" | "deleted") =>
+  `/transactions?month=${monthOf(paidAt)}&notice=${notice}`;
 
 type Supabase = Awaited<ReturnType<typeof requireUser>>["supabase"];
 
@@ -74,7 +74,7 @@ export async function createTransaction(
   if (error) return { values, message: "Não foi possível salvar o gasto. Tente novamente." };
 
   revalidateAll();
-  redirect(ledgerUrl(parsed.data.paidAt, "registrado"));
+  redirect(ledgerUrl(parsed.data.paidAt, "created"));
 }
 
 export async function updateTransaction(
@@ -101,7 +101,7 @@ export async function updateTransaction(
   if (error || !data) return { values, message: "Não foi possível salvar as alterações." };
 
   revalidateAll();
-  redirect(ledgerUrl(data.paid_at, "atualizado"));
+  redirect(ledgerUrl(data.paid_at, "updated"));
 }
 
 export async function deleteTransaction(transactionId: string): Promise<ActionResult> {
@@ -121,5 +121,5 @@ export async function deleteTransaction(transactionId: string): Promise<ActionRe
   if (error || !data) return { ok: false, message: "Não foi possível excluir o gasto." };
 
   revalidateAll();
-  redirect(ledgerUrl(data.paid_at, "excluido"));
+  redirect(ledgerUrl(data.paid_at, "deleted"));
 }

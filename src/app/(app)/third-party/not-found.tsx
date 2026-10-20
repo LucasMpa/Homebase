@@ -7,11 +7,11 @@ export default function NotFound() {
   return (
     <EmptyState
       icon={SearchXIcon}
-      title="Lançamento não encontrado"
+      title="Gasto não encontrado"
       description="Ele pode ter sido excluído."
       action={
-        <Link href="/lancamentos" className={buttonVariants({ variant: "outline" })}>
-          Ver lançamentos
+        <Link href="/third-party" className={buttonVariants({ variant: "outline" })}>
+          Ver gastos de terceiros
         </Link>
       }
     />

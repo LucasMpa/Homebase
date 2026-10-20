@@ -11,7 +11,7 @@ import { toast } from "sonner";
  * limpa, e Voltar/Avançar não reaproveita o payload que tinha o toast.
  * Sem `message` (valor desconhecido na URL), só limpa o parâmetro.
  */
-export function FlashToast({ message, param = "aviso" }: { message?: string; param?: string }) {
+export function FlashToast({ message, param = "notice" }: { message?: string; param?: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

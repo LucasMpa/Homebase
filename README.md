@@ -109,23 +109,23 @@ A lógica fica em `src/lib/recurrence/`, em funções puras e sem acesso ao banc
 
 ### Lançamentos (livro-caixa)
 
-Todo dinheiro que saiu é uma linha de `transactions`. Com `bill_id` + `due_date`, é o pagamento de uma ocorrência de conta; sem conta, é um **gasto avulso**, registrado pelo atalho “+ Gasto” (`/lancamentos/novo`).
+Todo dinheiro que saiu é uma linha de `transactions`. Com `bill_id` + `due_date`, é o pagamento de uma ocorrência de conta; sem conta, é um **gasto avulso**, registrado pelo atalho “+ Gasto” (`/transactions/new`).
 
 - `paid_at` é o dia em que o dinheiro saiu (nunca no futuro). Um ingresso comprado hoje para um show no mês que vem conta hoje.
 - Ao marcar uma conta como paga, o lançamento guarda o **retrato** do nome e da categoria da conta naquele momento. Renomear ou recategorizar a conta depois não muda os lançamentos antigos.
 - Pagamento de conta só muda pela conta: “Desfazer” apaga o lançamento, excluir a conta apaga os pagamentos dela (cascade) e arquivar preserva. As actions de Lançamentos recusam lançamentos com `bill_id`.
-- `/lancamentos` mostra um mês por vez (`?mes=YYYY-MM`), com filtro Tudo/Avulsos/Contas (`?tipo=`), agrupado por dia.
+- `/transactions` mostra um mês por vez (`?month=YYYY-MM`), com filtro Tudo/Avulsos/Contas (`?kind=`), agrupado por dia.
 - Os Relatórios somam contas e avulsos, por `paid_at` e pela categoria do lançamento. “Esta semana” e “Este mês” continuam só com contas, e Terceiros fica fora do livro-caixa.
 
 As regras ficam em funções puras: `src/lib/ledger.ts` (agrupamento por dia, filtro de tipo, recusa de edição) e `src/lib/reports.ts` (totais por mês, por categoria e por tipo).
 
 ### Gastos de terceiros
 
-Em `/terceiros` ficam as compras que outra pessoa passou no seu cartão e que ela precisa te devolver (`third_party_expenses`). Cada gasto guarda o **valor total** da compra. As parcelas definem o **custo mensal**: a 1ª cai no mês da compra, e a sobra de centavos da divisão vai para ela. Ao cadastrar, uma prévia mostra quanto a compra soma em cada mês, junto com o que a pessoa já tinha comprometido. A página mostra o total a receber dos próximos 6 meses. Quando a pessoa te paga, o gasto é marcado como acertado (`settled_at`), um por um ou todos os pendentes da pessoa de uma vez. O acerto pode ser desfeito. Os agrupamentos e totais ficam em `src/lib/third-party.ts`.
+Em `/third-party` ficam as compras que outra pessoa passou no seu cartão e que ela precisa te devolver (`third_party_expenses`). Cada gasto guarda o **valor total** da compra. As parcelas definem o **custo mensal**: a 1ª cai no mês da compra, e a sobra de centavos da divisão vai para ela. Ao cadastrar, uma prévia mostra quanto a compra soma em cada mês, junto com o que a pessoa já tinha comprometido. A página mostra o total a receber dos próximos 6 meses. Quando a pessoa te paga, o gasto é marcado como acertado (`settled_at`), um por um ou todos os pendentes da pessoa de uma vez. O acerto pode ser desfeito. Os agrupamentos e totais ficam em `src/lib/third-party.ts`.
 
 ### Segurança
 
-- O `src/proxy.ts` (o antigo `middleware.ts`, renomeado no Next 16) roda em todas as rotas. Ele renova a sessão, manda quem não está logado para `/login` e, se o e-mail não for o `ALLOWED_EMAIL`, faz `signOut` e redireciona para `/acesso-negado`.
+- O `src/proxy.ts` (o antigo `middleware.ts`, renomeado no Next 16) roda em todas as rotas. Ele renova a sessão, manda quem não está logado para `/login` e, se o e-mail não for o `ALLOWED_EMAIL`, faz `signOut` e redireciona para `/access-denied`.
 - `requireUser()` (`src/lib/auth.ts`) repete a checagem no servidor, no layout autenticado, em toda leitura de dados e em toda Server Action.
 - O `/auth/callback` checa o e-mail logo após o OAuth.
 - No Supabase Auth, um hook `before_user_created` recusa com 403 o cadastro de qualquer e-mail diferente do permitido. Isso vale também para quem chama a API do Auth direto, sem passar pelo app.

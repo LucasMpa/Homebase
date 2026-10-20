@@ -6,7 +6,7 @@ const valid: TransactionFormValues = {
   description: "Ingresso do show",
   amount: "180",
   paidAt: "2026-10-19",
-  category: "lazer",
+  category: "leisure",
   notes: "",
 };
 
@@ -28,7 +28,7 @@ describe("transactionFormSchema", () => {
       description: "Ingresso do show",
       amount: 18000,
       paidAt: "2026-10-19",
-      category: "lazer",
+      category: "leisure",
       notes: null,
     });
   });

@@ -17,7 +17,7 @@ export const requireUser = cache(async () => {
   if (!user) redirect("/login");
   if (!isAllowedEmail(user.email)) {
     await supabase.auth.signOut();
-    redirect("/acesso-negado");
+    redirect("/access-denied");
   }
   return { user, supabase };
 });
