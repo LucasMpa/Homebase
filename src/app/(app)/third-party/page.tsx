@@ -26,8 +26,8 @@ export const metadata: Metadata = { title: "Gastos de terceiros" };
 
 const OVERVIEW_MONTHS = 6;
 
-export default async function ThirdPartyPage({ searchParams }: PageProps<"/terceiros">) {
-  const settled = (await searchParams).acertados === "1";
+export default async function ThirdPartyPage({ searchParams }: PageProps<"/third-party">) {
+  const settled = (await searchParams).settled === "1";
   const [expenses, today] = await Promise.all([listExpenses({ settled }), getToday()]);
   // A receber soma só o que falta (parcelas em aberto); acertados, o valor da compra.
   const groups = settled ? groupByPerson(expenses) : groupByPerson(expenses, pendingCents);
@@ -40,7 +40,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
         title="Gastos de terceiros"
         description="O que outras pessoas passaram no seu cartão e precisam te devolver."
         actions={
-          <Link href="/terceiros/novo" className={buttonVariants()}>
+          <Link href="/third-party/new" className={buttonVariants()}>
             <PlusIcon aria-hidden /> Novo gasto
           </Link>
         }
@@ -49,8 +49,8 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
       <SegmentedNav
         label="Filtro"
         items={[
-          { href: "/terceiros", label: "A receber", active: !settled },
-          { href: "/terceiros?acertados=1", label: "Acertados", active: settled },
+          { href: "/third-party", label: "A receber", active: !settled },
+          { href: "/third-party?settled=1", label: "Acertados", active: settled },
         ]}
       />
 
@@ -63,7 +63,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
             title="Ninguém te deve nada"
             description="Cadastre aqui o que outras pessoas passarem no seu cartão."
             action={
-              <Link href="/terceiros/novo" className={buttonVariants()}>
+              <Link href="/third-party/new" className={buttonVariants()}>
                 <PlusIcon aria-hidden /> Cadastrar gasto
               </Link>
             }

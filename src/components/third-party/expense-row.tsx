@@ -43,7 +43,7 @@ export function ExpenseRow({ expense, showPerson = false }: { expense: ThirdPart
         </span>
         <div className="col-span-2 flex items-center justify-end gap-2 @xl:col-span-1">
           <Link
-            href={`/terceiros/${expense.id}/editar`}
+            href={`/third-party/${expense.id}/edit`}
             className={buttonVariants({ variant: "ghost", size: "sm" })}
             aria-label={`Editar ${expense.description}`}
           >

@@ -11,7 +11,7 @@ export async function signInWithGoogle() {
     provider: "google",
     options: { redirectTo: `${origin}/auth/callback`, queryParams: { prompt: "select_account" } },
   });
-  if (error || !data.url) redirect("/login?erro=oauth");
+  if (error || !data.url) redirect("/login?error=oauth");
   redirect(data.url);
 }
 

@@ -40,22 +40,22 @@ describe("groupByDay", () => {
 
 describe("filtro de tipo", () => {
   const entries = [
-    { id: "conta", billId: "b1" },
-    { id: "avulso", billId: null },
+    { id: "bill", billId: "b1" },
+    { id: "one-off", billId: null },
   ];
 
   it("lê o parâmetro e cai em Tudo quando inválido", () => {
-    expect(parseKindParam("avulsos")).toBe("avulsos");
-    expect(parseKindParam("contas")).toBe("contas");
-    expect(parseKindParam(undefined)).toBe("tudo");
-    expect(parseKindParam("xyz")).toBe("tudo");
-    expect(parseKindParam(["contas", "avulsos"])).toBe("tudo");
+    expect(parseKindParam("one-off")).toBe("one-off");
+    expect(parseKindParam("bills")).toBe("bills");
+    expect(parseKindParam(undefined)).toBe("all");
+    expect(parseKindParam("xyz")).toBe("all");
+    expect(parseKindParam(["bills", "one-off"])).toBe("all");
   });
 
   it("filtra contas e avulsos", () => {
-    expect(filterByKind(entries, "tudo").map((e) => e.id)).toEqual(["conta", "avulso"]);
-    expect(filterByKind(entries, "avulsos").map((e) => e.id)).toEqual(["avulso"]);
-    expect(filterByKind(entries, "contas").map((e) => e.id)).toEqual(["conta"]);
+    expect(filterByKind(entries, "all").map((e) => e.id)).toEqual(["bill", "one-off"]);
+    expect(filterByKind(entries, "one-off").map((e) => e.id)).toEqual(["one-off"]);
+    expect(filterByKind(entries, "bills").map((e) => e.id)).toEqual(["bill"]);
   });
 });
 

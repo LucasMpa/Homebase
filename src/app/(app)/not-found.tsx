@@ -10,7 +10,7 @@ export default function NotFound() {
       title="Conta não encontrada"
       description="Ela pode ter sido excluída."
       action={
-        <Link href="/contas" className={buttonVariants({ variant: "outline" })}>
+        <Link href="/bills" className={buttonVariants({ variant: "outline" })}>
           Ver contas
         </Link>
       }

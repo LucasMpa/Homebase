@@ -14,7 +14,7 @@ export default async function NewBillPage() {
         <BillForm
           action={createBill}
           submitLabel="Cadastrar conta"
-          cancelHref="/contas"
+          cancelHref="/bills"
           initialValues={{
             name: "",
             category: "",

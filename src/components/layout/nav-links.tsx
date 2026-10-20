@@ -6,19 +6,19 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/relatorios", label: "Relatórios", icon: BarChart3Icon },
-  { href: "/mes", label: "Este mês", icon: CalendarCheck2Icon },
-  { href: "/lancamentos", label: "Lançamentos", icon: WalletIcon },
-  { href: "/contas", label: "Contas", icon: ReceiptTextIcon },
-  { href: "/terceiros", label: "Terceiros", icon: HandCoinsIcon },
+  { href: "/reports", label: "Relatórios", icon: BarChart3Icon },
+  { href: "/month", label: "Este mês", icon: CalendarCheck2Icon },
+  { href: "/transactions", label: "Lançamentos", icon: WalletIcon },
+  { href: "/bills", label: "Contas", icon: ReceiptTextIcon },
+  { href: "/third-party", label: "Terceiros", icon: HandCoinsIcon },
 ] as const;
 
 /** A barra inferior do celular é mais estreita: "Este mês" fica de fora (acessível pelo card da home). */
-const BOTTOM_NAV = NAV.filter((item) => item.href !== "/mes");
+const BOTTOM_NAV = NAV.filter((item) => item.href !== "/month");
 
 function isActive(pathname: string, href: string) {
   // Seções com subrotas (detalhe, novo, editar) ficam ativas nelas também.
-  if (href === "/contas" || href === "/lancamentos" || href === "/terceiros") return pathname.startsWith(href);
+  if (href === "/bills" || href === "/transactions" || href === "/third-party") return pathname.startsWith(href);
   return pathname === href;
 }
 
@@ -81,7 +81,7 @@ export function BottomNav() {
         {BOTTOM_NAV.slice(0, middle).map(renderItem)}
         <li>
           <Link
-            href="/lancamentos/novo"
+            href="/transactions/new"
             aria-label="Registrar gasto"
             title="Registrar gasto"
             className="-mt-5 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md ring-4 ring-sidebar outline-none transition-transform active:scale-95 focus-visible:ring-ring/50"

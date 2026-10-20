@@ -11,7 +11,7 @@ export function isAllowedEmail(email: string | null | undefined): boolean {
 }
 
 /** Rotas acessíveis sem sessão. Todo o resto exige login. */
-export const PUBLIC_PATHS = ["/login", "/acesso-negado", "/auth/callback"] as const;
+export const PUBLIC_PATHS = ["/login", "/access-denied", "/auth/callback"] as const;
 
 export function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

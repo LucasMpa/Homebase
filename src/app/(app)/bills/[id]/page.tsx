@@ -27,7 +27,7 @@ export const metadata: Metadata = { title: "Conta" };
 
 const UPCOMING_COUNT = 6;
 
-export default async function BillDetailPage({ params }: PageProps<"/contas/[id]">) {
+export default async function BillDetailPage({ params }: PageProps<"/bills/[id]">) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
   const [bill, payments] = await Promise.all([getBill(id), listPayments({ billId: id })]);
@@ -53,7 +53,7 @@ export default async function BillDetailPage({ params }: PageProps<"/contas/[id]
   return (
     <>
       <Link
-        href={archived ? "/contas?arquivadas=1" : "/contas"}
+        href={archived ? "/bills?archived=1" : "/bills"}
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon className="size-4" aria-hidden /> Contas

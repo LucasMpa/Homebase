@@ -94,8 +94,8 @@ export function totalsByKind(
 /** Topo "redondo" para o eixo: 1, 2, 2,5 ou 5 × 10^n (em reais), em centavos. */
 export function niceMax(cents: number): number {
   if (cents <= 0) return 10000;
-  const reais = cents / 100;
-  const magnitude = 10 ** Math.floor(Math.log10(reais));
-  const step = [1, 2, 2.5, 5, 10].find((s) => s * magnitude >= reais)!;
+  const amount = cents / 100;
+  const magnitude = 10 ** Math.floor(Math.log10(amount));
+  const step = [1, 2, 2.5, 5, 10].find((s) => s * magnitude >= amount)!;
   return Math.round(step * magnitude * 100);
 }

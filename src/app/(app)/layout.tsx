@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
         <Link href="/" title="Início: esta semana" aria-label="Homebase, início" className="mb-8 rounded-lg px-2 py-1 outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
           <Logo />
         </Link>
-        <Link href="/lancamentos/novo" className={buttonVariants({ className: "mb-4 w-full" })}>
+        <Link href="/transactions/new" className={buttonVariants({ className: "mb-4 w-full" })}>
           <PlusIcon aria-hidden /> Gasto
         </Link>
         <SidebarNav />

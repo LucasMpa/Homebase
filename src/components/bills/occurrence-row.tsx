@@ -36,7 +36,7 @@ export function OccurrenceRow({
         <div className="min-w-0">
           {showBillName && (
             <Link
-              href={`/contas/${bill.id}`}
+              href={`/bills/${bill.id}`}
               className="block truncate font-medium underline-offset-4 outline-none hover:underline focus-visible:underline"
             >
               {bill.name}

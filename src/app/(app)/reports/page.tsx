@@ -26,8 +26,8 @@ function resolvePeriod(param: string | string[] | undefined): Period {
 
 const periodLabel = (p: Period) => (p === 1 ? "1 mês" : `${p} meses`);
 
-export default async function ReportsPage({ searchParams }: PageProps<"/relatorios">) {
-  const period = resolvePeriod((await searchParams).periodo);
+export default async function ReportsPage({ searchParams }: PageProps<"/reports">) {
+  const period = resolvePeriod((await searchParams).period);
   const today = await getToday();
   const currentMonth = monthOf(today);
   const months = monthsEndingAt(currentMonth, period);
@@ -64,7 +64,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/relatori
       label="Período"
       className="mb-6"
       items={PERIODS.map((p) => ({
-        href: p === 1 ? "/relatorios" : `/relatorios?periodo=${p}`,
+        href: p === 1 ? "/reports" : `/reports?period=${p}`,
         label: periodLabel(p),
         active: p === period,
       }))}
@@ -107,8 +107,8 @@ export default async function ReportsPage({ searchParams }: PageProps<"/relatori
           value={average === null ? "—" : formatBRL(average)}
           hint={average === null ? "nenhum mês fechado" : `${closed.length} ${closed.length === 1 ? "mês fechado" : "meses fechados"}`}
         />
-        <StatTile label="Recebido" value={formatBRL(receivedThirdParty)} hint={`de terceiros ${inPeriod}`} href="/terceiros?acertados=1" />
-        <StatTile label="A receber" value={formatBRL(toReceive)} hint="de terceiros, pendente agora" href="/terceiros" />
+        <StatTile label="Recebido" value={formatBRL(receivedThirdParty)} hint={`de terceiros ${inPeriod}`} href="/third-party?settled=1" />
+        <StatTile label="A receber" value={formatBRL(toReceive)} hint="de terceiros, pendente agora" href="/third-party" />
       </section>
 
       <div className="space-y-8">
@@ -131,7 +131,7 @@ export default async function ReportsPage({ searchParams }: PageProps<"/relatori
                 </ul>
               )}
               <Link
-                href={`/lancamentos?mes=${currentMonth}`}
+                href={`/transactions?month=${currentMonth}`}
                 className="mt-4 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
               >
                 Ver todos em Lançamentos →

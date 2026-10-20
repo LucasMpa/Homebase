@@ -22,7 +22,7 @@ export default async function NewExpensePage() {
           people={people}
           committed={pending}
           submitLabel="Cadastrar gasto"
-          cancelHref="/terceiros"
+          cancelHref="/third-party"
           initialValues={{
             // Com uma só pessoa cadastrada (o caso comum), ela já vem preenchida.
             person: people.length === 1 ? people[0] : "",

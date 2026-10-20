@@ -5,7 +5,7 @@ import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
 
 /**
  * Renova a sessão a cada requisição e aplica as regras de acesso:
- * sem sessão → /login; e-mail não permitido → signOut + /acesso-negado.
+ * sem sessão → /login; e-mail não permitido → signOut + /access-denied.
  */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -45,7 +45,7 @@ export async function updateSession(request: NextRequest) {
 
   if (user && !isAllowedEmail(user.email)) {
     await supabase.auth.signOut();
-    return pathname === "/acesso-negado" ? withHeaders(response, extraHeaders) : redirectTo("/acesso-negado");
+    return pathname === "/access-denied" ? withHeaders(response, extraHeaders) : redirectTo("/access-denied");
   }
 
   if (!user && !isPublicPath(pathname)) return redirectTo("/login");

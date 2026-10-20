@@ -19,15 +19,15 @@ export const metadata: Metadata = { title: "Lançamentos" };
 
 /** Toasts das mutações que terminam em redirect para cá (src/server/transaction-actions.ts). */
 const NOTICES: Record<string, string> = {
-  registrado: "Gasto registrado",
-  atualizado: "Gasto atualizado",
-  excluido: "Gasto excluído",
+  created: "Gasto registrado",
+  updated: "Gasto atualizado",
+  deleted: "Gasto excluído",
 };
 
 const KINDS: { kind: LedgerKind; label: string }[] = [
-  { kind: "tudo", label: "Tudo" },
-  { kind: "avulsos", label: "Avulsos" },
-  { kind: "contas", label: "Contas" },
+  { kind: "all", label: "Tudo" },
+  { kind: "one-off", label: "Avulsos" },
+  { kind: "bills", label: "Contas" },
 ];
 
 const firstDay = (month: YearMonth) => `${month}-01`;
@@ -39,24 +39,24 @@ function monthLabel(month: YearMonth) {
 /** "outubro de 2026" → "Outubro de 2026" (o `capitalize` do CSS colocaria "De"). */
 const upperFirst = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export default async function LedgerPage({ searchParams }: PageProps<"/lancamentos">) {
+export default async function LedgerPage({ searchParams }: PageProps<"/transactions">) {
   const params = await searchParams;
   const today = await getToday();
   const currentMonth = monthOf(today);
-  const month = parseMonthParam(params.mes, currentMonth, currentMonth);
-  const kind = parseKindParam(params.tipo);
+  const month = parseMonthParam(params.month, currentMonth, currentMonth);
+  const kind = parseKindParam(params.kind);
   const isCurrent = month === currentMonth;
   const prev = addMonths(month, -1);
   const next = addMonths(month, 1);
-  const notice = typeof params.aviso === "string" && Object.hasOwn(NOTICES, params.aviso) ? NOTICES[params.aviso] : undefined;
+  const notice = typeof params.notice === "string" && Object.hasOwn(NOTICES, params.notice) ? NOTICES[params.notice] : undefined;
 
   // O mês atual fica sem parâmetro; o filtro de tipo acompanha a navegação de mês.
   const hrefFor = (m: YearMonth, k: LedgerKind) => {
     const query = new URLSearchParams();
-    if (m !== currentMonth) query.set("mes", m);
-    if (k !== "tudo") query.set("tipo", k);
+    if (m !== currentMonth) query.set("month", m);
+    if (k !== "all") query.set("kind", k);
     const qs = query.toString();
-    return qs ? `/lancamentos?${qs}` : "/lancamentos";
+    return qs ? `/transactions?${qs}` : "/transactions";
   };
 
   const all = await listTransactions(monthBounds(month));
@@ -67,7 +67,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
   const name = monthName(firstDay(month));
 
   const newButton = (
-    <Link href="/lancamentos/novo" className={buttonVariants()}>
+    <Link href="/transactions/new" className={buttonVariants()}>
       <PlusIcon aria-hidden /> Novo gasto
     </Link>
   );
@@ -75,7 +75,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
   return (
     <>
       {/* Também com valor desconhecido: o FlashToast só limpa a URL. */}
-      {params.aviso !== undefined && <FlashToast message={notice} />}
+      {params.notice !== undefined && <FlashToast message={notice} />}
       <PageHeader
         title="Lançamentos"
         description="Tudo o que saiu: contas pagas e gastos avulsos."
@@ -121,7 +121,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
           icon={WalletIcon}
           title={`Nenhum lançamento em ${name}`}
           action={
-            <Link href="/lancamentos/novo" className={buttonVariants()}>
+            <Link href="/transactions/new" className={buttonVariants()}>
               <PlusIcon aria-hidden /> Registrar gasto
             </Link>
           }
@@ -129,7 +129,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
       ) : visible.length === 0 ? (
         <EmptyState
           icon={WalletIcon}
-          title={kind === "avulsos" ? `Nenhum gasto avulso em ${name}` : `Nenhuma conta paga em ${name}`}
+          title={kind === "one-off" ? `Nenhum gasto avulso em ${name}` : `Nenhuma conta paga em ${name}`}
         />
       ) : (
         <>
@@ -141,7 +141,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
             <p className="mt-1 text-xs text-muted-foreground">
               {upperFirst(monthLabel(month))} · {visible.length} {visible.length === 1 ? "lançamento" : "lançamentos"}
             </p>
-            {kind === "tudo" && (
+            {kind === "all" && (
               <p className="mt-1 text-sm text-muted-foreground tabular-nums">
                 Contas {formatBRL(billsCents)} · Avulsos {formatBRL(oneOffCents)}
               </p>
@@ -150,8 +150,8 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
 
           <div className="space-y-6">
             {groups.map((group) => (
-              <section key={group.date} aria-labelledby={`dia-${group.date}`}>
-                <h2 id={`dia-${group.date}`} className="mb-2 text-sm font-medium text-muted-foreground">
+              <section key={group.date} aria-labelledby={`day-${group.date}`}>
+                <h2 id={`day-${group.date}`} className="mb-2 text-sm font-medium text-muted-foreground">
                   {group.label}
                 </h2>
                 <ul className="divide-y divide-border rounded-xl bg-card px-4 ring-1 ring-foreground/10">
