@@ -105,14 +105,14 @@ describe("gasto avulso", () => {
 
   it("updateTransaction grava só avulsos e volta para o mês do gasto", async () => {
     await expect(updateTransaction(ID, {}, validForm())).rejects.toThrow(
-      "REDIRECT /lancamentos?mes=2026-10&aviso=atualizado",
+      "REDIRECT /transactions?mes=2026-10&aviso=atualizado",
     );
     // Sem o eq("id"), o update atingiria todos os avulsos.
     expect(db.calls).toEqual(["update", `update.eq(id, "${ID}")`, "update.is(bill_id, null)"]);
   });
 
   it("deleteTransaction apaga só avulsos e volta para o mês do gasto", async () => {
-    await expect(deleteTransaction(ID)).rejects.toThrow("REDIRECT /lancamentos?mes=2026-10&aviso=excluido");
+    await expect(deleteTransaction(ID)).rejects.toThrow("REDIRECT /transactions?mes=2026-10&aviso=excluido");
     expect(db.calls).toEqual(["delete", `delete.eq(id, "${ID}")`, "delete.is(bill_id, null)"]);
   });
 });

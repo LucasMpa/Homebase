@@ -11,7 +11,7 @@ import { getExpense, listExpenses, listExpenseSuggestions } from "@/server/third
 
 export const metadata: Metadata = { title: "Editar gasto" };
 
-export default async function EditExpensePage({ params }: PageProps<"/terceiros/[id]/editar">) {
+export default async function EditExpensePage({ params }: PageProps<"/third-party/[id]/edit">) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
   const [expense, { people }, pending] = await Promise.all([
@@ -34,7 +34,7 @@ export default async function EditExpensePage({ params }: PageProps<"/terceiros/
           people={people}
           committed={pending.filter((e) => e.id !== expense.id)}
           submitLabel="Salvar alterações"
-          cancelHref={isSettled(expense) ? "/terceiros?acertados=1" : "/terceiros"}
+          cancelHref={isSettled(expense) ? "/third-party?acertados=1" : "/third-party"}
           autoFocus={false}
           scheduleLocked={expense.settlements.length > 0}
           initialValues={{

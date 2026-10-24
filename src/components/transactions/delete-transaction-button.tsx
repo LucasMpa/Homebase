@@ -2,7 +2,7 @@
 
 import { Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -22,7 +22,7 @@ export function DeleteTransactionButton({ transactionId, description }: { transa
   const remove = () =>
     startTransition(async () => {
       const result = await deleteTransaction(transactionId);
-      // Em caso de sucesso a action redireciona para /lancamentos (com o toast "Gasto excluído").
+      // Em caso de sucesso a action redireciona para /transactions (com o toast "Gasto excluído").
       if (result && !result.ok) toast.error(result.message);
     });
 

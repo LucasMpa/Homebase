@@ -2,7 +2,7 @@
 
 import { HandCoinsIcon } from "lucide-react";
 import { useId, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { toast, toastWithAction } from "@/components/ui/toast";
 import { describedBy, FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +31,8 @@ export function SettleDialog({
   label,
   size = "sm",
   variant = "default",
+  ariaLabel,
+  className,
 }: {
   items: InstallmentRef[];
   title: string;
@@ -39,6 +41,9 @@ export function SettleDialog({
   label: string;
   size?: "sm" | "default";
   variant?: "default" | "outline" | "ghost";
+  /** Nome acessível do botão, quando `label` sozinho é ambíguo (ex.: vários "Acertar" na lista). */
+  ariaLabel?: string;
+  className?: string;
 }) {
   const id = useId();
   const [open, setOpen] = useState(false);
@@ -69,8 +74,9 @@ export function SettleDialog({
         return;
       }
       setOpen(false);
-      toast.success(`${formatBRL(totalCents)} recebido`, {
-        action: {
+      toastWithAction(
+        `${formatBRL(totalCents)} recebido`,
+        {
           label: "Desfazer",
           onClick: async () => {
             const undo = await unsettleInstallments(items);
@@ -78,7 +84,8 @@ export function SettleDialog({
             else toast.error(undo.message);
           },
         },
-      });
+        { type: "success" },
+      );
     });
   }
 
@@ -86,7 +93,7 @@ export function SettleDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger render={<Button size={size} variant={variant} />}>
+      <DialogTrigger render={<Button size={size} variant={variant} aria-label={ariaLabel} className={className} />}>
         <HandCoinsIcon aria-hidden /> {label}
       </DialogTrigger>
       <DialogContent>

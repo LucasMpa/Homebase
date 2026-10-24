@@ -16,7 +16,7 @@ export default async function NewTransactionPage() {
           action={createTransaction}
           maxDate={today}
           submitLabel="Salvar gasto"
-          cancelHref="/lancamentos"
+          cancelHref="/transactions"
           initialValues={{ description: "", amount: "", paidAt: today, category: "", notes: "" }}
         />
       </div>

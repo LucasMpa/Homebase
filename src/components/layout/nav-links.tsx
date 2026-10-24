@@ -1,24 +1,25 @@
 "use client";
 
-import { BarChart3Icon, CalendarCheck2Icon, HandCoinsIcon, ReceiptTextIcon, WalletIcon } from "lucide-react";
+import { BarChart3Icon, HandCoinsIcon, ReceiptTextIcon, WalletIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogoMark } from "@/components/layout/logo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { href: "/relatorios", label: "Relatórios", icon: BarChart3Icon },
-  { href: "/mes", label: "Este mês", icon: CalendarCheck2Icon },
-  { href: "/lancamentos", label: "Lançamentos", icon: WalletIcon },
-  { href: "/contas", label: "Contas", icon: ReceiptTextIcon },
-  { href: "/terceiros", label: "Terceiros", icon: HandCoinsIcon },
+  { href: "/reports", label: "Relatórios", icon: BarChart3Icon },
+  { href: "/transactions", label: "Lançamentos", icon: WalletIcon },
+  { href: "/bills", label: "Contas", icon: ReceiptTextIcon },
+  { href: "/third-party", label: "Terceiros", icon: HandCoinsIcon },
 ] as const;
 
-/** A barra inferior do celular é mais estreita: "Este mês" fica de fora (acessível pelo card da home). */
-const BOTTOM_NAV = NAV.filter((item) => item.href !== "/mes");
+/** Na barra inferior do celular, o botão do início (logo) fica no meio, entre as duas metades. */
+const BOTTOM_LEFT = NAV.slice(0, 2);
+const BOTTOM_RIGHT = NAV.slice(2);
 
 function isActive(pathname: string, href: string) {
   // Seções com subrotas (detalhe, novo, editar) ficam ativas nelas também.
-  if (href === "/contas" || href === "/lancamentos" || href === "/terceiros") return pathname.startsWith(href);
+  if (href === "/bills" || href === "/transactions" || href === "/third-party") return pathname.startsWith(href);
   return pathname === href;
 }
 
@@ -54,27 +55,48 @@ export function BottomNav() {
       aria-label="Navegação principal"
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-sidebar/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul className="mx-auto grid max-w-md grid-cols-4">
-        {BOTTOM_NAV.map(({ href, label, icon: Icon }) => {
-          const active = isActive(pathname, href);
-          return (
-            <li key={href}>
-              <Link
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  // 4 itens em 320px: "Lançamentos" precisa caber numa linha, sem cortar.
-                  "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium whitespace-nowrap text-muted-foreground outline-none focus-visible:bg-secondary min-[360px]:text-xs",
-                  active && "text-primary",
-                )}
-              >
-                <Icon className="size-6" aria-hidden />
-                {label}
-              </Link>
-            </li>
-          );
-        })}
+      {/* Coluna do meio só com o tamanho do botão: as quatro de texto dividem o resto. */}
+      <ul className="mx-auto grid max-w-md grid-cols-[1fr_1fr_auto_1fr_1fr]">
+        {BOTTOM_LEFT.map((item) => (
+          <BottomNavItem key={item.href} item={item} active={isActive(pathname, item.href)} />
+        ))}
+        <li className="flex items-center justify-center px-1">
+          <Link
+            href="/"
+            title="Início: esta semana"
+            aria-label="Homebase, início"
+            aria-current={pathname === "/" ? "page" : undefined}
+            className="rounded-2xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            <LogoMark
+              className={cn("size-12 rounded-2xl shadow-lg transition-transform active:scale-95", pathname === "/" && "ring-2 ring-primary-foreground/30 ring-inset")}
+              iconClassName="size-6"
+            />
+          </Link>
+        </li>
+        {BOTTOM_RIGHT.map((item) => (
+          <BottomNavItem key={item.href} item={item} active={isActive(pathname, item.href)} />
+        ))}
       </ul>
     </nav>
+  );
+}
+
+function BottomNavItem({ item: { href, label, icon: Icon }, active }: { item: (typeof NAV)[number]; active: boolean }) {
+  return (
+    <li>
+      <Link
+        href={href}
+        aria-current={active ? "page" : undefined}
+        className={cn(
+          // Com o botão do meio sobram ~66px por item em 320px: "Lançamentos" só cabe numa linha com 10px.
+          "flex flex-col items-center gap-1 py-2.5 text-[10px] font-medium whitespace-nowrap text-muted-foreground outline-none focus-visible:bg-secondary min-[360px]:text-[11px] min-[390px]:text-xs",
+          active && "text-primary",
+        )}
+      >
+        <Icon className="size-6" aria-hidden />
+        {label}
+      </Link>
+    </li>
   );
 }

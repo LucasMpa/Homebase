@@ -2,7 +2,7 @@
 
 import { Trash2Icon } from "lucide-react";
 import { useTransition } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -22,7 +22,7 @@ export function DeleteExpenseButton({ expenseId, description }: { expenseId: str
   const remove = () =>
     startTransition(async () => {
       const result = await deleteExpense(expenseId);
-      // Em caso de sucesso a action redireciona para /terceiros.
+      // Em caso de sucesso a action redireciona para /third-party.
       if (result && !result.ok) toast.error(result.message);
     });
 

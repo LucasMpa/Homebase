@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* Estilo base dos toasts; os ajustes do Homebase ficam no fim deste arquivo. */
+@import "react-toastify/dist/ReactToastify.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -106,5 +108,78 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/*
+ * Toasts (react-toastify) com a identidade do Homebase: superfície de card,
+ * borda #384358, cantos e fonte do app, ícones do lucide e um filete colorido
+ * à esquerda pelo tipo. No celular ficam com margem e cantos, não colados na borda.
+ */
+:root {
+  --toastify-toast-width: 380px;
+  --toastify-toast-min-height: 3.25rem;
+  --toastify-toast-padding: 0.75rem 0.875rem;
+  --toastify-toast-bd-radius: calc(var(--radius) * 1.4);
+  --toastify-font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --toastify-color-dark: var(--popover);
+  --toastify-text-color-dark: var(--popover-foreground);
+  --toastify-toast-shadow: 0 10px 30px -8px rgb(0 0 0 / 0.5);
+}
+
+.Toastify__toast {
+  gap: 0.625rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+}
+
+.Toastify__toast--default {
+  border-left-color: var(--border);
+}
+.Toastify__toast--success {
+  border-left-color: var(--primary);
+}
+.Toastify__toast--error {
+  border-left-color: var(--overdue-foreground);
+}
+.Toastify__toast--warning {
+  border-left-color: #f5c46b;
+}
+.Toastify__toast--info {
+  border-left-color: var(--muted-foreground);
+}
+
+.Toastify__toast-icon {
+  width: auto;
+  margin-inline-end: 0;
+}
+.hb-toast-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.hb-toast-icon--success {
+  color: var(--primary);
+}
+.hb-toast-icon--error {
+  color: var(--overdue-foreground);
+}
+.hb-toast-icon--warning {
+  color: #f5c46b;
+}
+.hb-toast-icon--info {
+  color: var(--muted-foreground);
+}
+
+@media only screen and (max-width: 480px) {
+  .Toastify__toast-container {
+    padding: 0.75rem 1rem 0;
+  }
+  .Toastify__toast {
+    margin-bottom: 0.5rem;
+    border-radius: var(--toastify-toast-bd-radius);
   }
 }

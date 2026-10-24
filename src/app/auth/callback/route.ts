@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
   if (!isAllowedEmail(data.user.email)) {
     await supabase.auth.signOut();
-    return NextResponse.redirect(new URL("/acesso-negado", origin));
+    return NextResponse.redirect(new URL("/access-denied", origin));
   }
 
   return NextResponse.redirect(new URL("/", origin));

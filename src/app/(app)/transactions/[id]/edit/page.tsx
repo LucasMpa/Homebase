@@ -12,13 +12,13 @@ import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Editar gasto" };
 
-export default async function EditTransactionPage({ params }: PageProps<"/lancamentos/[id]/editar">) {
+export default async function EditTransactionPage({ params }: PageProps<"/transactions/[id]/edit">) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
   const [transaction, today] = await Promise.all([getTransaction(id), getToday()]);
   if (!transaction) notFound();
   // Pagamento de conta só muda pela conta.
-  if (transaction.billId) redirect(`/contas/${transaction.billId}`);
+  if (transaction.billId) redirect(`/bills/${transaction.billId}`);
 
   return (
     <>
@@ -32,7 +32,7 @@ export default async function EditTransactionPage({ params }: PageProps<"/lancam
           action={updateTransaction.bind(null, transaction.id)}
           maxDate={today}
           submitLabel="Salvar alterações"
-          cancelHref={`/lancamentos?mes=${monthOf(transaction.paidAt)}`}
+          cancelHref={`/transactions?mes=${monthOf(transaction.paidAt)}`}
           autoFocus={false}
           initialValues={{
             description: transaction.description,

@@ -1,4 +1,4 @@
-import { CalendarRangeIcon, HandCoinsIcon, HistoryIcon, PlusIcon } from "lucide-react";
+import { CalendarRangeIcon, ChevronLeftIcon, ChevronRightIcon, HandCoinsIcon, HistoryIcon, PlusIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
@@ -9,7 +9,9 @@ import { SettleDialog } from "@/components/third-party/settle-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
+import { parseMonthParam } from "@/lib/months";
 import {
+  addMonths,
   groupByPerson,
   monthlyOverview,
   monthOf,
@@ -19,6 +21,7 @@ import {
   type ThirdPartyExpense,
 } from "@/lib/third-party";
 import { cn } from "@/lib/utils";
+import { MAX_YEAR } from "@/lib/validation/common";
 import { listExpenses } from "@/server/third-party";
 import { getToday } from "@/server/today";
 
@@ -26,12 +29,15 @@ export const metadata: Metadata = { title: "Gastos de terceiros" };
 
 const OVERVIEW_MONTHS = 6;
 
-export default async function ThirdPartyPage({ searchParams }: PageProps<"/terceiros">) {
-  const settled = (await searchParams).acertados === "1";
+export default async function ThirdPartyPage({ searchParams }: PageProps<"/third-party">) {
+  const params = await searchParams;
+  const settled = params.acertados === "1";
   const [expenses, today] = await Promise.all([listExpenses({ settled }), getToday()]);
   // A receber soma só o que falta (parcelas em aberto); acertados, o valor da compra.
   const groups = settled ? groupByPerson(expenses) : groupByPerson(expenses, pendingCents);
   const currentMonth = monthOf(today);
+  // Mês do card "A receber"; pode ir para o futuro, já que as parcelas vencem nos meses seguintes.
+  const summaryMonth = parseMonthParam(params.mes, currentMonth, `${MAX_YEAR}-12`);
   const totalCents = groups.reduce((sum, g) => sum + g.totalCents, 0);
 
   return (
@@ -40,7 +46,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
         title="Gastos de terceiros"
         description="O que outras pessoas passaram no seu cartão e precisam te devolver."
         actions={
-          <Link href="/terceiros/novo" className={buttonVariants()}>
+          <Link href="/third-party/new" className={buttonVariants()}>
             <PlusIcon aria-hidden /> Novo gasto
           </Link>
         }
@@ -49,8 +55,8 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
       <SegmentedNav
         label="Filtro"
         items={[
-          { href: "/terceiros", label: "A receber", active: !settled },
-          { href: "/terceiros?acertados=1", label: "Acertados", active: settled },
+          { href: "/third-party", label: "A receber", active: !settled },
+          { href: "/third-party?acertados=1", label: "Acertados", active: settled },
         ]}
       />
 
@@ -63,7 +69,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
             title="Ninguém te deve nada"
             description="Cadastre aqui o que outras pessoas passarem no seu cartão."
             action={
-              <Link href="/terceiros/novo" className={buttonVariants()}>
+              <Link href="/third-party/new" className={buttonVariants()}>
                 <PlusIcon aria-hidden /> Cadastrar gasto
               </Link>
             }
@@ -78,7 +84,13 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/terce
               {groups.length > 1 && <PersonBreakdown items={groups.map((g) => ({ person: g.person, cents: g.totalCents }))} />}
             </section>
           ) : (
-            <PendingSummary expenses={expenses} currentMonth={currentMonth} groups={groups} totalCents={totalCents} />
+            <PendingSummary
+              expenses={expenses}
+              month={summaryMonth}
+              currentMonth={currentMonth}
+              groups={groups}
+              totalCents={totalCents}
+            />
           )}
 
           {!settled && <MonthlyOverview expenses={expenses} currentMonth={currentMonth} />}
@@ -178,27 +190,52 @@ function MonthlyOverview({ expenses, currentMonth }: { expenses: ThirdPartyExpen
   );
 }
 
-/** Cards "Total mensal" (parcelas do mês atual) e "Total a receber" (tudo pendente). */
+/** Cards "A receber no mês" (parcelas de `month`, navegável pelas setas) e "Total a receber" (tudo pendente, com a barra do que já foi recebido). */
 function PendingSummary({
   expenses,
+  month,
   currentMonth,
   groups,
   totalCents,
 }: {
   expenses: ThirdPartyExpense[];
+  month: string;
   currentMonth: string;
   groups: PersonGroup[];
   totalCents: number;
 }) {
-  const { before, months } = monthlyOverview(expenses, currentMonth, 1);
+  const { before, months } = monthlyOverview(expenses, month, 1);
   const thisMonth = months[0];
+  const prev = addMonths(month, -1);
+  const next = addMonths(month, 1);
+  // O mês atual fica sem parâmetro; scroll={false} mantém a página no lugar ao trocar de mês.
+  const hrefFor = (m: string) => (m === currentMonth ? "/third-party" : `/third-party?mes=${m}`);
+  // Barra do "Total a receber": o máximo é o valor integral dos gastos em aberto; enche com o que já foi acertado.
+  const fullCents = expenses.reduce((sum, e) => sum + e.amountCents, 0);
+  const receivedCents = fullCents - totalCents;
+  const progress = fullCents > 0 ? (receivedCents / fullCents) * 100 : 0;
+  const arrow = cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "size-8");
 
   return (
     <section aria-label="Resumo" className="mb-8 grid grid-cols-2 gap-3">
       <div className="rounded-xl bg-card p-4 ring-1 ring-foreground/10">
-        <p className="text-sm text-muted-foreground">Total mensal</p>
+        {/* Mesma estrutura do card ao lado (rótulo, valor, dica), para os valores ficarem na mesma linha. */}
+        <div className="flex items-center justify-between gap-2">
+          <p className="min-w-0 truncate text-sm text-muted-foreground">
+            {month === currentMonth ? "A receber este mês" : "A receber no mês"}
+          </p>
+          {/* -my-1.5: as setas não aumentam a altura da linha do rótulo. */}
+          <nav aria-label="Mês" className="-my-1.5 -mr-1.5 flex shrink-0 items-center">
+            <Link href={hrefFor(prev)} scroll={false} className={arrow} aria-label={`Mês anterior: ${formatMonth(prev)}`}>
+              <ChevronLeftIcon aria-hidden />
+            </Link>
+            <Link href={hrefFor(next)} scroll={false} className={arrow} aria-label={`Próximo mês: ${formatMonth(next)}`}>
+              <ChevronRightIcon aria-hidden />
+            </Link>
+          </nav>
+        </div>
         <p className="mt-1 font-heading text-xl font-semibold tabular-nums md:text-2xl">{formatBRL(thisMonth.totalCents)}</p>
-        <p className="mt-1 text-xs text-muted-foreground">parcelas de {formatMonth(currentMonth)}</p>
+        <p className="mt-1 text-xs text-muted-foreground">parcelas de {formatMonth(month)}</p>
         {before > 0 && (
           <p className="mt-1 text-xs text-overdue-foreground">+ {formatBRL(before)} de meses anteriores</p>
         )}
@@ -209,7 +246,21 @@ function PendingSummary({
         <p className="mt-1 font-heading text-xl font-semibold text-primary tabular-nums md:text-2xl">
           {formatBRL(totalCents)}
         </p>
-        <p className="mt-1 text-xs text-muted-foreground">tudo pendente</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          <span className="font-medium text-foreground tabular-nums">{formatBRL(receivedCents)}</span> de{" "}
+          <span className="tabular-nums">{formatBRL(fullCents)}</span> já recebido
+        </p>
+        <div
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={fullCents}
+          aria-valuenow={receivedCents}
+          aria-valuetext={`${formatBRL(receivedCents)} de ${formatBRL(fullCents)} recebido`}
+          aria-label="Recebido dos gastos em aberto"
+          className="mt-2 h-2 overflow-hidden rounded-full bg-muted ring-1 ring-border"
+        >
+          <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${progress}%` }} />
+        </div>
         {groups.length > 1 && <PersonBreakdown items={groups.map((g) => ({ person: g.person, cents: g.totalCents }))} />}
       </div>
     </section>

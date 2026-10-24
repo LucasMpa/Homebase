@@ -13,6 +13,7 @@ import { formatBRL } from "@/lib/money";
 import { addMonths, monthBounds, monthOf, parseMonthParam, type YearMonth } from "@/lib/months";
 import { totalsByKind } from "@/lib/reports";
 import { listTransactions } from "@/server/transactions";
+import { cn } from "@/lib/utils";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Lançamentos" };
@@ -39,7 +40,7 @@ function monthLabel(month: YearMonth) {
 /** "outubro de 2026" → "Outubro de 2026" (o `capitalize` do CSS colocaria "De"). */
 const upperFirst = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-export default async function LedgerPage({ searchParams }: PageProps<"/lancamentos">) {
+export default async function LedgerPage({ searchParams }: PageProps<"/transactions">) {
   const params = await searchParams;
   const today = await getToday();
   const currentMonth = monthOf(today);
@@ -56,7 +57,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
     if (m !== currentMonth) query.set("mes", m);
     if (k !== "tudo") query.set("tipo", k);
     const qs = query.toString();
-    return qs ? `/lancamentos?${qs}` : "/lancamentos";
+    return qs ? `/transactions?${qs}` : "/transactions";
   };
 
   const all = await listTransactions(monthBounds(month));
@@ -66,8 +67,9 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
   const groups = groupByDay(visible, today);
   const name = monthName(firstDay(month));
 
+  // No celular o cabeçalho fixo já tem "+ Gasto"; aqui o botão só aparece a partir do md.
   const newButton = (
-    <Link href="/lancamentos/novo" className={buttonVariants()}>
+    <Link href="/transactions/new" className={cn(buttonVariants(), "hidden md:inline-flex")}>
       <PlusIcon aria-hidden /> Novo gasto
     </Link>
   );
@@ -82,30 +84,40 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
         actions={newButton}
       />
 
-      <nav aria-label="Mês" className="mb-4 flex items-center justify-between gap-2">
+      {/* Seletor de mês: setas de 44px nas pontas e o mês visível no meio, que é o que importa no celular. */}
+      <nav aria-label="Mês" className="mb-4 flex items-center justify-between gap-2 rounded-xl bg-card p-1 ring-1 ring-foreground/10">
         <Link
           href={hrefFor(prev, kind)}
-          className={buttonVariants({ variant: "outline", size: "sm" })}
+          className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-11")}
           aria-label={`Mês anterior: ${monthLabel(prev)}`}
         >
-          <ChevronLeftIcon aria-hidden /> <span className="capitalize">{monthName(firstDay(prev))}</span>
+          <ChevronLeftIcon className="size-5" aria-hidden />
         </Link>
-        {!isCurrent && (
-          <Link
-            href={hrefFor(currentMonth, kind)}
-            // min-w-0: em 320px o texto quebra em duas linhas em vez de empurrar os botões para fora da tela.
-            className="min-w-0 text-center text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-          >
-            Voltar ao mês atual
-          </Link>
-        )}
-        {!isCurrent && (
+        <div className="min-w-0 text-center">
+          <p className="truncate font-heading font-semibold">
+            {upperFirst(monthLabel(month))}
+          </p>
+          {isCurrent ? (
+            <p className="text-xs text-muted-foreground">mês atual</p>
+          ) : (
+            <Link
+              href={hrefFor(currentMonth, kind)}
+              className="text-xs font-medium text-primary underline-offset-4 outline-none hover:underline focus-visible:underline"
+            >
+              Voltar ao mês atual
+            </Link>
+          )}
+        </div>
+        {isCurrent ? (
+          // Mesmo espaço da seta, para o mês continuar centralizado; não há mês futuro com lançamentos.
+          <span className="size-11 shrink-0" aria-hidden />
+        ) : (
           <Link
             href={hrefFor(next, kind)}
-            className={buttonVariants({ variant: "outline", size: "sm" })}
+            className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "size-11")}
             aria-label={`Próximo mês: ${monthLabel(next)}`}
           >
-            <span className="capitalize">{monthName(firstDay(next))}</span> <ChevronRightIcon aria-hidden />
+            <ChevronRightIcon className="size-5" aria-hidden />
           </Link>
         )}
       </nav>
@@ -121,7 +133,7 @@ export default async function LedgerPage({ searchParams }: PageProps<"/lancament
           icon={WalletIcon}
           title={`Nenhum lançamento em ${name}`}
           action={
-            <Link href="/lancamentos/novo" className={buttonVariants()}>
+            <Link href="/transactions/new" className={buttonVariants()}>
               <PlusIcon aria-hidden /> Registrar gasto
             </Link>
           }

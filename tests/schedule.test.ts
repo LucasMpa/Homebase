@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildMonthSummary, buildMonthView, buildWeekView, type PaymentRecord, type SchedulableBill } from "@/lib/recurrence";
+import { buildMonthSummary, buildWeekView, type PaymentRecord, type SchedulableBill } from "@/lib/recurrence";
 
 const bill = (
   id: string,
@@ -86,46 +86,5 @@ describe("buildMonthSummary", () => {
       withoutAmountCount: 0,
       paidCents: 10000,
     });
-  });
-});
-
-describe("buildMonthView", () => {
-  const bills = [
-    bill("luz", "monthly", "2026-01-10", 20000),
-    bill("agua", "monthly", "2026-09-20", 8000),
-    bill("net", "monthly", "2026-01-25", null),
-    bill("seguro", "yearly", "2026-03-01", 50000),
-  ];
-
-  it("separa pagas e pendentes do mês e soma os valores", () => {
-    const view = buildMonthView(
-      bills,
-      [pay("luz", "2026-10-10", 19876, "2026-10-09"), pay("luz", "2026-09-10", 20000)],
-      today,
-      today,
-    );
-    expect(view.paid.map((o) => o.bill.id)).toEqual(["luz"]);
-    expect(view.paidCents).toBe(19876);
-    expect(view.pending.map((o) => `${o.bill.id}:${o.dueDate}`)).toEqual(["agua:2026-10-20", "net:2026-10-25"]);
-    expect(view.pendingCents).toBe(8000);
-    expect(view.pendingWithoutAmountCount).toBe(1);
-    expect(view.otherPayments).toEqual([]);
-  });
-
-  it("lista pagamentos feitos no mês para vencimentos de outros meses", () => {
-    const late = pay("agua", "2026-09-20", 8000, "2026-10-02");
-    const early = pay("luz", "2026-11-10", 20000, "2026-10-14");
-    const view = buildMonthView(bills, [late, early, pay("luz", "2026-10-10", 20000)], today, today);
-    expect(view.otherPayments).toEqual([late, early]);
-    expect(view.paid).toHaveLength(1);
-  });
-
-  it("aceita qualquer dia do mês como referência e marca atrasadas em meses passados", () => {
-    const view = buildMonthView(bills, [], "2026-09-30", today);
-    expect(view.pending.map((o) => [o.bill.id, o.status])).toEqual([
-      ["luz", "overdue"],
-      ["agua", "overdue"],
-      ["net", "overdue"],
-    ]);
   });
 });

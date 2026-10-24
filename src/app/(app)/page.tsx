@@ -29,7 +29,7 @@ export default async function HomePage() {
           title="Nenhuma conta cadastrada ainda"
           description="Cadastre luz, água, internet, aluguel… e o Homebase avisa o que vence."
           action={
-            <Link href="/contas/nova" className={buttonVariants()}>
+            <Link href="/bills/new" className={buttonVariants()}>
               <PlusIcon aria-hidden /> Cadastrar conta
             </Link>
           }
@@ -58,14 +58,14 @@ export default async function HomePage() {
           )}
         </div>
         <Link
-          href="/mes"
+          href="/transactions?tipo=contas"
           className="rounded-xl bg-card p-4 ring-1 ring-foreground/10 transition-colors outline-none hover:bg-secondary/60 focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <p className="text-sm text-muted-foreground">Pago em {monthName}</p>
           <p className="mt-1 font-heading text-xl font-semibold text-primary tabular-nums md:text-2xl">
             {formatBRL(summary.paidCents)}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground underline-offset-4">Ver contas do mês →</p>
+          <p className="mt-1 text-xs text-muted-foreground underline-offset-4">Ver contas pagas →</p>
         </Link>
       </section>
 
@@ -133,7 +133,7 @@ function OverdueSection({ occurrences, today }: { occurrences: Occurrence<Bill>[
           return (
             <div key={bill.id}>
               <h3 className="flex flex-wrap items-baseline gap-x-2 border-b border-overdue/40 pb-1 pt-2">
-                <Link href={`/contas/${bill.id}`} className="font-medium underline-offset-4 hover:underline">
+                <Link href={`/bills/${bill.id}`} className="font-medium underline-offset-4 hover:underline">
                   {bill.name}
                 </Link>
                 {items.length > 1 && (

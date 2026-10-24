@@ -51,7 +51,7 @@ function revalidateAll() {
 
 /** Volta para o mês do gasto; `aviso` vira o toast na tela de Lançamentos. */
 const ledgerUrl = (paidAt: string, aviso: "registrado" | "atualizado" | "excluido") =>
-  `/lancamentos?mes=${monthOf(paidAt)}&aviso=${aviso}`;
+  `/transactions?mes=${monthOf(paidAt)}&aviso=${aviso}`;
 
 type Supabase = Awaited<ReturnType<typeof requireUser>>["supabase"];
 
