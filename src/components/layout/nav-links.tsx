@@ -1,9 +1,8 @@
 "use client";
 
-import { BarChart3Icon, HandCoinsIcon, ReceiptTextIcon, WalletIcon } from "lucide-react";
+import { BarChart3Icon, HandCoinsIcon, HouseIcon, ReceiptTextIcon, WalletIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogoMark } from "@/components/layout/logo";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -68,10 +67,15 @@ export function BottomNav() {
             aria-current={pathname === "/" ? "page" : undefined}
             className="rounded-2xl outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            <LogoMark
-              className={cn("size-12 rounded-2xl shadow-lg transition-transform active:scale-95", pathname === "/" && "ring-2 ring-primary-foreground/30 ring-inset")}
-              iconClassName="size-6"
-            />
+            {/* Quadrado verde com a casa, no tom dos ícones da barra; o logo do app fica no cabeçalho. */}
+            <span
+              className={cn(
+                "flex size-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg transition-transform active:scale-95",
+                pathname === "/" && "ring-2 ring-primary-foreground/30 ring-inset",
+              )}
+            >
+              <HouseIcon className="size-6" aria-hidden />
+            </span>
           </Link>
         </li>
         {BOTTOM_RIGHT.map((item) => (
