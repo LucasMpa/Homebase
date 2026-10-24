@@ -7,7 +7,7 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Tudo, exceto assets do Next e o favicon.
-    "/((?!_next/static|_next/image|favicon\\.ico$).*)",
+    // Tudo, exceto assets do Next e os ícones (precisam carregar na tela de login).
+    "/((?!_next/static|_next/image|favicon\\.ico$|icon\\.svg$|apple-icon\\.png$).*)",
   ],
 };

@@ -53,7 +53,7 @@ export default async function BillDetailPage({ params }: PageProps<"/bills/[id]"
   return (
     <>
       <Link
-        href={archived ? "/bills?arquivadas=1" : "/bills"}
+        href={archived ? "/bills?archived=1" : "/bills"}
         className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeftIcon className="size-4" aria-hidden /> Contas

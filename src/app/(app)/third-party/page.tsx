@@ -31,13 +31,13 @@ const OVERVIEW_MONTHS = 6;
 
 export default async function ThirdPartyPage({ searchParams }: PageProps<"/third-party">) {
   const params = await searchParams;
-  const settled = params.acertados === "1";
+  const settled = params.settled === "1";
   const [expenses, today] = await Promise.all([listExpenses({ settled }), getToday()]);
   // A receber soma só o que falta (parcelas em aberto); acertados, o valor da compra.
   const groups = settled ? groupByPerson(expenses) : groupByPerson(expenses, pendingCents);
   const currentMonth = monthOf(today);
   // Mês do card "A receber"; pode ir para o futuro, já que as parcelas vencem nos meses seguintes.
-  const summaryMonth = parseMonthParam(params.mes, currentMonth, `${MAX_YEAR}-12`);
+  const summaryMonth = parseMonthParam(params.month, currentMonth, `${MAX_YEAR}-12`);
   const totalCents = groups.reduce((sum, g) => sum + g.totalCents, 0);
 
   return (
@@ -56,7 +56,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/third
         label="Filtro"
         items={[
           { href: "/third-party", label: "A receber", active: !settled },
-          { href: "/third-party?acertados=1", label: "Acertados", active: settled },
+          { href: "/third-party?settled=1", label: "Acertados", active: settled },
         ]}
       />
 
@@ -209,7 +209,7 @@ function PendingSummary({
   const prev = addMonths(month, -1);
   const next = addMonths(month, 1);
   // O mês atual fica sem parâmetro; scroll={false} mantém a página no lugar ao trocar de mês.
-  const hrefFor = (m: string) => (m === currentMonth ? "/third-party" : `/third-party?mes=${m}`);
+  const hrefFor = (m: string) => (m === currentMonth ? "/third-party" : `/third-party?month=${m}`);
   // Barra do "Total a receber": o máximo é o valor integral dos gastos em aberto; enche com o que já foi acertado.
   const fullCents = expenses.reduce((sum, e) => sum + e.amountCents, 0);
   const receivedCents = fullCents - totalCents;

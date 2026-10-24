@@ -34,7 +34,7 @@ export default async function EditExpensePage({ params }: PageProps<"/third-part
           people={people}
           committed={pending.filter((e) => e.id !== expense.id)}
           submitLabel="Salvar alterações"
-          cancelHref={isSettled(expense) ? "/third-party?acertados=1" : "/third-party"}
+          cancelHref={isSettled(expense) ? "/third-party?settled=1" : "/third-party"}
           autoFocus={false}
           scheduleLocked={expense.settlements.length > 0}
           initialValues={{

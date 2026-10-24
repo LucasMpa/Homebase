@@ -32,7 +32,7 @@ export default async function EditTransactionPage({ params }: PageProps<"/transa
           action={updateTransaction.bind(null, transaction.id)}
           maxDate={today}
           submitLabel="Salvar alterações"
-          cancelHref={`/transactions?mes=${monthOf(transaction.paidAt)}`}
+          cancelHref={`/transactions?month=${monthOf(transaction.paidAt)}`}
           autoFocus={false}
           initialValues={{
             description: transaction.description,

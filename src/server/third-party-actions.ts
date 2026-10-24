@@ -100,7 +100,7 @@ export async function updateExpense(
   if (error || count !== 1) return { values, message: "Não foi possível salvar as alterações." };
 
   revalidateAll();
-  redirect(settledCount >= current.installments ? "/third-party?acertados=1" : "/third-party");
+  redirect(settledCount >= current.installments ? "/third-party?settled=1" : "/third-party");
 }
 
 export async function deleteExpense(expenseId: string): Promise<ActionResult> {

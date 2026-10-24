@@ -63,12 +63,12 @@ async function main() {
   }
 
   const bills: Database["public"]["Tables"]["bills"]["Insert"][] = [
-    { name: "Aluguel", category: "moradia", frequency: "monthly", start_date: monthDay(5, -3), estimated_amount_cents: 250000 },
-    { name: "Conta de luz", category: "consumo", frequency: "monthly", start_date: day31, estimated_amount_cents: 18990 },
+    { name: "Aluguel", category: "housing", frequency: "monthly", start_date: monthDay(5, -3), estimated_amount_cents: 250000 },
+    { name: "Conta de luz", category: "utilities", frequency: "monthly", start_date: day31, estimated_amount_cents: 18990 },
     { name: "Internet", category: "internet", frequency: "monthly", start_date: today, estimated_amount_cents: 11990 },
-    { name: "Diarista", category: "casa", frequency: "weekly", start_date: addDays(today, -12), estimated_amount_cents: 18000 },
-    { name: "IPTU", category: "impostos", frequency: "yearly", start_date: addDays(today, 3), notes: "Pagar em cota única para ter desconto." },
-    { name: "Revisão do ar-condicionado", category: "casa", frequency: "once", start_date: addDays(today, 6) },
+    { name: "Diarista", category: "home", frequency: "weekly", start_date: addDays(today, -12), estimated_amount_cents: 18000 },
+    { name: "IPTU", category: "taxes", frequency: "yearly", start_date: addDays(today, 3), notes: "Pagar em cota única para ter desconto." },
+    { name: "Revisão do ar-condicionado", category: "home", frequency: "once", start_date: addDays(today, 6) },
   ];
 
   const { data, error } = await supabase
@@ -107,11 +107,11 @@ async function main() {
     amount_cents: amountCents,
   });
   const oneOffs = [
-    oneOff(1, "Mercado", "alimentacao", 34250),
-    oneOff(6, "Farmácia", "saude", 8790),
-    oneOff(24, "Ingresso do show", "lazer", 18000),
-    oneOff(38, "Presente de aniversário", "compras", 15000),
-    oneOff(65, "Mercado", "alimentacao", 41230),
+    oneOff(1, "Mercado", "food", 34250),
+    oneOff(6, "Farmácia", "health", 8790),
+    oneOff(24, "Ingresso do show", "leisure", 18000),
+    oneOff(38, "Presente de aniversário", "shopping", 15000),
+    oneOff(65, "Mercado", "food", 41230),
   ];
 
   const { error: txError } = await supabase.from("transactions").insert([...payments, ...oneOffs]);

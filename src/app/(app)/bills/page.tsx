@@ -16,7 +16,7 @@ import { getToday } from "@/server/today";
 export const metadata: Metadata = { title: "Contas" };
 
 export default async function BillsPage({ searchParams }: PageProps<"/bills">) {
-  const archived = (await searchParams).arquivadas === "1";
+  const archived = (await searchParams).archived === "1";
   const today = await getToday();
   const [bills, payments] = await Promise.all([listBills({ archived }), listPayments()]);
 
@@ -35,7 +35,7 @@ export default async function BillsPage({ searchParams }: PageProps<"/bills">) {
         label="Filtro"
         items={[
           { href: "/bills", label: "Ativas", active: !archived },
-          { href: "/bills?arquivadas=1", label: "Arquivadas", active: archived },
+          { href: "/bills?archived=1", label: "Arquivadas", active: archived },
         ]}
       />
 

@@ -3,16 +3,16 @@
 import { formatDate, weekdayName } from "@/lib/format";
 import { addDays, type PlainDate } from "@/lib/recurrence";
 
-/** Filtro de tipo: "?tipo=avulsos" / "?tipo=contas"; sem parâmetro = tudo. */
-export type LedgerKind = "tudo" | "avulsos" | "contas";
+/** Filtro de tipo: "?kind=one-off" / "?kind=bills"; sem parâmetro = tudo. */
+export type LedgerKind = "all" | "one-off" | "bills";
 
 export function parseKindParam(param: string | string[] | undefined): LedgerKind {
-  return param === "avulsos" || param === "contas" ? param : "tudo";
+  return param === "one-off" || param === "bills" ? param : "all";
 }
 
 export function filterByKind<T extends { billId: string | null }>(entries: readonly T[], kind: LedgerKind): T[] {
-  if (kind === "tudo") return [...entries];
-  return entries.filter((e) => (kind === "contas" ? e.billId !== null : e.billId === null));
+  if (kind === "all") return [...entries];
+  return entries.filter((e) => (kind === "bills" ? e.billId !== null : e.billId === null));
 }
 
 /** Cabeçalho do dia: "Hoje", "Ontem" ou "sexta, 16/10". */

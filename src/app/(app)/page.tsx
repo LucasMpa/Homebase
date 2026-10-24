@@ -58,7 +58,7 @@ export default async function HomePage() {
           )}
         </div>
         <Link
-          href="/transactions?tipo=contas"
+          href="/transactions?kind=bills"
           className="rounded-xl bg-card p-4 ring-1 ring-foreground/10 transition-colors outline-none hover:bg-secondary/60 focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           <p className="text-sm text-muted-foreground">Pago em {monthName}</p>
