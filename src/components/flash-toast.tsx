@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 /**
  * Mostra o toast de uma mutação que terminou em redirect (a action não tem
@@ -19,7 +19,7 @@ export function FlashToast({ message, param = "notice" }: { message?: string; pa
   useEffect(() => {
     if (!searchParams.has(param)) return;
     // id fixo: o efeito duplicado do Strict Mode não gera dois toasts.
-    if (message) toast(message, { id: `flash-${param}` });
+    if (message) toast(message, { toastId: `flash-${param}` });
     const rest = new URLSearchParams(searchParams);
     rest.delete(param);
     const qs = rest.toString();

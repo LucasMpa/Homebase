@@ -5,6 +5,7 @@ import { Logo } from "@/components/layout/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { signOut } from "@/app/login/actions";
 import { requireUser } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   // Checagem no servidor, independente do proxy.
@@ -37,12 +38,21 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
           <Link href="/" title="Início: esta semana" aria-label="Homebase, início" className="rounded-lg outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
             <Logo />
           </Link>
-          {/* O botão de registrar gasto fica no meio da barra inferior. */}
-          <form action={signOut}>
-            <Button type="submit" variant="ghost" size="icon" aria-label="Sair">
-              <LogOutIcon aria-hidden />
-            </Button>
-          </form>
+          <div className="flex items-center gap-1">
+            {/* h-10: alvo de toque de 40px, mesmo tamanho do botão Sair. */}
+            <Link
+              href="/transactions/new"
+              aria-label="Registrar gasto"
+              className={cn(buttonVariants({ size: "sm" }), "h-10")}
+            >
+              <PlusIcon aria-hidden /> Gasto
+            </Link>
+            <form action={signOut}>
+              <Button type="submit" variant="ghost" size="icon" aria-label="Sair">
+                <LogOutIcon aria-hidden />
+              </Button>
+            </form>
+          </div>
         </header>
         <main className="mx-auto w-full max-w-3xl flex-1 px-4 pt-6 pb-28 md:px-8 md:pt-10 md:pb-12">{children}</main>
       </div>

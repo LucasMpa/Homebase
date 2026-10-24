@@ -26,7 +26,8 @@ export function SegmentedNav({
           href={item.href}
           aria-current={item.active ? "page" : undefined}
           className={cn(
-            "flex-1 rounded-md px-2 py-1.5 text-center text-sm font-medium whitespace-nowrap text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+            // Altura de 40px no celular (alvo de toque); mais compacto a partir do md.
+            "flex min-h-10 flex-1 items-center justify-center rounded-md px-2 py-1.5 text-center md:min-h-0 text-sm font-medium whitespace-nowrap text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
             item.active && "bg-card text-foreground shadow-sm",
           )}
         >

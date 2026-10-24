@@ -2,7 +2,7 @@
 
 import { CheckIcon } from "lucide-react";
 import { useId, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { toast, toastWithAction } from "@/components/ui/toast";
 import { describedBy, FormField } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import {
@@ -70,8 +70,9 @@ export function PayDialog({
         return;
       }
       setOpen(false);
-      toast.success(`${billName} marcada como paga`, {
-        action: {
+      toastWithAction(
+        `${billName} marcada como paga`,
+        {
           label: "Desfazer",
           onClick: async () => {
             const undo = await unmarkPaid(billId, dueDate);
@@ -79,7 +80,8 @@ export function PayDialog({
             else toast.error(undo.message);
           },
         },
-      });
+        { type: "success" },
+      );
     });
   }
 

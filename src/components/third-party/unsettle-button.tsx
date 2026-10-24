@@ -2,29 +2,31 @@
 
 import { Undo2Icon } from "lucide-react";
 import { useTransition } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import type { InstallmentRef } from "@/lib/validation/third-party";
 import { unsettleInstallments } from "@/server/third-party-actions";
 
-/** Desfaz o acerto das parcelas indicadas. `compact` mostra só o ícone (lista de parcelas). */
+/** Desfaz o acerto das parcelas indicadas. `ariaLabel` diz qual, quando há vários "Desfazer" na tela. */
 export function UnsettleButton({
   items,
   message,
-  compact = false,
+  ariaLabel,
+  className,
 }: {
   items: InstallmentRef[];
   message: string;
-  compact?: boolean;
+  ariaLabel?: string;
+  className?: string;
 }) {
   const [pending, startTransition] = useTransition();
   return (
     <Button
-      size={compact ? "icon-xs" : "sm"}
+      size="sm"
       variant="ghost"
       disabled={pending}
-      aria-label={compact ? "Desfazer acerto" : undefined}
-      title={compact ? "Desfazer acerto" : undefined}
+      aria-label={ariaLabel}
+      className={className}
       onClick={() =>
         startTransition(async () => {
           const result = await unsettleInstallments(items);
@@ -33,7 +35,7 @@ export function UnsettleButton({
         })
       }
     >
-      <Undo2Icon aria-hidden /> {!compact && "Desfazer"}
+      <Undo2Icon aria-hidden /> Desfazer
     </Button>
   );
 }

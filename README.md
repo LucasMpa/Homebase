@@ -115,7 +115,7 @@ Todo dinheiro que saiu é uma linha de `transactions`. Com `bill_id` + `due_date
 - Ao marcar uma conta como paga, o lançamento guarda o **retrato** do nome e da categoria da conta naquele momento. Renomear ou recategorizar a conta depois não muda os lançamentos antigos.
 - Pagamento de conta só muda pela conta: “Desfazer” apaga o lançamento, excluir a conta apaga os pagamentos dela (cascade) e arquivar preserva. As actions de Lançamentos recusam lançamentos com `bill_id`.
 - `/transactions` mostra um mês por vez (`?month=YYYY-MM`), com filtro Tudo/Avulsos/Contas (`?kind=`), agrupado por dia.
-- Os Relatórios somam contas e avulsos, por `paid_at` e pela categoria do lançamento. “Esta semana” e “Este mês” continuam só com contas, e Terceiros fica fora do livro-caixa.
+- Os Relatórios somam contas e avulsos, por `paid_at` e pela categoria do lançamento. “Esta semana” continua só com contas, e Terceiros fica fora do livro-caixa.
 
 As regras ficam em funções puras: `src/lib/ledger.ts` (agrupamento por dia, filtro de tipo, recusa de edição) e `src/lib/reports.ts` (totais por mês, por categoria e por tipo).
 

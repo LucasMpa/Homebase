@@ -11,7 +11,7 @@ import { formatBRL } from "@/lib/money";
 import { monthBounds, monthOf, monthsEndingAt } from "@/lib/months";
 import { paidByCategory, paidByMonth, totalsByKind } from "@/lib/reports";
 import { hasAnyTransaction, listTransactions } from "@/server/transactions";
-import { pendingCents } from "@/lib/third-party";
+import { monthlyOverview } from "@/lib/third-party";
 import { listExpenses } from "@/server/third-party";
 import { getToday } from "@/server/today";
 
@@ -48,12 +48,13 @@ export default async function ReportsPage({ searchParams }: PageProps<"/reports"
   // Média só dos meses fechados que tiveram lançamento, para não puxar para baixo com meses vazios ou o atual.
   const closed = byMonth.filter((m) => m.month !== currentMonth && m.count > 0);
   const average = closed.length ? Math.round(closed.reduce((s, m) => s + m.cents, 0) / closed.length) : null;
-  // Recebido: parcelas acertadas no período. A receber: tudo o que ainda está em aberto.
+  // Recebido: parcelas acertadas no período. A receber: parcelas do período ainda em aberto; as pendentes de antes da janela aparecem só na dica.
   const receivedThirdParty = thirdParty
     .flatMap((e) => e.settlements)
     .filter((s) => monthOf(s.settledAt) >= first)
     .reduce((sum, s) => sum + s.amountCents, 0);
-  const toReceive = thirdParty.reduce((sum, e) => sum + pendingCents(e), 0);
+  const pending = monthlyOverview(thirdParty, first, period);
+  const toReceive = pending.months.reduce((sum, m) => sum + m.totalCents, 0);
   const range = period === 1 ? formatMonth(currentMonth) : `${formatMonth(first)} a ${formatMonth(currentMonth)}`;
   const inPeriod = period === 1 ? "no mês" : `em ${periodLabel(period)}`;
   // A leitura já vem por paid_at desc, created_at desc.
@@ -103,12 +104,17 @@ export default async function ReportsPage({ searchParams }: PageProps<"/reports"
           accent
         />
         <StatTile
-          label="Média mensal"
+          label="Gasto médio por mês"
           value={average === null ? "—" : formatBRL(average)}
-          hint={average === null ? "nenhum mês fechado" : `${closed.length} ${closed.length === 1 ? "mês fechado" : "meses fechados"}`}
+          hint={average === null ? "nenhum mês fechado no período" : `média de ${closed.length} ${closed.length === 1 ? "mês fechado" : "meses fechados"}`}
         />
         <StatTile label="Recebido" value={formatBRL(receivedThirdParty)} hint={`de terceiros ${inPeriod}`} href="/third-party?settled=1" />
-        <StatTile label="A receber" value={formatBRL(toReceive)} hint="de terceiros, pendente agora" href="/third-party" />
+        <StatTile
+          label="A receber"
+          value={formatBRL(toReceive)}
+          hint={`de terceiros ${inPeriod}${pending.before > 0 ? ` · + ${formatBRL(pending.before)} de antes` : ""}`}
+          href="/third-party"
+        />
       </section>
 
       <div className="space-y-8">
