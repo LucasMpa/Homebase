@@ -7,7 +7,7 @@
  *   pnpm seed:dev --reset   # apaga os lançamentos e as contas do usuário antes
  */
 import { createClient } from "@supabase/supabase-js";
-import { addDays, daysInMonth, formatPlainDate, parsePlainDate, todayInSaoPaulo } from "../src/lib/recurrence";
+import { addDays, daysInMonth, formatPlainDate, parsePlainDate, todayInSaoPaulo } from "../src/lib/dates";
 import type { Database } from "../src/lib/supabase/database.types";
 
 type Category = Database["public"]["Enums"]["category"];

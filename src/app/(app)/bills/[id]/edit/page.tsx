@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { z } from "zod";
-import { BillForm } from "@/components/bills/bill-form";
+import { BillForm } from "@/features/bills/components/bill-form";
 import { PageHeader } from "@/components/page-header";
 import { centsToInput } from "@/lib/money";
-import { updateBill } from "@/server/bill-actions";
-import { getBill, listPayments } from "@/server/bills";
+import { updateBill } from "@/features/bills/server/actions";
+import { getBill, listPayments } from "@/features/bills/server/queries";
 
 export const metadata: Metadata = { title: "Editar conta" };
 

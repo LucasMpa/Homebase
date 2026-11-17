@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
-import { ExpenseForm } from "@/components/third-party/expense-form";
-import { createExpense } from "@/server/third-party-actions";
-import { listExpenses, listExpenseSuggestions } from "@/server/third-party";
+import { ExpenseForm } from "@/features/third-party/components/expense-form";
+import { createExpense } from "@/features/third-party/server/actions";
+import { listExpenses, listExpenseSuggestions } from "@/features/third-party/server/queries";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Novo gasto de terceiro" };

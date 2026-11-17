@@ -1,18 +1,18 @@
 import { BarChart3Icon, ChevronRightIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MonthColumns } from "@/components/reports/month-columns";
+import { MonthColumns } from "@/features/reports/components/month-columns";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { SegmentedNav } from "@/components/segmented-nav";
-import { TransactionRow } from "@/components/transactions/transaction-row";
+import { TransactionRow } from "@/features/transactions/components/transaction-row";
 import { formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
 import { monthBounds, monthOf, monthsEndingAt } from "@/lib/months";
-import { paidByCategory, paidByMonth, totalsByKind } from "@/lib/reports";
-import { hasAnyTransaction, listTransactions } from "@/server/transactions";
-import { monthlyOverview } from "@/lib/third-party";
-import { listExpenses } from "@/server/third-party";
+import { paidByCategory, paidByMonth, totalsByKind } from "@/features/reports/lib/reports";
+import { hasAnyTransaction, listTransactions } from "@/features/transactions/server/queries";
+import { monthlyOverview } from "@/features/third-party/lib/expenses";
+import { listExpenses } from "@/features/third-party/server/queries";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Relatórios" };

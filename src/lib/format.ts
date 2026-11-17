@@ -1,4 +1,4 @@
-import { diffInDays, parsePlainDate, type BillFrequency, type PlainDate } from "@/lib/recurrence";
+import { diffInDays, parsePlainDate, type PlainDate } from "@/lib/dates";
 import type { Database } from "@/lib/supabase/database.types";
 
 /** Categoria de contas e lançamentos (uma lista só). */
@@ -11,7 +11,8 @@ export function formatDate(date: PlainDate): string {
 }
 
 const WEEKDAYS = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
-const MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+/** Meses abreviados: "jan", "fev"… */
+export const MONTH_ABBREVIATIONS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
 export function weekdayName(date: PlainDate): string {
   const { year, month, day } = parsePlainDate(date);
@@ -29,23 +30,6 @@ export function relativeDay(date: PlainDate, today: PlainDate): string {
   return diff < 0 ? `há ${-diff} dias` : `em ${diff} dias`;
 }
 
-/** "Mensal, todo dia 10", "Semanal, toda sexta"… */
-export function describeFrequency(frequency: BillFrequency, startDate: PlainDate): string {
-  const { month, day } = parsePlainDate(startDate);
-  switch (frequency) {
-    case "once":
-      return `Única, em ${formatDate(startDate)}`;
-    case "weekly": {
-      const wd = weekdayName(startDate);
-      return `Semanal, ${wd === "sábado" || wd === "domingo" ? "todo" : "toda"} ${wd}`;
-    }
-    case "monthly":
-      return day > 28 ? `Mensal, dia ${day} (ou último dia do mês)` : `Mensal, todo dia ${day}`;
-    case "yearly":
-      return `Anual, todo ${day} de ${MONTHS[month - 1]}`;
-  }
-}
-
 const MONTH_NAMES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
 /** "2026-10-15" → "outubro" */
@@ -56,15 +40,8 @@ export function monthName(date: PlainDate): string {
 /** "2026-10" → "out/2026" */
 export function formatMonth(month: string): string {
   const [year, m] = month.split("-").map(Number);
-  return `${MONTHS[m - 1]}/${year}`;
+  return `${MONTH_ABBREVIATIONS[m - 1]}/${year}`;
 }
-
-export const FREQUENCY_LABELS: Record<BillFrequency, string> = {
-  once: "Única",
-  weekly: "Semanal",
-  monthly: "Mensal",
-  yearly: "Anual",
-};
 
 /** Na ordem em que aparecem nos formulários. */
 export const CATEGORY_LABELS: Record<Category, string> = {

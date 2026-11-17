@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BottomNav, SidebarNav } from "@/components/layout/nav-links";
 import { Logo } from "@/components/layout/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { signOut } from "@/app/login/actions";
+import { signOut } from "@/app/(public)/login/actions";
 import { requireUser } from "@/server/auth";
 import { cn } from "@/lib/utils";
 
