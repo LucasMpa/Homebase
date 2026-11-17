@@ -57,7 +57,8 @@ const s = StyleSheet.create({
   eyebrow: { color: C.mutedForeground, fontSize: 10, marginBottom: 4 },
   title: { fontSize: 22, fontWeight: 600, marginBottom: 4 },
   cards: { flexDirection: "row", gap: 8, marginTop: 18, marginBottom: 12 },
-  card: { flex: 1, backgroundColor: C.card, borderRadius: 10, borderWidth: 1, borderColor: C.border, padding: 12 },
+  // Até dois cards (total e atrasado), cada um com metade da largura.
+  card: { flex: 1, maxWidth: "50%", backgroundColor: C.card, borderRadius: 10, borderWidth: 1, borderColor: C.border, padding: 12 },
   cardLabel: { color: C.mutedForeground, fontSize: 9 },
   cardValue: { fontSize: 15, fontWeight: 600, marginTop: 4 },
   notice: {
@@ -140,11 +141,10 @@ function Status({ line }: { line: ReportLine }) {
       </View>
     );
   }
+  // Parcela em dia e não acertada: sem rótulo (o padrão).
   return (
     <View style={s.status}>
-      <Text style={{ color: line.status === "overdue" ? C.overdue : C.foreground }}>
-        {line.status === "overdue" ? "Atrasada" : "Pendente"}
-      </Text>
+      {line.status === "overdue" && <Text style={{ color: C.overdue }}>Atrasada</Text>}
     </View>
   );
 }
@@ -241,14 +241,6 @@ function ReportDocument({
             <Text style={s.cardLabel}>Total no período</Text>
             <Text style={s.cardValue}>{formatBRL(report.totals.totalCents)}</Text>
           </View>
-          <View style={s.card}>
-            <Text style={s.cardLabel}>Já recebido</Text>
-            <Text style={s.cardValue}>{formatBRL(report.totals.settledCents)}</Text>
-          </View>
-          <View style={s.card}>
-            <Text style={s.cardLabel}>A receber</Text>
-            <Text style={[s.cardValue, { color: C.primary }]}>{formatBRL(report.totals.pendingCents)}</Text>
-          </View>
           {report.totals.overdueCents > 0 && (
             <View style={s.card}>
               <Text style={s.cardLabel}>Atrasado</Text>
@@ -271,12 +263,7 @@ function ReportDocument({
               {m.lines.length === 0 ? (
                 <Text style={[s.muted, { fontSize: 9 }]}>Nenhuma parcela</Text>
               ) : (
-                <Text style={{ fontWeight: 600 }}>
-                  {formatBRL(m.totalCents)}
-                  {m.settledCents > 0 && m.pendingCents > 0 ? (
-                    <Text style={[s.muted, { fontWeight: 400, fontSize: 9 }]}> · faltam {formatBRL(m.pendingCents)}</Text>
-                  ) : null}
-                </Text>
+                <Text style={{ fontWeight: 600 }}>{formatBRL(m.totalCents)}</Text>
               )}
             </View>
           );
