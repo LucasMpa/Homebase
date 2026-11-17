@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { formatBRL } from "@/lib/money";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
 import { settleSchema, type InstallmentRef } from "@/lib/validation/third-party";
 import { settleInstallments, unsettleInstallments } from "@/server/third-party-actions";

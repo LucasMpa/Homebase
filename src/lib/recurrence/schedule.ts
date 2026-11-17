@@ -1,7 +1,7 @@
-import { addDays, endOfMonth, startOfMonth } from "./dates";
+import { addDays, endOfMonth, type PlainDate, startOfMonth } from "@/lib/dates";
 import { occurrencesBetween } from "./occurrences";
 import { occurrenceStatus } from "./status";
-import type { OccurrenceStatus, PlainDate, RecurrenceRule } from "./types";
+import type { OccurrenceStatus, RecurrenceRule } from "./types";
 
 /** Combina regras de contas com pagamentos registrados. Sem acesso ao banco. */
 

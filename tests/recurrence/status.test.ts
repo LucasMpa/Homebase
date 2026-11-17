@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { occurrenceStatus, todayInSaoPaulo } from "@/lib/recurrence";
+import { occurrenceStatus } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 
 describe("occurrenceStatus", () => {
   const today = "2026-10-15";

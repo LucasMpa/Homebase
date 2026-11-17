@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addDays, isPlainDate } from "@/lib/recurrence";
+import { addDays, isPlainDate } from "@/lib/dates";
 import { plainDate } from "@/lib/validation/common";
 
 describe("anos fora de 1970–2099 (regressão)", () => {

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { formatDate } from "@/lib/format";
 import { centsToInput } from "@/lib/money";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
 import { paymentFormSchema } from "@/lib/validation/payments";
 import { markPaid, unmarkPaid } from "@/server/bill-actions";

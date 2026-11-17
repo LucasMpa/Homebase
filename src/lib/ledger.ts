@@ -1,7 +1,7 @@
 /** Regras da tela de Lançamentos (livro-caixa). Funções puras, sem acesso ao banco. */
 
 import { formatDate, weekdayName } from "@/lib/format";
-import { addDays, type PlainDate } from "@/lib/recurrence";
+import { addDays, type PlainDate } from "@/lib/dates";
 
 /** Filtro de tipo: "?kind=one-off" / "?kind=bills"; sem parâmetro = tudo. */
 export type LedgerKind = "all" | "one-off" | "bills";

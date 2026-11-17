@@ -5,7 +5,7 @@ import { Logo } from "@/components/layout/logo";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDate, formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { monthOf } from "@/lib/third-party";
 import { buildExportReport, periodLabel, type ReportLine } from "@/lib/third-party-report";
 import { cn } from "@/lib/utils";

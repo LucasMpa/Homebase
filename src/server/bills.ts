@@ -1,7 +1,8 @@
 import "server-only";
 import { requireUser } from "@/server/auth";
 import type { Category } from "@/lib/format";
-import type { BillFrequency, PaymentRecord, PlainDate, SchedulableBill } from "@/lib/recurrence";
+import type { BillFrequency, PaymentRecord, SchedulableBill } from "@/lib/recurrence";
+import type { PlainDate } from "@/lib/dates";
 import type { Database } from "@/lib/supabase/database.types";
 
 type BillRow = Database["public"]["Tables"]["bills"]["Row"];

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { parseBRL } from "@/lib/money";
-import { isPlainDate } from "@/lib/recurrence";
+import { isPlainDate } from "@/lib/dates";
 
 /** Limite da coluna integer do Postgres. */
 export const MAX_CENTS = 2_147_483_647;

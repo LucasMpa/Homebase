@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/toast";
 import { formatDate, formatMonth } from "@/lib/format";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { addMonths } from "@/lib/third-party";
 import { periodLabel, SHARE_TTL_DAYS } from "@/lib/third-party-report";
 import { cn } from "@/lib/utils";

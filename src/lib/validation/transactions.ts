@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CATEGORIES } from "@/lib/format";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { brlAmount, optionalText, plainDate } from "./common";
 
 /** Formulário de gasto avulso (lançamento sem conta). */

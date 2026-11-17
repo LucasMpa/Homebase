@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { reportPdfResponse } from "@/components/third-party/report-pdf";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { monthOf } from "@/lib/third-party";
 import { buildExportReport } from "@/lib/third-party-report";
 import { getSharedReport } from "@/server/third-party-shares";

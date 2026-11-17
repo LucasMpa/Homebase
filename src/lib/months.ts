@@ -1,4 +1,4 @@
-import { daysInMonth, formatPlainDate, type PlainDate } from "@/lib/recurrence";
+import { daysInMonth, formatPlainDate, type PlainDate } from "@/lib/dates";
 import { MAX_YEAR, MIN_YEAR } from "@/lib/validation/common";
 
 /** Mês civil no formato "YYYY-MM". */

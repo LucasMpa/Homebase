@@ -1,4 +1,5 @@
-import type { OccurrenceStatus, PlainDate } from "./types";
+import type { PlainDate } from "@/lib/dates";
+import type { OccurrenceStatus } from "./types";
 
 /** Status calculado (nunca armazenado). `today` deve vir de todayInSaoPaulo(). */
 export function occurrenceStatus(dueDate: PlainDate, isPaid: boolean, today: PlainDate): OccurrenceStatus {

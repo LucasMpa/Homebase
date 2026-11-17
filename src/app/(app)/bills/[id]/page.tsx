@@ -10,16 +10,8 @@ import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { CATEGORY_LABELS, describeFrequency, formatDate } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import {
-  addDays,
-  buildOccurrences,
-  indexPayments,
-  nextOccurrences,
-  occurrencesBetween,
-  occurrenceStatus,
-  todayInSaoPaulo,
-  type Occurrence,
-} from "@/lib/recurrence";
+import { buildOccurrences, indexPayments, nextOccurrences, type Occurrence, occurrencesBetween, occurrenceStatus } from "@/lib/recurrence";
+import { addDays, todayInSaoPaulo } from "@/lib/dates";
 import { getBill, listPayments, type Bill } from "@/server/bills";
 import { getToday } from "@/server/today";
 

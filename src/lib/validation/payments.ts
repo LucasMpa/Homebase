@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { todayInSaoPaulo } from "@/lib/recurrence";
+import { todayInSaoPaulo } from "@/lib/dates";
 import { brlAmount, plainDate } from "./common";
 
 export const paymentFormSchema = z.object({

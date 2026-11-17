@@ -1,7 +1,7 @@
 import "server-only";
 import { requireUser } from "@/server/auth";
 import type { Category } from "@/lib/format";
-import type { PlainDate } from "@/lib/recurrence";
+import type { PlainDate } from "@/lib/dates";
 import type { Database } from "@/lib/supabase/database.types";
 
 type TransactionRow = Database["public"]["Tables"]["transactions"]["Row"];

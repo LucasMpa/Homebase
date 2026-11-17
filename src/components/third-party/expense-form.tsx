@@ -8,7 +8,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { parseBRL } from "@/lib/money";
-import { isPlainDate } from "@/lib/recurrence";
+import { isPlainDate } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
 import { expenseFormSchema, MAX_INSTALLMENTS, type ExpenseFormValues } from "@/lib/validation/third-party";
 import type { ExpenseFormState } from "@/server/third-party-actions";

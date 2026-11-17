@@ -4,7 +4,8 @@ import { UndoPaymentButton } from "@/components/bills/undo-payment-button";
 import { StatusBadge } from "@/components/status-badge";
 import { formatDate, relativeDay, weekdayName } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import type { Occurrence, PlainDate } from "@/lib/recurrence";
+import type { Occurrence } from "@/lib/recurrence";
+import type { PlainDate } from "@/lib/dates";
 import { cn } from "@/lib/utils";
 import type { Bill } from "@/server/bills";
 

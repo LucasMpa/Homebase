@@ -1,10 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  nextOccurrences,
-  occurrencesBetween,
-  type BillFrequency,
-  type RecurrenceRule,
-} from "@/lib/recurrence";
+import { type BillFrequency, nextOccurrences, occurrencesBetween, type RecurrenceRule } from "@/lib/recurrence";
 
 function rule(
   frequency: BillFrequency,

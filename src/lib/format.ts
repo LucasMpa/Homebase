@@ -1,4 +1,5 @@
-import { diffInDays, parsePlainDate, type BillFrequency, type PlainDate } from "@/lib/recurrence";
+import type { BillFrequency } from "@/lib/recurrence";
+import { diffInDays, parsePlainDate, type PlainDate } from "@/lib/dates";
 import type { Database } from "@/lib/supabase/database.types";
 
 /** Categoria de contas e lançamentos (uma lista só). */

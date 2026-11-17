@@ -1,5 +1,5 @@
-import { addDays, daysInMonth, diffInDays, formatPlainDate, parsePlainDate } from "./dates";
-import type { PlainDate, RecurrenceRule } from "./types";
+import { addDays, daysInMonth, diffInDays, formatPlainDate, parsePlainDate, type PlainDate } from "@/lib/dates";
+import type { RecurrenceRule } from "./types";
 
 /**
  * A k-ésima ocorrência (k = 0 é `startDate`). Sempre derivada da âncora,

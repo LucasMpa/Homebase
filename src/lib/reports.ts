@@ -2,7 +2,7 @@
 
 import { CATEGORIES, CATEGORY_LABELS, type Category } from "@/lib/format";
 import { monthOf, type YearMonth } from "@/lib/months";
-import type { PlainDate } from "@/lib/recurrence";
+import type { PlainDate } from "@/lib/dates";
 
 /**
  * O que os relatórios precisam de um lançamento do livro-caixa. O `Transaction`

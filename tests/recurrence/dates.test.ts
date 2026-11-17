@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { addDays, todayInSaoPaulo } from "@/lib/recurrence";
+import { addDays, todayInSaoPaulo } from "@/lib/dates";
 
 describe("addDays", () => {
   it.each([

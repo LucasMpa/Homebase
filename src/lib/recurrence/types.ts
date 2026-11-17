@@ -1,5 +1,4 @@
-/** Data civil sem horário nem fuso, no formato ISO "YYYY-MM-DD". */
-export type PlainDate = string;
+import type { PlainDate } from "@/lib/dates";
 
 export type BillFrequency = "once" | "weekly" | "monthly" | "yearly";
 

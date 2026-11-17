@@ -1,4 +1,5 @@
-import type { PlainDate } from "./types";
+/** Data civil sem horário nem fuso, no formato ISO "YYYY-MM-DD". */
+export type PlainDate = string;
 
 /**
  * Aritmética de datas civis ("YYYY-MM-DD"). Internamente usa UTC só como
