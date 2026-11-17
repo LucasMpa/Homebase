@@ -55,7 +55,7 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/third
         actions={
           <>
             {people.length > 0 && (
-              <ExportDialog people={people} currentMonth={currentMonth} defaultFrom={summaryMonth} shares={shares} />
+              <ExportDialog people={people} currentMonth={currentMonth} shares={shares} />
             )}
             <Link href="/third-party/new" className={buttonVariants()}>
               <PlusIcon aria-hidden /> Novo gasto
