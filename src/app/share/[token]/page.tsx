@@ -57,10 +57,8 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
         <h1 className="mt-1 font-heading text-2xl font-semibold tracking-tight md:text-3xl">{report.person}</h1>
         <p className="mt-1 text-sm text-muted-foreground">Parcelas de {period}</p>
 
-        <section aria-label="Totais" className="mt-6 mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <section aria-label="Totais" className="mt-6 mb-8 grid grid-cols-2 gap-3">
           <SummaryCard label="Total no período" cents={totals.totalCents} />
-          <SummaryCard label="Já recebido" cents={totals.settledCents} />
-          <SummaryCard label="A receber" cents={totals.pendingCents} className="text-primary" />
           {totals.overdueCents > 0 && (
             <SummaryCard label="Atrasado" cents={totals.overdueCents} className="text-overdue-foreground" />
           )}
@@ -89,12 +87,7 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
                 {m.lines.length === 0 ? (
                   <p className="text-sm text-muted-foreground">Nenhuma parcela</p>
                 ) : (
-                  <p className="text-sm tabular-nums">
-                    <span className="font-semibold">{formatBRL(m.totalCents)}</span>
-                    {m.settledCents > 0 && m.pendingCents > 0 && (
-                      <span className="text-muted-foreground"> · faltam {formatBRL(m.pendingCents)}</span>
-                    )}
-                  </p>
+                  <p className="text-sm font-semibold tabular-nums">{formatBRL(m.totalCents)}</p>
                 )}
               </div>
               {m.lines.length > 0 && (
@@ -140,10 +133,8 @@ function Line({ line }: { line: ReportLine }) {
           <p className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
             <CheckIcon className="size-3.5 text-primary" aria-hidden /> Acertada em {formatDate(line.settledAt!)}
           </p>
-        ) : line.status === "overdue" ? (
-          <p className="text-xs font-medium text-overdue-foreground">Atrasada</p>
         ) : (
-          <p className="text-xs text-muted-foreground">Pendente</p>
+          line.status === "overdue" && <p className="text-xs font-medium text-overdue-foreground">Atrasada</p>
         )}
       </div>
     </li>
