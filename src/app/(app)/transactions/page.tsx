@@ -11,7 +11,7 @@ import { monthName } from "@/lib/format";
 import { filterByKind, groupByDay, parseKindParam, type LedgerKind } from "@/features/transactions/lib/ledger";
 import { formatBRL } from "@/lib/money";
 import { addMonths, monthBounds, monthOf, parseMonthParam, type YearMonth } from "@/lib/months";
-import { totalsByKind } from "@/lib/reports";
+import { totalsByKind } from "@/features/reports/lib/reports";
 import { listTransactions } from "@/features/transactions/server/queries";
 import { cn } from "@/lib/utils";
 import { getToday } from "@/server/today";

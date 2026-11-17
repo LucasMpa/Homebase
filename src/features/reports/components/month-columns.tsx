@@ -1,6 +1,6 @@
 import { formatMonth, monthName } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { niceMax, type MonthTotal } from "@/lib/reports";
+import { niceMax, type MonthTotal } from "@/features/reports/lib/reports";
 
 /**
  * Colunas mensais de uma única série (sem legenda: o título nomeia a série).
