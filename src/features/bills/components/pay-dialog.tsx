@@ -20,8 +20,8 @@ import { formatDate } from "@/lib/format";
 import { centsToInput } from "@/lib/money";
 import { todayInSaoPaulo } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import { paymentFormSchema } from "@/lib/validation/payments";
-import { markPaid, unmarkPaid } from "@/server/bill-actions";
+import { paymentFormSchema } from "@/features/bills/payment-validation";
+import { markPaid, unmarkPaid } from "@/features/bills/server/actions";
 
 export function PayDialog({
   billId,

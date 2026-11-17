@@ -1,16 +1,16 @@
 import { AlertTriangleIcon, CalendarCheckIcon, CircleDotIcon, PlusIcon, ReceiptTextIcon } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { OccurrenceRow } from "@/components/bills/occurrence-row";
+import { OccurrenceRow } from "@/features/bills/components/occurrence-row";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { buildMonthSummary, buildWeekView, type Occurrence } from "@/lib/recurrence";
+import { buildMonthSummary, buildWeekView, type Occurrence } from "@/features/bills/lib/recurrence";
 import { parsePlainDate } from "@/lib/dates";
 import { cn } from "@/lib/utils";
-import { listBills, listPayments, type Bill } from "@/server/bills";
+import { listBills, listPayments, type Bill } from "@/features/bills/server/queries";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Esta semana" };

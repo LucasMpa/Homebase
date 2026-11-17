@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { PayDialog } from "@/components/bills/pay-dialog";
-import { UndoPaymentButton } from "@/components/bills/undo-payment-button";
-import { StatusBadge } from "@/components/status-badge";
+import { PayDialog } from "@/features/bills/components/pay-dialog";
+import { UndoPaymentButton } from "@/features/bills/components/undo-payment-button";
+import { StatusBadge } from "@/features/bills/components/status-badge";
 import { formatDate, relativeDay, weekdayName } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import type { Occurrence } from "@/lib/recurrence";
+import type { Occurrence } from "@/features/bills/lib/recurrence";
 import type { PlainDate } from "@/lib/dates";
 import { cn } from "@/lib/utils";
-import type { Bill } from "@/server/bills";
+import type { Bill } from "@/features/bills/server/queries";
 
 /**
  * Estreito: [info | valor] em cima, [status | ação] embaixo.

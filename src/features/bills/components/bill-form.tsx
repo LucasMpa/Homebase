@@ -17,12 +17,13 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CATEGORY_LABELS, FREQUENCY_LABELS } from "@/lib/format";
-import type { BillFrequency } from "@/lib/recurrence";
+import { CATEGORY_LABELS } from "@/lib/format";
+import { FREQUENCY_LABELS } from "@/features/bills/lib/frequency";
+import type { BillFrequency } from "@/features/bills/lib/recurrence";
 import { isPlainDate, parsePlainDate } from "@/lib/dates";
-import { billFormSchema, type BillFormValues } from "@/lib/validation/bills";
+import { billFormSchema, type BillFormValues } from "@/features/bills/validation";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import type { BillFormState } from "@/server/bill-actions";
+import type { BillFormState } from "@/features/bills/server/actions";
 
 type Mode = "save" | "replace";
 

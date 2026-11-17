@@ -1,5 +1,5 @@
 import { AlertTriangleIcon, CheckIcon, ClockIcon, CircleDotIcon } from "lucide-react";
-import type { OccurrenceStatus } from "@/lib/recurrence";
+import type { OccurrenceStatus } from "@/features/bills/lib/recurrence";
 import { cn } from "@/lib/utils";
 
 const STYLES: Record<OccurrenceStatus, { label: string; className: string; icon: typeof CheckIcon }> = {

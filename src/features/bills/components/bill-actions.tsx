@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { deleteBill, setBillArchived } from "@/server/bill-actions";
+import { deleteBill, setBillArchived } from "@/features/bills/server/actions";
 
 export function BillActions({
   billId,

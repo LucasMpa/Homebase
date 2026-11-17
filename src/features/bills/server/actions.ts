@@ -5,10 +5,10 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ActionResult } from "@/server/action-result";
 import { requireUser } from "@/server/auth";
-import { occurrencesBetween } from "@/lib/recurrence";
-import { BILL_FIELDS, billFormSchema, type BillFormValues, type BillInput } from "@/lib/validation/bills";
+import { occurrencesBetween } from "@/features/bills/lib/recurrence";
+import { BILL_FIELDS, billFormSchema, type BillFormValues, type BillInput } from "@/features/bills/validation";
 import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
-import { paymentFormSchema, paymentKeySchema, type PaymentFormValues } from "@/lib/validation/payments";
+import { paymentFormSchema, paymentKeySchema, type PaymentFormValues } from "@/features/bills/payment-validation";
 
 /**
  * Mutações das contas fixas e dos pagamentos. Cada action: requireUser()

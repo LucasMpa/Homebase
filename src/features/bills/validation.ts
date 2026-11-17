@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CATEGORIES } from "@/lib/format";
-import { brlAmount, optionalText, plainDate } from "./common";
+import { brlAmount, optionalText, plainDate } from "@/lib/validation/common";
 
 export const BILL_FIELDS = [
   "name",
