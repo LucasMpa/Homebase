@@ -3,11 +3,11 @@
 import { createHash, randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import { SHARE_TTL_DAYS } from "@/lib/third-party-report";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
 import { shareLinkSchema } from "@/lib/validation/third-party-export";
-import type { ActionResult } from "@/server/actions";
+import type { ActionResult } from "@/server/action-result";
 
 export type CreateShareResult =
   | { ok: true; path: string; expiresAt: string }

@@ -13,7 +13,7 @@ const db = vi.hoisted(() => ({
   calls: [] as string[],
 }));
 
-vi.mock("@/lib/auth", () => {
+vi.mock("@/server/auth", () => {
   type Query = {
     eq: (column: string, value: unknown) => Query;
     is: (column: string, value: unknown) => Query;

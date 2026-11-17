@@ -21,7 +21,7 @@ import { CATEGORY_LABELS, FREQUENCY_LABELS } from "@/lib/format";
 import { parsePlainDate, isPlainDate, type BillFrequency } from "@/lib/recurrence";
 import { billFormSchema, type BillFormValues } from "@/lib/validation/bills";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import type { BillFormState } from "@/server/actions";
+import type { BillFormState } from "@/server/bill-actions";
 
 type Mode = "save" | "replace";
 

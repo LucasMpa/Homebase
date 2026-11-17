@@ -4,7 +4,7 @@ import { BottomNav, SidebarNav } from "@/components/layout/nav-links";
 import { Logo } from "@/components/layout/logo";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { signOut } from "@/app/login/actions";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import { cn } from "@/lib/utils";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isAllowedEmail } from "@/lib/allowed-email";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/server/supabase";
 
 /** Retorno do Google OAuth: troca o código pela sessão e valida o e-mail. */
 export async function GET(request: NextRequest) {

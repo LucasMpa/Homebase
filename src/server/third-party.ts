@@ -1,5 +1,5 @@
 import "server-only";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import type { Database } from "@/lib/supabase/database.types";
 import { isSettled, settledOn, uniqueSuggestions, type ThirdPartyExpense } from "@/lib/third-party";
 

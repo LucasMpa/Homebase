@@ -3,15 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import type { ActionResult } from "@/server/action-result";
+import { requireUser } from "@/server/auth";
 import { occurrencesBetween } from "@/lib/recurrence";
 import { BILL_FIELDS, billFormSchema, type BillFormValues, type BillInput } from "@/lib/validation/bills";
 import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
 import { paymentFormSchema, paymentKeySchema, type PaymentFormValues } from "@/lib/validation/payments";
 
 /**
- * Todas as mutações do app. Cada action: requireUser() (sessão + ALLOWED_EMAIL)
- * → validação zod → Supabase com RLS. Nada aqui confia no cliente.
+ * Mutações das contas fixas e dos pagamentos. Cada action: requireUser()
+ * (sessão + ALLOWED_EMAIL) → validação zod → Supabase com RLS. Nada aqui
+ * confia no cliente. As outras áreas seguem o mesmo padrão (*-actions.ts).
  */
 
 export type BillFormState = {
@@ -19,8 +21,6 @@ export type BillFormState = {
   fieldErrors?: FieldErrors;
   values?: BillFormValues;
 };
-
-export type ActionResult = { ok: true } | { ok: false; message: string; fieldErrors?: FieldErrors };
 
 const idSchema = z.uuid();
 

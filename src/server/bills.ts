@@ -1,5 +1,5 @@
 import "server-only";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import type { Category } from "@/lib/format";
 import type { BillFrequency, PaymentRecord, PlainDate, SchedulableBill } from "@/lib/recurrence";
 import type { Database } from "@/lib/supabase/database.types";
