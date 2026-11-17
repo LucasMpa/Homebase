@@ -5,14 +5,14 @@ import { EmptyState } from "@/components/empty-state";
 import { FlashToast } from "@/components/flash-toast";
 import { PageHeader } from "@/components/page-header";
 import { SegmentedNav } from "@/components/segmented-nav";
-import { TransactionRow } from "@/components/transactions/transaction-row";
+import { TransactionRow } from "@/features/transactions/components/transaction-row";
 import { buttonVariants } from "@/components/ui/button";
 import { monthName } from "@/lib/format";
-import { filterByKind, groupByDay, parseKindParam, type LedgerKind } from "@/lib/ledger";
+import { filterByKind, groupByDay, parseKindParam, type LedgerKind } from "@/features/transactions/lib/ledger";
 import { formatBRL } from "@/lib/money";
 import { addMonths, monthBounds, monthOf, parseMonthParam, type YearMonth } from "@/lib/months";
 import { totalsByKind } from "@/lib/reports";
-import { listTransactions } from "@/server/transactions";
+import { listTransactions } from "@/features/transactions/server/queries";
 import { cn } from "@/lib/utils";
 import { getToday } from "@/server/today";
 

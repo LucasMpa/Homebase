@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
-import { TransactionForm } from "@/components/transactions/transaction-form";
-import { createTransaction } from "@/server/transaction-actions";
+import { TransactionForm } from "@/features/transactions/components/transaction-form";
+import { createTransaction } from "@/features/transactions/server/actions";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Novo gasto" };

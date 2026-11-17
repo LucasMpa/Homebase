@@ -9,8 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { CATEGORY_LABELS } from "@/lib/format";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import { transactionFormSchema, type TransactionFormValues } from "@/lib/validation/transactions";
-import type { TransactionFormState } from "@/server/transaction-actions";
+import { transactionFormSchema, type TransactionFormValues } from "@/features/transactions/validation";
+import type { TransactionFormState } from "@/features/transactions/server/actions";
 
 const PAID_AT_HINT = "Dia em que o dinheiro saiu";
 

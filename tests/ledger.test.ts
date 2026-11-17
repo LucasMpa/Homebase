@@ -6,7 +6,7 @@ import {
   filterByKind,
   groupByDay,
   parseKindParam,
-} from "@/lib/ledger";
+} from "@/features/transactions/lib/ledger";
 
 const today = "2026-10-19";
 

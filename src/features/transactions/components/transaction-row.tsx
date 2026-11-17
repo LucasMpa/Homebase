@@ -2,7 +2,7 @@ import { ChevronRightIcon, ReceiptTextIcon } from "lucide-react";
 import Link from "next/link";
 import { CATEGORY_LABELS, formatDate } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import type { Transaction } from "@/server/transactions";
+import type { Transaction } from "@/features/transactions/server/queries";
 
 /**
  * Uma linha do livro-caixa; a linha inteira é o link. Pagamento de conta leva

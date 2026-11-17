@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { occurrenceStatus } from "@/lib/recurrence";
+import { occurrenceStatus } from "@/features/bills/lib/recurrence";
 import { todayInSaoPaulo } from "@/lib/dates";
 
 describe("occurrenceStatus", () => {

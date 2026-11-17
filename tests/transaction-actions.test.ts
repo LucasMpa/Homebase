@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { BILL_PAYMENT_LOCKED_MESSAGE } from "@/lib/ledger";
+import { BILL_PAYMENT_LOCKED_MESSAGE } from "@/features/transactions/lib/ledger";
 
 /**
  * Chama as actions de verdade com um Supabase falso: confere que pagamento de
@@ -62,7 +62,7 @@ vi.mock("next/navigation", () => ({
   },
 }));
 
-const { deleteTransaction, updateTransaction } = await import("@/server/transaction-actions");
+const { deleteTransaction, updateTransaction } = await import("@/features/transactions/server/actions");
 
 const ID = "7f1c2a3e-5b6d-4e8f-9a0b-1c2d3e4f5a6b";
 

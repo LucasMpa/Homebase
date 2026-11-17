@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 import { PageHeader } from "@/components/page-header";
-import { DeleteTransactionButton } from "@/components/transactions/delete-transaction-button";
-import { TransactionForm } from "@/components/transactions/transaction-form";
+import { DeleteTransactionButton } from "@/features/transactions/components/delete-transaction-button";
+import { TransactionForm } from "@/features/transactions/components/transaction-form";
 import { centsToInput } from "@/lib/money";
 import { monthOf } from "@/lib/months";
-import { updateTransaction } from "@/server/transaction-actions";
-import { getTransaction } from "@/server/transactions";
+import { updateTransaction } from "@/features/transactions/server/actions";
+import { getTransaction } from "@/features/transactions/server/queries";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Editar gasto" };

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireUser } from "@/server/auth";
-import { editLockReason } from "@/lib/ledger";
+import { editLockReason } from "@/features/transactions/lib/ledger";
 import { monthOf } from "@/lib/months";
 import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
 import {
@@ -12,7 +12,7 @@ import {
   transactionFormSchema,
   type TransactionFormValues,
   type TransactionInput,
-} from "@/lib/validation/transactions";
+} from "@/features/transactions/validation";
 import type { ActionResult } from "@/server/action-result";
 
 /**

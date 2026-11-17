@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteTransaction } from "@/server/transaction-actions";
+import { deleteTransaction } from "@/features/transactions/server/actions";
 
 export function DeleteTransactionButton({ transactionId, description }: { transactionId: string; description: string }) {
   const [pending, startTransition] = useTransition();
