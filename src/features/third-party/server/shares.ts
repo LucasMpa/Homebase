@@ -5,9 +5,9 @@ import { z } from "zod";
 import { requireUser } from "@/server/auth";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
 import type { Database } from "@/lib/supabase/database.types";
-import type { ThirdPartyExpense } from "@/lib/third-party";
-import type { EarlierPending } from "@/lib/third-party-report";
-import { shareTokenSchema } from "@/lib/validation/third-party-export";
+import type { ThirdPartyExpense } from "@/features/third-party/lib/expenses";
+import type { EarlierPending } from "@/features/third-party/lib/report";
+import { shareTokenSchema } from "@/features/third-party/export-validation";
 
 export interface ShareSummary {
   id: string;

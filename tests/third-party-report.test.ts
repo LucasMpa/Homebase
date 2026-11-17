@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { monthlyOverview, type ThirdPartyExpense } from "@/lib/third-party";
-import { buildExportReport, monthSpan, periodLabel, reportFileName, slugify } from "@/lib/third-party-report";
-import { exportParamsSchema, shareLinkSchema, shareTokenSchema } from "@/lib/validation/third-party-export";
+import { monthlyOverview, type ThirdPartyExpense } from "@/features/third-party/lib/expenses";
+import { buildExportReport, monthSpan, periodLabel, reportFileName, slugify } from "@/features/third-party/lib/report";
+import { exportParamsSchema, shareLinkSchema, shareTokenSchema } from "@/features/third-party/export-validation";
 
 function expense(overrides: Partial<ThirdPartyExpense>): ThirdPartyExpense {
   return {

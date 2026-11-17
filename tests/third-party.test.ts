@@ -13,8 +13,8 @@ import {
   settledOn,
   uniqueSuggestions,
   type ThirdPartyExpense,
-} from "@/lib/third-party";
-import { expenseFormSchema, settleSchema } from "@/lib/validation/third-party";
+} from "@/features/third-party/lib/expenses";
+import { expenseFormSchema, settleSchema } from "@/features/third-party/validation";
 
 function expense(overrides: Partial<ThirdPartyExpense>): ThirdPartyExpense {
   return {

@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { startTransition, useActionState, useState } from "react";
 import { describedBy, FormField } from "@/components/form-field";
-import { MonthlyCostPreview, type CommittedExpense } from "@/components/third-party/monthly-cost-preview";
+import { MonthlyCostPreview, type CommittedExpense } from "@/features/third-party/components/monthly-cost-preview";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { parseBRL } from "@/lib/money";
 import { isPlainDate } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import { expenseFormSchema, MAX_INSTALLMENTS, type ExpenseFormValues } from "@/lib/validation/third-party";
-import type { ExpenseFormState } from "@/server/third-party-actions";
+import { expenseFormSchema, MAX_INSTALLMENTS, type ExpenseFormValues } from "@/features/third-party/validation";
+import type { ExpenseFormState } from "@/features/third-party/server/actions";
 
 const LOCKED_HINT = "Já há parcelas acertadas. Para mudar valor, parcelas ou data, desfaça os acertos.";
 

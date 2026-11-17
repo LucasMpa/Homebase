@@ -1,7 +1,7 @@
 import { CalendarRangeIcon } from "lucide-react";
 import { formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { installmentSchedule, monthlyTotals, personKey, type ThirdPartyExpense } from "@/lib/third-party";
+import { installmentSchedule, monthlyTotals, personKey, type ThirdPartyExpense } from "@/features/third-party/lib/expenses";
 
 export type CommittedExpense = Pick<
   ThirdPartyExpense,

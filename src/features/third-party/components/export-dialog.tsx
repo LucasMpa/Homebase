@@ -17,13 +17,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/components/ui/toast";
 import { formatDate, formatMonth } from "@/lib/format";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { addMonths } from "@/lib/third-party";
-import { periodLabel, SHARE_TTL_DAYS } from "@/lib/third-party-report";
+import { addMonths } from "@/features/third-party/lib/expenses";
+import { periodLabel, SHARE_TTL_DAYS } from "@/features/third-party/lib/report";
 import { cn } from "@/lib/utils";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import { exportParamsSchema, shareLinkSchema } from "@/lib/validation/third-party-export";
-import type { ShareSummary } from "@/server/third-party-shares";
-import { createShareLink, revokeShareLink } from "@/server/third-party-share-actions";
+import { exportParamsSchema, shareLinkSchema } from "@/features/third-party/export-validation";
+import type { ShareSummary } from "@/features/third-party/server/shares";
+import { createShareLink, revokeShareLink } from "@/features/third-party/server/share-actions";
 
 const ALL = "__all__";
 

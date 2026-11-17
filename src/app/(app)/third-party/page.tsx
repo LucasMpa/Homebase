@@ -4,9 +4,9 @@ import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { SegmentedNav } from "@/components/segmented-nav";
-import { ExpenseRow } from "@/components/third-party/expense-row";
-import { ExportDialog } from "@/components/third-party/export-dialog";
-import { SettleDialog } from "@/components/third-party/settle-dialog";
+import { ExpenseRow } from "@/features/third-party/components/expense-row";
+import { ExportDialog } from "@/features/third-party/components/export-dialog";
+import { SettleDialog } from "@/features/third-party/components/settle-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
@@ -20,11 +20,11 @@ import {
   pendingInstallments,
   type PersonGroup,
   type ThirdPartyExpense,
-} from "@/lib/third-party";
+} from "@/features/third-party/lib/expenses";
 import { cn } from "@/lib/utils";
 import { MAX_YEAR } from "@/lib/validation/common";
-import { listExpenses, listExpenseSuggestions } from "@/server/third-party";
-import { listActiveShares } from "@/server/third-party-shares";
+import { listExpenses, listExpenseSuggestions } from "@/features/third-party/server/queries";
+import { listActiveShares } from "@/features/third-party/server/shares";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Gastos de terceiros" };

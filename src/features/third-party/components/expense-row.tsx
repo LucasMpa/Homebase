@@ -1,12 +1,12 @@
 import { CheckIcon, PencilIcon } from "lucide-react";
 import Link from "next/link";
-import { SettleDialog } from "@/components/third-party/settle-dialog";
-import { UnsettleButton } from "@/components/third-party/unsettle-button";
+import { SettleDialog } from "@/features/third-party/components/settle-dialog";
+import { UnsettleButton } from "@/features/third-party/components/unsettle-button";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatDate, formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { installmentCents, installmentSchedule, settledOn, type ThirdPartyExpense } from "@/lib/third-party";
+import { installmentCents, installmentSchedule, settledOn, type ThirdPartyExpense } from "@/features/third-party/lib/expenses";
 
 /** Uma linha de gasto: descrição, data, valor, parcelas e ações (acertar/desfazer, editar). */
 export function ExpenseRow({ expense, showPerson = false }: { expense: ThirdPartyExpense; showPerson?: boolean }) {

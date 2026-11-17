@@ -1,7 +1,7 @@
 import "server-only";
 import { requireUser } from "@/server/auth";
 import type { Database } from "@/lib/supabase/database.types";
-import { isSettled, settledOn, uniqueSuggestions, type ThirdPartyExpense } from "@/lib/third-party";
+import { isSettled, settledOn, uniqueSuggestions, type ThirdPartyExpense } from "@/features/third-party/lib/expenses";
 
 type ExpenseRow = Database["public"]["Tables"]["third_party_expenses"]["Row"] & {
   third_party_settlements: Pick<

@@ -4,7 +4,7 @@
  */
 
 import { formatMonth } from "@/lib/format";
-import { addMonths, installmentSchedule, personKey, type ThirdPartyExpense, type YearMonth } from "@/lib/third-party";
+import { addMonths, installmentSchedule, personKey, type ThirdPartyExpense, type YearMonth } from "@/features/third-party/lib/expenses";
 
 /** Maior intervalo exportável, em meses (inclusive). */
 export const MAX_REPORT_MONTHS = 24;

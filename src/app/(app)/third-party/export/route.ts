@@ -1,10 +1,10 @@
 import type { NextRequest } from "next/server";
-import { reportPdfResponse } from "@/components/third-party/report-pdf";
+import { reportPdfResponse } from "@/features/third-party/server/report-pdf";
 import { requireUser } from "@/server/auth";
-import { monthOf } from "@/lib/third-party";
-import { buildExportReport } from "@/lib/third-party-report";
-import { exportParamsSchema } from "@/lib/validation/third-party-export";
-import { listExpenses } from "@/server/third-party";
+import { monthOf } from "@/features/third-party/lib/expenses";
+import { buildExportReport } from "@/features/third-party/lib/report";
+import { exportParamsSchema } from "@/features/third-party/export-validation";
+import { listExpenses } from "@/features/third-party/server/queries";
 import { getToday } from "@/server/today";
 
 /** PDF dos gastos de terceiros: GET /third-party/export?person=Ana&from=2026-11&to=2027-04 (pessoa vazia = todas). */

@@ -19,8 +19,8 @@ import { Input } from "@/components/ui/input";
 import { formatBRL } from "@/lib/money";
 import { todayInSaoPaulo } from "@/lib/dates";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
-import { settleSchema, type InstallmentRef } from "@/lib/validation/third-party";
-import { settleInstallments, unsettleInstallments } from "@/server/third-party-actions";
+import { settleSchema, type InstallmentRef } from "@/features/third-party/validation";
+import { settleInstallments, unsettleInstallments } from "@/features/third-party/server/actions";
 
 /** Registra que a pessoa pagou: uma parcela, as restantes de um gasto ou várias de uma vez. */
 export function SettleDialog({

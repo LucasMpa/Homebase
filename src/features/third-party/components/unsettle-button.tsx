@@ -4,8 +4,8 @@ import { Undo2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
-import type { InstallmentRef } from "@/lib/validation/third-party";
-import { unsettleInstallments } from "@/server/third-party-actions";
+import type { InstallmentRef } from "@/features/third-party/validation";
+import { unsettleInstallments } from "@/features/third-party/server/actions";
 
 /** Desfaz o acerto das parcelas indicadas. `ariaLabel` diz qual, quando há vários "Desfazer" na tela. */
 export function UnsettleButton({

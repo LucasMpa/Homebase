@@ -6,10 +6,10 @@ import { buttonVariants } from "@/components/ui/button";
 import { formatDate, formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { monthOf } from "@/lib/third-party";
-import { buildExportReport, periodLabel, type ReportLine } from "@/lib/third-party-report";
+import { monthOf } from "@/features/third-party/lib/expenses";
+import { buildExportReport, periodLabel, type ReportLine } from "@/features/third-party/lib/report";
 import { cn } from "@/lib/utils";
-import { getSharedReport } from "@/server/third-party-shares";
+import { getSharedReport } from "@/features/third-party/server/shares";
 import { getToday } from "@/server/today";
 
 /*

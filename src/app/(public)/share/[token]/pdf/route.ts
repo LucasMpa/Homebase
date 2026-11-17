@@ -1,9 +1,9 @@
 import type { NextRequest } from "next/server";
-import { reportPdfResponse } from "@/components/third-party/report-pdf";
+import { reportPdfResponse } from "@/features/third-party/server/report-pdf";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { monthOf } from "@/lib/third-party";
-import { buildExportReport } from "@/lib/third-party-report";
-import { getSharedReport } from "@/server/third-party-shares";
+import { monthOf } from "@/features/third-party/lib/expenses";
+import { buildExportReport } from "@/features/third-party/lib/report";
+import { getSharedReport } from "@/features/third-party/server/shares";
 import { getToday } from "@/server/today";
 
 /** PDF público de um link de compartilhamento. Link inválido, expirado ou revogado → 404. */

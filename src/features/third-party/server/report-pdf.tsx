@@ -3,7 +3,7 @@ import path from "node:path";
 import { Document, Font, Page, Path, Rect, renderToBuffer, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 import { formatDate, formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { periodLabel, reportFileName, type ExportReport, type ReportLine } from "@/lib/third-party-report";
+import { periodLabel, reportFileName, type ExportReport, type ReportLine } from "@/features/third-party/lib/report";
 
 /*
  * PDF do resumo de gastos de terceiros, no tema escuro do app (mesma paleta de

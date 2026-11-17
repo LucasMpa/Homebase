@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireUser } from "@/server/auth";
-import { installmentSchedule } from "@/lib/third-party";
+import { installmentSchedule } from "@/features/third-party/lib/expenses";
 import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
 import {
   EXPENSE_FIELDS,
@@ -14,7 +14,7 @@ import {
   type ExpenseFormValues,
   type ExpenseInput,
   type InstallmentRef,
-} from "@/lib/validation/third-party";
+} from "@/features/third-party/validation";
 import type { ActionResult } from "@/server/action-result";
 
 /**

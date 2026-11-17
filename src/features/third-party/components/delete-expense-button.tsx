@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteExpense } from "@/server/third-party-actions";
+import { deleteExpense } from "@/features/third-party/server/actions";
 
 export function DeleteExpenseButton({ expenseId, description }: { expenseId: string; description: string }) {
   const [pending, startTransition] = useTransition();

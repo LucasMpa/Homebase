@@ -11,8 +11,8 @@ import { formatBRL } from "@/lib/money";
 import { monthBounds, monthOf, monthsEndingAt } from "@/lib/months";
 import { paidByCategory, paidByMonth, totalsByKind } from "@/features/reports/lib/reports";
 import { hasAnyTransaction, listTransactions } from "@/features/transactions/server/queries";
-import { monthlyOverview } from "@/lib/third-party";
-import { listExpenses } from "@/server/third-party";
+import { monthlyOverview } from "@/features/third-party/lib/expenses";
+import { listExpenses } from "@/features/third-party/server/queries";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Relatórios" };
