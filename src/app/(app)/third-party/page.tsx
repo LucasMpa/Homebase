@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/empty-state";
 import { PageHeader } from "@/components/page-header";
 import { SegmentedNav } from "@/components/segmented-nav";
 import { ExpenseRow } from "@/components/third-party/expense-row";
+import { ExportDialog } from "@/components/third-party/export-dialog";
 import { SettleDialog } from "@/components/third-party/settle-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { formatMonth } from "@/lib/format";
@@ -22,7 +23,8 @@ import {
 } from "@/lib/third-party";
 import { cn } from "@/lib/utils";
 import { MAX_YEAR } from "@/lib/validation/common";
-import { listExpenses } from "@/server/third-party";
+import { listExpenses, listExpenseSuggestions } from "@/server/third-party";
+import { listActiveShares } from "@/server/third-party-shares";
 import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Gastos de terceiros" };
@@ -32,7 +34,12 @@ const OVERVIEW_MONTHS = 6;
 export default async function ThirdPartyPage({ searchParams }: PageProps<"/third-party">) {
   const params = await searchParams;
   const settled = params.settled === "1";
-  const [expenses, today] = await Promise.all([listExpenses({ settled }), getToday()]);
+  const [expenses, today, { people }, shares] = await Promise.all([
+    listExpenses({ settled }),
+    getToday(),
+    listExpenseSuggestions(),
+    listActiveShares(),
+  ]);
   // A receber soma só o que falta (parcelas em aberto); acertados, o valor da compra.
   const groups = settled ? groupByPerson(expenses) : groupByPerson(expenses, pendingCents);
   const currentMonth = monthOf(today);
@@ -46,9 +53,14 @@ export default async function ThirdPartyPage({ searchParams }: PageProps<"/third
         title="Gastos de terceiros"
         description="O que outras pessoas passaram no seu cartão e precisam te devolver."
         actions={
-          <Link href="/third-party/new" className={buttonVariants()}>
-            <PlusIcon aria-hidden /> Novo gasto
-          </Link>
+          <>
+            {people.length > 0 && (
+              <ExportDialog people={people} currentMonth={currentMonth} defaultFrom={summaryMonth} shares={shares} />
+            )}
+            <Link href="/third-party/new" className={buttonVariants()}>
+              <PlusIcon aria-hidden /> Novo gasto
+            </Link>
+          </>
         }
       />
 
