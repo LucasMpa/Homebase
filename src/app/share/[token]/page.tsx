@@ -53,9 +53,12 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
       </header>
 
       <main>
-        <p className="text-sm text-muted-foreground">Resumo de gastos de terceiros</p>
-        <h1 className="mt-1 font-heading text-2xl font-semibold tracking-tight md:text-3xl">{report.person}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Parcelas de {period}</p>
+        {/* Centralizado no celular; alinhado à esquerda a partir do md. */}
+        <div className="text-center md:text-left">
+          <p className="text-sm text-muted-foreground">Resumo de gastos de terceiros</p>
+          <h1 className="mt-1 font-heading text-2xl font-semibold tracking-tight md:text-3xl">{report.person}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Parcelas de {period}</p>
+        </div>
 
         <section aria-label="Totais" className="mt-6 mb-8 grid grid-cols-2 gap-3">
           <SummaryCard label="Total no período" cents={totals.totalCents} />
