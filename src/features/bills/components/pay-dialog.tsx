@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { formatDate } from "@/lib/format";
 import { centsToInput } from "@/lib/money";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import { paymentFormSchema } from "@/features/bills/payment-validation";
 import { markPaid, unmarkPaid } from "@/features/bills/server/actions";
 

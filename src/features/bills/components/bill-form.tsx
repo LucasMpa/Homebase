@@ -22,7 +22,7 @@ import { FREQUENCY_LABELS } from "@/features/bills/lib/frequency";
 import type { BillFrequency } from "@/features/bills/lib/recurrence";
 import { isPlainDate, parsePlainDate } from "@/lib/dates";
 import { billFormSchema, type BillFormValues } from "@/features/bills/validation";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import type { BillFormState } from "@/features/bills/server/actions";
 
 type Mode = "save" | "replace";

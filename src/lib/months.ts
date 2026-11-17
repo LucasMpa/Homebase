@@ -1,5 +1,5 @@
 import { daysInMonth, formatPlainDate, type PlainDate } from "@/lib/dates";
-import { MAX_YEAR, MIN_YEAR } from "@/lib/validation/common";
+import { MAX_YEAR, MIN_YEAR } from "@/lib/validation";
 
 /** Mês civil no formato "YYYY-MM". */
 export type YearMonth = string;

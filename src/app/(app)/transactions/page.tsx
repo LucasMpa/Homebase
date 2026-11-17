@@ -18,7 +18,7 @@ import { getToday } from "@/server/today";
 
 export const metadata: Metadata = { title: "Lançamentos" };
 
-/** Toasts das mutações que terminam em redirect para cá (src/server/transaction-actions.ts). */
+/** Toasts das mutações que terminam em redirect para cá (src/features/transactions/server/actions.ts). */
 const NOTICES: Record<string, string> = {
   created: "Gasto registrado",
   updated: "Gasto atualizado",

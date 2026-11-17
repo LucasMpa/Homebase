@@ -22,7 +22,7 @@ import {
   type ThirdPartyExpense,
 } from "@/features/third-party/lib/expenses";
 import { cn } from "@/lib/utils";
-import { MAX_YEAR } from "@/lib/validation/common";
+import { MAX_YEAR } from "@/lib/validation";
 import { listExpenses, listExpenseSuggestions } from "@/features/third-party/server/queries";
 import { listActiveShares } from "@/features/third-party/server/shares";
 import { getToday } from "@/server/today";

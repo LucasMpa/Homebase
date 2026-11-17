@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { parseBRL } from "@/lib/money";
 import { isPlainDate } from "@/lib/dates";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import { expenseFormSchema, MAX_INSTALLMENTS, type ExpenseFormValues } from "@/features/third-party/validation";
 import type { ExpenseFormState } from "@/features/third-party/server/actions";
 

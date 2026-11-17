@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireUser } from "@/server/auth";
 import { SHARE_TTL_DAYS } from "@/features/third-party/lib/report";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import { shareLinkSchema } from "@/features/third-party/export-validation";
 import type { ActionResult } from "@/server/action-result";
 

@@ -7,7 +7,7 @@ import type { ActionResult } from "@/server/action-result";
 import { requireUser } from "@/server/auth";
 import { occurrencesBetween } from "@/features/bills/lib/recurrence";
 import { BILL_FIELDS, billFormSchema, type BillFormValues, type BillInput } from "@/features/bills/validation";
-import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation";
 import { paymentFormSchema, paymentKeySchema, type PaymentFormValues } from "@/features/bills/payment-validation";
 
 /**

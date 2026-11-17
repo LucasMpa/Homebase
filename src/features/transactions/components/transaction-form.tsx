@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CATEGORY_LABELS } from "@/lib/format";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import { transactionFormSchema, type TransactionFormValues } from "@/features/transactions/validation";
 import type { TransactionFormState } from "@/features/transactions/server/actions";
 

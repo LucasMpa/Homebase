@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GoogleIcon } from "@/components/google-icon";
+import { GoogleIcon } from "@/components/icons/google-icon";
 import { Logo } from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { signInWithGoogle } from "./actions";

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { CATEGORIES } from "@/lib/format";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { brlAmount, optionalText, plainDate } from "@/lib/validation/common";
+import { brlAmount, optionalText, plainDate } from "@/lib/validation";
 
 /** Formulário de gasto avulso (lançamento sem conta). */
 export const TRANSACTION_FIELDS = ["description", "amount", "paidAt", "category", "notes"] as const;

@@ -97,7 +97,7 @@ As migrations aplicadas ficam em `supabase_migrations.schema_migrations`, a mesm
 
 O banco guarda a **regra** de recorrência (`bills.frequency` + `start_date` + `end_date`), e não cada vencimento. As ocorrências são calculadas no app, e só os pagamentos viram registros: lançamentos em `transactions` com `bill_id` + `due_date`, únicos por `(bill_id, due_date)`.
 
-A lógica fica em `src/lib/recurrence/`, em funções puras e sem acesso ao banco:
+A lógica fica em `src/features/bills/lib/recurrence/`, em funções puras e sem acesso ao banco:
 
 - `dates.ts`: aritmética de datas civis (`"YYYY-MM-DD"`) e `todayInSaoPaulo()`.
 - `occurrences.ts`: geração das ocorrências.
@@ -117,11 +117,11 @@ Todo dinheiro que saiu é uma linha de `transactions`. Com `bill_id` + `due_date
 - `/transactions` mostra um mês por vez (`?month=YYYY-MM`), com filtro Tudo/Avulsos/Contas (`?kind=`), agrupado por dia.
 - Os Relatórios somam contas e avulsos, por `paid_at` e pela categoria do lançamento. “Esta semana” continua só com contas, e Terceiros fica fora do livro-caixa.
 
-As regras ficam em funções puras: `src/lib/ledger.ts` (agrupamento por dia, filtro de tipo, recusa de edição) e `src/lib/reports.ts` (totais por mês, por categoria e por tipo).
+As regras ficam em funções puras: `src/features/transactions/lib/ledger.ts` (agrupamento por dia, filtro de tipo, recusa de edição) e `src/features/reports/lib/reports.ts` (totais por mês, por categoria e por tipo).
 
 ### Gastos de terceiros
 
-Em `/third-party` ficam as compras que outra pessoa passou no seu cartão e que ela precisa te devolver (`third_party_expenses`). Cada gasto guarda o **valor total** da compra. As parcelas definem o **custo mensal**: a 1ª cai no mês da compra, e a sobra de centavos da divisão vai para ela. Ao cadastrar, uma prévia mostra quanto a compra soma em cada mês, junto com o que a pessoa já tinha comprometido. A página mostra o total a receber dos próximos 6 meses. Quando a pessoa te paga, o gasto é marcado como acertado (`settled_at`), um por um ou todos os pendentes da pessoa de uma vez. O acerto pode ser desfeito. Os agrupamentos e totais ficam em `src/lib/third-party.ts`.
+Em `/third-party` ficam as compras que outra pessoa passou no seu cartão e que ela precisa te devolver (`third_party_expenses`). Cada gasto guarda o **valor total** da compra. As parcelas definem o **custo mensal**: a 1ª cai no mês da compra, e a sobra de centavos da divisão vai para ela. Ao cadastrar, uma prévia mostra quanto a compra soma em cada mês, junto com o que a pessoa já tinha comprometido. A página mostra o total a receber dos próximos 6 meses. Quando a pessoa te paga, o gasto é marcado como acertado (`settled_at`), um por um ou todos os pendentes da pessoa de uma vez. O acerto pode ser desfeito. Os agrupamentos e totais ficam em `src/features/third-party/lib/expenses.ts`.
 
 ### Segurança
 

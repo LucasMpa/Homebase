@@ -20,7 +20,7 @@ import { todayInSaoPaulo } from "@/lib/dates";
 import { addMonths } from "@/features/third-party/lib/expenses";
 import { periodLabel, SHARE_TTL_DAYS } from "@/features/third-party/lib/report";
 import { cn } from "@/lib/utils";
-import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, type FieldErrors } from "@/lib/validation";
 import { exportParamsSchema, shareLinkSchema } from "@/features/third-party/export-validation";
 import type { ShareSummary } from "@/features/third-party/server/shares";
 import { createShareLink, revokeShareLink } from "@/features/third-party/server/share-actions";

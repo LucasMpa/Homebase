@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireUser } from "@/server/auth";
 import { installmentSchedule } from "@/features/third-party/lib/expenses";
-import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation";
 import {
   EXPENSE_FIELDS,
   expenseFormSchema,
@@ -18,7 +18,7 @@ import {
 import type { ActionResult } from "@/server/action-result";
 
 /**
- * Mutações dos gastos de terceiros. Mesmo padrão de src/server/bill-actions.ts:
+ * Mutações dos gastos de terceiros. Mesmo padrão de src/features/bills/server/actions.ts:
  * requireUser() → validação zod → Supabase com RLS.
  */
 

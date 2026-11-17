@@ -6,7 +6,7 @@ import { z } from "zod";
 import { requireUser } from "@/server/auth";
 import { editLockReason } from "@/features/transactions/lib/ledger";
 import { monthOf } from "@/lib/months";
-import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
+import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation";
 import {
   TRANSACTION_FIELDS,
   transactionFormSchema,
@@ -17,7 +17,7 @@ import type { ActionResult } from "@/server/action-result";
 
 /**
  * Mutações dos gastos avulsos (lançamentos sem conta). Mesmo padrão de
- * src/server/bill-actions.ts: requireUser() → validação zod → Supabase com RLS.
+ * src/features/bills/server/actions.ts: requireUser() → validação zod → Supabase com RLS.
  * Pagamentos de conta só mudam pela conta (markPaid/unmarkPaid).
  */
 

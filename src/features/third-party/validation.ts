@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { brlAmount, optionalText, plainDate } from "@/lib/validation/common";
+import { brlAmount, optionalText, plainDate } from "@/lib/validation";
 
 export const MAX_INSTALLMENTS = 48;
 

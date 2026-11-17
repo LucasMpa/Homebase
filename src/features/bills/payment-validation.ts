@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { todayInSaoPaulo } from "@/lib/dates";
-import { brlAmount, plainDate } from "@/lib/validation/common";
+import { brlAmount, plainDate } from "@/lib/validation";
 
 export const paymentFormSchema = z.object({
   billId: z.uuid("Conta inválida"),

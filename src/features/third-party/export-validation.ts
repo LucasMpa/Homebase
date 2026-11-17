@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { MAX_REPORT_MONTHS, monthSpan } from "@/features/third-party/lib/report";
-import { MAX_YEAR, MIN_YEAR } from "@/lib/validation/common";
+import { MAX_YEAR, MIN_YEAR } from "@/lib/validation";
 
 const yearMonth = (message: string) =>
   z

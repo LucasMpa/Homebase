@@ -6,7 +6,7 @@ import type { PlainDate } from "@/lib/dates";
 
 /**
  * O que os relatórios precisam de um lançamento do livro-caixa. O `Transaction`
- * de src/server/transactions.ts é compatível. `billId` nulo = gasto avulso.
+ * de src/features/transactions/server/queries.ts é compatível. `billId` nulo = gasto avulso.
  */
 export interface LedgerEntry {
   paidAt: PlainDate;
