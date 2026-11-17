@@ -2,7 +2,7 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { isAllowedEmail } from "@/lib/allowed-email";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/server/supabase";
 
 /**
  * Garante sessão válida E e-mail permitido, no servidor. Deve ser chamado em

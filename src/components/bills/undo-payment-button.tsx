@@ -4,7 +4,7 @@ import { Undo2Icon } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
-import { unmarkPaid } from "@/server/actions";
+import { unmarkPaid } from "@/server/bill-actions";
 
 export function UndoPaymentButton({ billId, dueDate }: { billId: string; dueDate: string }) {
   const [pending, startTransition] = useTransition();

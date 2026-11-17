@@ -126,7 +126,7 @@ Em `/third-party` ficam as compras que outra pessoa passou no seu cartão e que 
 ### Segurança
 
 - O `src/proxy.ts` (o antigo `middleware.ts`, renomeado no Next 16) roda em todas as rotas. Ele renova a sessão, manda quem não está logado para `/login` e, se o e-mail não for o `ALLOWED_EMAIL`, faz `signOut` e redireciona para `/access-denied`.
-- `requireUser()` (`src/lib/auth.ts`) repete a checagem no servidor, no layout autenticado, em toda leitura de dados e em toda Server Action.
+- `requireUser()` (`src/server/auth.ts`) repete a checagem no servidor, no layout autenticado, em toda leitura de dados e em toda Server Action.
 - O `/auth/callback` checa o e-mail logo após o OAuth.
 - No Supabase Auth, um hook `before_user_created` recusa com 403 o cadastro de qualquer e-mail diferente do permitido. Isso vale também para quem chama a API do Auth direto, sem passar pelo app.
 - No banco, o RLS exige que a linha seja do `auth.uid()` **e** que o e-mail do JWT seja o permitido. O papel `anon` não tem nenhum grant, e a FK composta `(bill_id, user_id)` de `transactions` impede um lançamento de apontar para a conta de outro usuário.

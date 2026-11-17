@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import { installmentSchedule } from "@/lib/third-party";
 import { fieldErrorsOf, formDataToStrings, type FieldErrors } from "@/lib/validation/common";
 import {
@@ -15,10 +15,10 @@ import {
   type ExpenseInput,
   type InstallmentRef,
 } from "@/lib/validation/third-party";
-import type { ActionResult } from "@/server/actions";
+import type { ActionResult } from "@/server/action-result";
 
 /**
- * Mutações dos gastos de terceiros. Mesmo padrão de src/server/actions.ts:
+ * Mutações dos gastos de terceiros. Mesmo padrão de src/server/bill-actions.ts:
  * requireUser() → validação zod → Supabase com RLS.
  */
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { BillForm } from "@/components/bills/bill-form";
 import { PageHeader } from "@/components/page-header";
 import { getToday } from "@/server/today";
-import { createBill } from "@/server/actions";
+import { createBill } from "@/server/bill-actions";
 
 export const metadata: Metadata = { title: "Nova conta" };
 

@@ -21,7 +21,7 @@ import { centsToInput } from "@/lib/money";
 import { todayInSaoPaulo } from "@/lib/recurrence";
 import { fieldErrorsOf, type FieldErrors } from "@/lib/validation/common";
 import { paymentFormSchema } from "@/lib/validation/payments";
-import { markPaid, unmarkPaid } from "@/server/actions";
+import { markPaid, unmarkPaid } from "@/server/bill-actions";
 
 export function PayDialog({
   billId,

@@ -30,6 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# store do pnpm (quando criado dentro do projeto)
+/.pnpm-store/
+
 # env files — nunca commitar segredos; só o exemplo
 .env*
 !.env.example

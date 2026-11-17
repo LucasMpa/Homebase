@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { reportPdfResponse } from "@/components/third-party/report-pdf";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import { monthOf } from "@/lib/third-party";
 import { buildExportReport } from "@/lib/third-party-report";
 import { exportParamsSchema } from "@/lib/validation/third-party-export";

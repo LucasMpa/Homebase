@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/server/supabase";
 
 export async function signInWithGoogle() {
   const origin = (await headers()).get("origin") ?? "http://localhost:3000";

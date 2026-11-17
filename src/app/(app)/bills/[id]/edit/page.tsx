@@ -4,7 +4,7 @@ import { z } from "zod";
 import { BillForm } from "@/components/bills/bill-form";
 import { PageHeader } from "@/components/page-header";
 import { centsToInput } from "@/lib/money";
-import { updateBill } from "@/server/actions";
+import { updateBill } from "@/server/bill-actions";
 import { getBill, listPayments } from "@/server/bills";
 
 export const metadata: Metadata = { title: "Editar conta" };

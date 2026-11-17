@@ -2,7 +2,7 @@ import "server-only";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cache } from "react";
 import { z } from "zod";
-import { requireUser } from "@/lib/auth";
+import { requireUser } from "@/server/auth";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "@/lib/env";
 import type { Database } from "@/lib/supabase/database.types";
 import type { ThirdPartyExpense } from "@/lib/third-party";
