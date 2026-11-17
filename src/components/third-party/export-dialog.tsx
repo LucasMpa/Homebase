@@ -34,19 +34,18 @@ const ALL = "__all__";
 export function ExportDialog({
   people,
   currentMonth,
-  defaultFrom,
   shares,
 }: {
   people: string[];
   currentMonth: string;
-  defaultFrom: string;
   shares: ShareSummary[];
 }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [person, setPerson] = useState(people.length === 1 ? people[0] : ALL);
-  const [from, setFrom] = useState(defaultFrom);
-  const [to, setTo] = useState(addMonths(defaultFrom, 5));
+  // Período padrão: só o mês atual (de e até), a cada vez que o diálogo abre.
+  const [from, setFrom] = useState(currentMonth);
+  const [to, setTo] = useState(currentMonth);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [link, setLink] = useState<{ url: string; expiresAt: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -59,6 +58,8 @@ export function ExportDialog({
   function onOpenChange(next: boolean) {
     setOpen(next);
     if (next) {
+      setFrom(currentMonth);
+      setTo(currentMonth);
       setErrors({});
       setLink(null);
     }
