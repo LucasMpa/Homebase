@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fieldErrorsOf } from "@/lib/validation/common";
+import { fieldErrorsOf } from "@/lib/validation";
 import { transactionFormSchema, type TransactionFormValues } from "@/features/transactions/validation";
 
 const valid: TransactionFormValues = {

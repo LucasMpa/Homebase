@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { addDays, todayInSaoPaulo } from "@/lib/dates";
+import { addDays, isPlainDate, todayInSaoPaulo } from "@/lib/dates";
+import { plainDate } from "@/lib/validation";
 
 describe("addDays", () => {
   it.each([
@@ -67,5 +68,18 @@ describe("todayInSaoPaulo", () => {
   it("devolve string no formato YYYY-MM-DD", () => {
     expect(todayInSaoPaulo(new Date("2026-01-05T15:00:00Z"))).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(todayInSaoPaulo(new Date("2026-01-05T15:00:00Z"))).toBe("2026-01-05");
+  });
+});
+
+describe("anos fora de 1970–2099 (regressão)", () => {
+  it("não converte anos 0–99 para 1900–1999", () => {
+    expect(addDays("0024-03-05", 7)).toBe("0024-03-12");
+    expect(isPlainDate("0000-02-29")).toBe(true); // ano 0 é bissexto no calendário proléptico
+  });
+
+  it("formulários aceitam só anos entre 2000 e 2100", () => {
+    expect(plainDate().safeParse("0024-03-05").success).toBe(false);
+    expect(plainDate().safeParse("2101-01-01").success).toBe(false);
+    expect(plainDate().safeParse("2026-10-15").success).toBe(true);
   });
 });
