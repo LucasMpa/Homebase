@@ -60,7 +60,8 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
           <p className="mt-1 text-sm text-muted-foreground">Parcelas de {period}</p>
         </div>
 
-        <section aria-label="Totais" className="mt-6 mb-8 grid grid-cols-2 gap-3">
+        {/* Celular: cards em largura total, empilhados e centralizados. A partir do md: lado a lado, à esquerda. */}
+        <section aria-label="Totais" className="mt-6 mb-8 grid grid-cols-1 gap-3 md:grid-cols-2">
           <SummaryCard label="Total no período" cents={totals.totalCents} />
           {totals.overdueCents > 0 && (
             <SummaryCard label="Atrasado" cents={totals.overdueCents} className="text-overdue-foreground" />
@@ -114,7 +115,7 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
 
 function SummaryCard({ label, cents, className }: { label: string; cents: number; className?: string }) {
   return (
-    <div className="rounded-xl bg-card p-4 ring-1 ring-foreground/10">
+    <div className="flex flex-col items-center justify-center rounded-xl bg-card p-4 text-center ring-1 ring-foreground/10 md:items-start md:text-left">
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className={cn("mt-1 font-heading text-xl font-semibold tabular-nums md:text-2xl", className)}>{formatBRL(cents)}</p>
     </div>
