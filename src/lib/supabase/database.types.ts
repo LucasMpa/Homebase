@@ -163,6 +163,43 @@ export type Database = {
           },
         ]
       }
+      third_party_shares: {
+        Row: {
+          created_at: string
+          expires_at: string
+          from_month: string
+          id: string
+          person: string
+          revoked_at: string | null
+          to_month: string
+          token_hash: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          expires_at: string
+          from_month: string
+          id?: string
+          person: string
+          revoked_at?: string | null
+          to_month: string
+          token_hash: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          from_month?: string
+          id?: string
+          person?: string
+          revoked_at?: string | null
+          to_month?: string
+          token_hash?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount_cents: number
@@ -231,6 +268,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_shared_report: { Args: { share_token: string }; Returns: Json }
       hook_before_user_created: { Args: { event: Json }; Returns: Json }
       set_allowed_email: { Args: { email: string }; Returns: undefined }
     }

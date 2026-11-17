@@ -10,8 +10,11 @@ export function isAllowedEmail(email: string | null | undefined): boolean {
   return email.trim().toLowerCase() === allowed;
 }
 
-/** Rotas acessíveis sem sessão. Todo o resto exige login. */
-export const PUBLIC_PATHS = ["/login", "/access-denied", "/auth/callback"] as const;
+/**
+ * Rotas acessíveis sem sessão. Todo o resto exige login.
+ * /share: links públicos dos gastos de terceiros; a página valida o token no banco.
+ */
+export const PUBLIC_PATHS = ["/login", "/access-denied", "/auth/callback", "/share"] as const;
 
 export function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
