@@ -1,7 +1,14 @@
 import { describe, expect, it } from "vitest";
 import type { Category } from "@/lib/format";
 import { monthsEndingAt } from "@/lib/months";
-import { niceMax, OTHER_CATEGORIES, paidByCategory, paidByMonth, totalsByKind, type LedgerEntry } from "@/features/reports/lib/reports";
+import {
+  niceMax,
+  OTHER_CATEGORIES,
+  paidByCategory,
+  paidByMonth,
+  totalsByKind,
+  type LedgerEntry,
+} from "@/features/reports/lib/reports";
 
 /** Lançamento de teste: com `billId` é pagamento de conta; sem, gasto avulso. */
 const entry = (paidAt: string, amountCents: number, category: Category, billId: string | null = null): LedgerEntry => ({

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildMonthSummary, buildWeekView, type PaymentRecord, type SchedulableBill } from "@/features/bills/lib/recurrence";
+import {
+  buildMonthSummary,
+  buildWeekView,
+  type PaymentRecord,
+  type SchedulableBill,
+} from "@/features/bills/lib/recurrence";
 
 const bill = (
   id: string,

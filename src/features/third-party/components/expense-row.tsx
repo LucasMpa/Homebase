@@ -6,7 +6,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatDate, formatMonth } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { installmentCents, installmentSchedule, settledOn, type ThirdPartyExpense } from "@/features/third-party/lib/expenses";
+import {
+  installmentCents,
+  installmentSchedule,
+  settledOn,
+  type ThirdPartyExpense,
+} from "@/features/third-party/lib/expenses";
 
 /** Uma linha de gasto: descrição, data, valor, parcelas e ações (acertar/desfazer, editar). */
 export function ExpenseRow({ expense, showPerson = false }: { expense: ThirdPartyExpense; showPerson?: boolean }) {

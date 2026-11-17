@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { type BillFrequency, nextOccurrences, occurrencesBetween, type RecurrenceRule } from "@/features/bills/lib/recurrence";
+import {
+  type BillFrequency,
+  nextOccurrences,
+  occurrencesBetween,
+  type RecurrenceRule,
+} from "@/features/bills/lib/recurrence";
 
 function rule(
   frequency: BillFrequency,

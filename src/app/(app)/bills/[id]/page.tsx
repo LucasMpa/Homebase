@@ -11,7 +11,14 @@ import { PageHeader } from "@/components/page-header";
 import { CATEGORY_LABELS, formatDate } from "@/lib/format";
 import { describeFrequency } from "@/features/bills/lib/frequency";
 import { formatBRL } from "@/lib/money";
-import { buildOccurrences, indexPayments, nextOccurrences, type Occurrence, occurrencesBetween, occurrenceStatus } from "@/features/bills/lib/recurrence";
+import {
+  buildOccurrences,
+  indexPayments,
+  nextOccurrences,
+  type Occurrence,
+  occurrencesBetween,
+  occurrenceStatus,
+} from "@/features/bills/lib/recurrence";
 import { addDays, todayInSaoPaulo } from "@/lib/dates";
 import { getBill, listPayments, type Bill } from "@/features/bills/server/queries";
 import { getToday } from "@/server/today";

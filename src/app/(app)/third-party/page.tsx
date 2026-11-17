@@ -1,4 +1,11 @@
-import { CalendarRangeIcon, ChevronLeftIcon, ChevronRightIcon, HandCoinsIcon, HistoryIcon, PlusIcon } from "lucide-react";
+import {
+  CalendarRangeIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  HandCoinsIcon,
+  HistoryIcon,
+  PlusIcon,
+} from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
