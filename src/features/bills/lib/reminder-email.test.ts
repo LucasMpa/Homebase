@@ -5,6 +5,7 @@ import {
   reminderDetail,
   reminderPreview,
   reminderSubject,
+  FOOTER_NOTE,
   reminderTotals,
   sectionHeading,
 } from "./reminder-email";
@@ -185,6 +186,14 @@ describe("buildReminderEmail", () => {
     // Precisam vir depois de .stack-column(-right), que alinham à esquerda, para prevalecer.
     expect(mobile.indexOf(".total-amount {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
     expect(mobile.indexOf(".total-badge {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
+  });
+
+  it("rodapé explica quando o e-mail é enviado", () => {
+    expect(email.html).toContain(
+      ">Só enviamos este e-mail quando há algo a fazer: contas a 7, 3 ou 1 dia do vencimento, vencendo hoje ou atrasadas (estas, uma vez por semana até o pagamento).</p>",
+    );
+    expect(email.html).toContain(FOOTER_NOTE);
+    expect(email.html).not.toContain("Avisos de 7, 3 e 1 dia antes");
   });
 
   it("sem links para páginas que não existem", () => {

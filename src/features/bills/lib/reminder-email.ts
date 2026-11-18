@@ -37,6 +37,10 @@ const C = {
   logoMark: "#7ed497",
 } as const;
 
+/** Rodapé: quando este e-mail é enviado. */
+export const FOOTER_NOTE =
+  "Só enviamos este e-mail quando há algo a fazer: contas a 7, 3 ou 1 dia do vencimento, vencendo hoje ou atrasadas (estas, uma vez por semana até o pagamento).";
+
 const FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
 /** Espaços invisíveis depois da prévia: impedem o cliente de completá-la com o começo do corpo. */
@@ -307,7 +311,7 @@ ${sectionsHtml}
 
           <tr>
             <td style="background-color:${C.footer};border-top:1px solid ${C.border};border-radius:0 0 20px 20px;padding:28px 36px 32px 36px;text-align:center;font-family:${FONT};" class="mobile-padding email-footer">
-              <p style="margin:0 0 16px 0;font-size:12px;line-height:1.6;color:${C.muted};">Avisos de 7, 3 e 1 dia antes, no dia do vencimento e, para contas atrasadas, no 1º dia e depois a cada 7 dias até o pagamento.</p>
+              <p style="margin:0 0 16px 0;font-size:12px;line-height:1.6;color:${C.muted};">${FOOTER_NOTE}</p>
               <p style="margin:0;"><a href="${billsUrl}" target="_blank" style="font-size:13px;font-weight:600;color:${C.primary};text-decoration:none;">Abrir contas no Homebase</a></p>
             </td>
           </tr>
