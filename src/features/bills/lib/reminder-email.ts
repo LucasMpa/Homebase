@@ -207,10 +207,12 @@ export function buildReminderEmail(
     body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
     img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
-    table { border-collapse: collapse !important; }
+    /* separate (e não collapse): com collapse os clientes ignoram o border-radius das tabelas. */
+    table { border-collapse: separate !important; border-spacing: 0; }
     body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: ${C.page}; font-family: ${FONT}; }
     @media only screen and (max-width: 620px) {
-      .email-container { width: 100% !important; max-width: 100% !important; border-radius: 0px !important; }
+      .email-container { width: 100% !important; max-width: 100% !important; border-radius: 16px !important; }
+      .email-footer { border-radius: 0 0 16px 16px !important; }
       .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
       .stack-column { display: block !important; width: 100% !important; text-align: left !important; }
       .stack-column-right { display: block !important; width: 100% !important; text-align: left !important; padding-top: 0 !important; }
@@ -287,7 +289,7 @@ ${sectionsHtml}
           </tr>
 
           <tr>
-            <td style="background-color:${C.footer};border-top:1px solid ${C.border};padding:28px 36px 32px 36px;text-align:center;font-family:${FONT};" class="mobile-padding">
+            <td style="background-color:${C.footer};border-top:1px solid ${C.border};border-radius:0 0 20px 20px;padding:28px 36px 32px 36px;text-align:center;font-family:${FONT};" class="mobile-padding email-footer">
               <p style="margin:0 0 16px 0;font-size:12px;line-height:1.6;color:${C.muted};">Avisos de 7, 3 e 1 dia antes, no dia do vencimento e, para contas atrasadas, no 1º dia e depois a cada 7 dias até o pagamento.</p>
               <p style="margin:0;"><a href="${billsUrl}" target="_blank" style="font-size:13px;font-weight:600;color:${C.primary};text-decoration:none;">Abrir contas no Homebase</a></p>
             </td>

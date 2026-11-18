@@ -147,6 +147,14 @@ describe("buildReminderEmail", () => {
     expect(email.html).toContain("Gerenciar todas as contas no painel &rarr;");
   });
 
+  it("cantos arredondados: tabelas sem border-collapse: collapse e raio também no celular", () => {
+    expect(email.html).not.toMatch(/border-collapse:\s*collapse/);
+    expect(email.html).toContain("table { border-collapse: separate !important; border-spacing: 0; }");
+    expect(email.html).toMatch(/max-width:600px;[^"]*border-radius:20px;/);
+    expect(email.html).toContain("border-radius:0 0 20px 20px;");
+    expect(email.html).not.toContain("border-radius: 0px !important");
+  });
+
   it("sem links para páginas que não existem", () => {
     for (const path of ["/dashboard", "/notificacoes", "/preferencias", "/unsubscribe"]) {
       expect(email.html).not.toContain(path);
