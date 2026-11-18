@@ -25,10 +25,6 @@ const C = {
   muted: "#9aa4b8",
   primary: "#5fd38d",
   primaryForeground: "#161e2f",
-  /** Texto do botão "Ver conta" (pedido explícito: branco). */
-  billButtonText: "#ffffff",
-  /** Contorno preto do texto do botão "Ver conta" (melhora a leitura do branco sobre o verde). */
-  billButtonOutline: "#000000",
   /** Pílula "N contas no resumo": verde translúcido. */
   primarySoft: "rgba(95, 211, 141, 0.12)",
   primarySoftBorder: "rgba(95, 211, 141, 0.4)",
@@ -40,16 +36,6 @@ const C = {
   logoBorder: "#2a344b",
   logoMark: "#7ed497",
 } as const;
-
-/** Contorno de 1px feito com sombras nos quatro lados (o que os clientes de e-mail suportam melhor). */
-const TEXT_OUTLINE = [
-  "-1px -1px 0",
-  "1px -1px 0",
-  "-1px 1px 0",
-  "1px 1px 0",
-]
-  .map((offset) => `${offset} ${C.billButtonOutline}`)
-  .join(", ");
 
 const FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
@@ -170,7 +156,7 @@ function billCard(r: Reminder, base: string, overdue: boolean, last: boolean): s
                       <tr>
                         <td align="left" valign="middle" style="text-align:left;font-family:${FONT};">${amount}</td>
                         <td align="right" valign="middle" style="text-align:right;padding-left:14px;white-space:nowrap;font-family:${FONT};">
-                          <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.billButtonText};text-shadow:${TEXT_OUTLINE};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;">Ver conta</a>
+                          <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.primaryForeground};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;">Ver conta</a>
                         </td>
                       </tr>
                     </table>
