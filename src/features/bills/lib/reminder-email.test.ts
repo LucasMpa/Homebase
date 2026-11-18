@@ -70,7 +70,7 @@ describe("buildReminderEmail", () => {
   it("assunto, data e seções com a quantidade de contas", () => {
     expect(email.subject).toBe("Resumo das contas · 17/11");
     // A contagem vai na prévia (texto oculto que o cliente mostra ao lado do assunto).
-    expect(email.html).toContain(">1 conta atrasada · 2 vencem nos próximos dias</div>");
+    expect(email.html).toContain(">1 conta atrasada · 2 vencem nos próximos dias&#847;&zwnj;&nbsp;");
     expect(email.html).toContain("terça, 17/11/2026");
     expect(email.html).toContain(">Atrasadas - 1 conta<");
     // 3 e 7 dias ficam juntos em "Vence em breve".

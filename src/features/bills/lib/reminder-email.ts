@@ -20,6 +20,9 @@ const C = {
   overdue: "#ff8e98",
 } as const;
 
+/** Espaços invisíveis depois da prévia: impedem o cliente de completá-la com o começo do corpo. */
+const PREVIEW_PADDING = "&#847;&zwnj;&nbsp;".repeat(60);
+
 const FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
 export interface ReminderEmail {
@@ -157,7 +160,7 @@ export function buildReminderEmail(
 <title>${escapeHtml(subject)}</title>
 </head>
 <body style="margin:0;padding:0;background:${C.background};">
-<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(reminderPreview(reminders))}</div>
+<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(reminderPreview(reminders))}${PREVIEW_PADDING}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.background};">
   <tr>
     <td align="center" style="padding:24px 12px;">
