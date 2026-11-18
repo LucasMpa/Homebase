@@ -174,6 +174,14 @@ describe("buildReminderEmail", () => {
     expect(mobile).toContain(".bill-amount { white-space: normal !important; }");
   });
 
+  it("celular: pílula \"N contas no resumo\" centralizada e afastada do total", () => {
+    expect(email.html).toContain('class="stack-column-right total-badge"');
+    const mobile = email.html.slice(email.html.indexOf("@media only screen"));
+    expect(mobile).toContain(".total-badge { text-align: center !important; padding-top: 14px !important; }");
+    // Precisa vir depois de .stack-column-right (que alinha à esquerda) para prevalecer.
+    expect(mobile.indexOf(".total-badge {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
+  });
+
   it("sem links para páginas que não existem", () => {
     for (const path of ["/dashboard", "/notificacoes", "/preferencias", "/unsubscribe"]) {
       expect(email.html).not.toContain(path);

@@ -229,6 +229,8 @@ export function buildReminderEmail(
       .stack-column-right { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; padding-top: 0 !important; }
       /* No celular o valor pode quebrar linha; no desktop fica numa linha só. */
       .bill-amount { white-space: normal !important; }
+      /* Pílula "N contas no resumo": centralizada e com um respiro abaixo do total (vem depois de .stack-column-right para prevalecer). */
+      .total-badge { text-align: center !important; padding-top: 14px !important; }
     }
   </style>
 </head>
@@ -271,7 +273,7 @@ export function buildReminderEmail(
                           <div style="font-size:11px;font-weight:700;color:${C.muted};text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Total a pagar informado</div>
                           <div style="font-size:28px;font-weight:800;color:${C.foreground};letter-spacing:-0.5px;">${formatBRL(totalCents)}</div>
                         </td>
-                        <td align="right" valign="middle" class="stack-column-right" style="font-family:${FONT};">
+                        <td align="right" valign="middle" class="stack-column-right total-badge" style="font-family:${FONT};">
                           <div style="display:inline-block;background-color:${C.primarySoft};border:1px solid ${C.primarySoftBorder};border-radius:20px;padding:5px 12px;color:${C.primary};font-size:12px;font-weight:600;">${count} ${plural(count, "conta no resumo", "contas no resumo")}</div>
                         </td>
                       </tr>
