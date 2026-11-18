@@ -214,6 +214,11 @@ services:
       NEXT_PUBLIC_SUPABASE_URL: *api-url
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: *anon-key
       SUPABASE_SECRET_KEY: *service-role-key
+      # E-mails (avisos de vencimento) vão para o Mailpit: http://localhost:54324
+      MAILPIT_URL: http://mailpit:8025
+      # Segredo do job de avisos (/api/cron/bill-reminders), só para uso local.
+      # O `pnpm sync:cron-secret` (roda no predev) grava o hash dele no banco.
+      CRON_SECRET: local-dev-cron-secret-nao-use-em-producao
     volumes:
       - .:/app
       - next-node-modules:/app/node_modules

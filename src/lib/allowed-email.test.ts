@@ -23,5 +23,8 @@ describe("PUBLIC_PATHS", () => {
     expect(isPublicPath("/share-foo")).toBe(false);
     expect(isPublicPath("/auth")).toBe(false);
     expect(isPublicPath("/third-party")).toBe(false);
+    expect(isPublicPath("/api/cron/bill-reminders")).toBe(true);
+    expect(isPublicPath("/api")).toBe(false);
+    expect(isPublicPath("/api/outra-coisa")).toBe(false);
   });
 });
