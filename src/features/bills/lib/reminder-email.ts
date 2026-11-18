@@ -106,12 +106,12 @@ export function sectionHeading(title: string, count: number): string {
   return `${title} – ${count} ${plural(count, "conta", "contas")}`;
 }
 
-/** "Venceu em 10/11/2026 • 8 dias de atraso", "Vence em 20/11/2026 (sexta)"… */
+/** "Venceu em 10/11/2026 • 8 dias de atraso", "Vence hoje, 17/11/2026", "Vence quarta, 18/11/2026"… */
 export function reminderDetail(r: Reminder): string {
   const date = formatDate(r.dueDate);
   if (r.kind === "overdue") return `Venceu em ${date} • ${r.days} ${plural(r.days, "dia", "dias")} de atraso`;
   if (r.kind === "due_today") return `Vence hoje, ${date}`;
-  return `Vence em ${date} (${weekdayName(r.dueDate)})`;
+  return `Vence ${weekdayName(r.dueDate)}, ${date}`;
 }
 
 function escapeHtml(text: string): string {

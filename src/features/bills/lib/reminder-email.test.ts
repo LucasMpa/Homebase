@@ -72,7 +72,9 @@ describe("reminderDetail", () => {
       "Venceu em 16/11/2026 • 1 dia de atraso",
     );
     expect(reminderDetail(reminder("due_today", { dueDate: "2026-11-17", days: 0 }))).toBe("Vence hoje, 17/11/2026");
-    expect(reminderDetail(reminder("due_in_3", { dueDate: "2026-11-20" }))).toBe("Vence em 20/11/2026 (sexta)");
+    expect(reminderDetail(reminder("due_in_1", { dueDate: "2026-11-18", days: 1 }))).toBe("Vence quarta, 18/11/2026");
+    expect(reminderDetail(reminder("due_in_3", { dueDate: "2026-11-20" }))).toBe("Vence sexta, 20/11/2026");
+    expect(reminderDetail(reminder("due_in_7", { dueDate: "2026-11-22", days: 5 }))).toBe("Vence domingo, 22/11/2026");
   });
 });
 
