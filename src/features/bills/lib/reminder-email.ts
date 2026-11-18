@@ -229,7 +229,9 @@ export function buildReminderEmail(
       .stack-column-right { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; padding-top: 0 !important; }
       /* No celular o valor pode quebrar linha; no desktop fica numa linha só. */
       .bill-amount { white-space: normal !important; }
-      /* Pílula "N contas no resumo": centralizada e com um respiro abaixo do total (vem depois de .stack-column-right para prevalecer). */
+      /* Card do total centralizado: rótulo, valor e a pílula "N contas no resumo", com um respiro
+         entre o valor e a pílula. Vem depois de .stack-column(-right) para prevalecer. */
+      .total-amount { text-align: center !important; }
       .total-badge { text-align: center !important; padding-top: 14px !important; }
     }
   </style>
@@ -269,7 +271,7 @@ export function buildReminderEmail(
                   <td style="padding:20px 24px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
                       <tr>
-                        <td valign="middle" class="stack-column" style="font-family:${FONT};">
+                        <td valign="middle" class="stack-column total-amount" style="font-family:${FONT};">
                           <div style="font-size:11px;font-weight:700;color:${C.muted};text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">Total a pagar informado</div>
                           <div style="font-size:28px;font-weight:800;color:${C.foreground};letter-spacing:-0.5px;">${formatBRL(totalCents)}</div>
                         </td>

@@ -174,11 +174,14 @@ describe("buildReminderEmail", () => {
     expect(mobile).toContain(".bill-amount { white-space: normal !important; }");
   });
 
-  it("celular: pílula \"N contas no resumo\" centralizada e afastada do total", () => {
+  it("celular: card do total centralizado (rótulo, valor e pílula afastada do valor)", () => {
+    expect(email.html).toContain('class="stack-column total-amount"');
     expect(email.html).toContain('class="stack-column-right total-badge"');
     const mobile = email.html.slice(email.html.indexOf("@media only screen"));
+    expect(mobile).toContain(".total-amount { text-align: center !important; }");
     expect(mobile).toContain(".total-badge { text-align: center !important; padding-top: 14px !important; }");
-    // Precisa vir depois de .stack-column-right (que alinha à esquerda) para prevalecer.
+    // Precisam vir depois de .stack-column(-right), que alinham à esquerda, para prevalecer.
+    expect(mobile.indexOf(".total-amount {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
     expect(mobile.indexOf(".total-badge {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
   });
 
