@@ -7,7 +7,7 @@
 import type { PlainDate } from "@/lib/dates";
 import { formatDate, weekdayName } from "@/lib/format";
 import { formatBRL } from "@/lib/money";
-import { REMINDER_KIND_ORDER, type Reminder, type ReminderKind } from "./reminders";
+import type { Reminder, ReminderKind } from "./reminders";
 
 const C = {
   background: "#161e2f",
@@ -44,19 +44,20 @@ export function reminderSubject(reminders: readonly Reminder[]): string {
   return `Homebase: ${parts.join(" · ")}`;
 }
 
-function groupTitle(kind: ReminderKind, n: number): string {
-  switch (kind) {
-    case "overdue":
-      return plural(n, "Atrasada", "Atrasadas");
-    case "due_today":
-      return plural(n, "Vence hoje", "Vencem hoje");
-    case "due_in_1":
-      return plural(n, "Vence amanhã", "Vencem amanhã");
-    case "due_in_3":
-      return plural(n, "Vence em 3 dias", "Vencem em 3 dias");
-    case "due_in_7":
-      return plural(n, "Vence em 7 dias", "Vencem em 7 dias");
-  }
+/**
+ * Seções do e-mail, em ordem de urgência. "Vence em breve" junta os avisos de
+ * 3 e 7 dias (cada linha já mostra a data).
+ */
+export const REMINDER_SECTIONS: readonly { title: string; kinds: readonly ReminderKind[] }[] = [
+  { title: "Atrasadas", kinds: ["overdue"] },
+  { title: "Vence hoje", kinds: ["due_today"] },
+  { title: "Vence amanhã", kinds: ["due_in_1"] },
+  { title: "Vence em breve", kinds: ["due_in_3", "due_in_7"] },
+];
+
+/** "Vence em breve - 3 contas" */
+export function sectionHeading(title: string, count: number): string {
+  return `${title} - ${count} ${plural(count, "conta", "contas")}`;
 }
 
 /** "Venceu em 10/11/2026 · 8 dias de atraso", "Vence em 20/11/2026 (sexta)"… */
@@ -79,10 +80,14 @@ export function billUrl(appUrl: string, billId: string): string {
   return `${appUrl.replace(/\/+$/, "")}/bills/${encodeURIComponent(billId)}`;
 }
 
-function groups(reminders: readonly Reminder[]): { kind: ReminderKind; items: Reminder[] }[] {
-  return REMINDER_KIND_ORDER.map((kind) => ({ kind, items: reminders.filter((r) => r.kind === kind) })).filter(
-    (g) => g.items.length > 0,
-  );
+function sections(reminders: readonly Reminder[]): { title: string; overdue: boolean; items: Reminder[] }[] {
+  return REMINDER_SECTIONS.map(({ title, kinds }) => ({
+    title,
+    overdue: kinds.includes("overdue"),
+    items: reminders
+      .filter((r) => kinds.includes(r.kind))
+      .sort((a, b) => a.dueDate.localeCompare(b.dueDate) || a.bill.name.localeCompare(b.bill.name, "pt-BR")),
+  })).filter((g) => g.items.length > 0);
 }
 
 /** Monta o resumo. `today` é a data do envio (São Paulo); `appUrl` é a base dos links. */
@@ -94,9 +99,9 @@ export function buildReminderEmail(
   const dateLine = `${weekdayName(today)}, ${formatDate(today)}`;
   const base = appUrl.replace(/\/+$/, "");
 
-  const sections = groups(reminders)
-    .map(({ kind, items }) => {
-      const color = kind === "overdue" ? C.overdue : C.foreground;
+  const sectionsHtml = sections(reminders)
+    .map(({ title, overdue, items }) => {
+      const color = overdue ? C.overdue : C.foreground;
       const rows = items
         .map((r, i) => {
           const divider = i > 0 ? `border-top:1px solid ${C.border};` : "";
@@ -107,7 +112,7 @@ export function buildReminderEmail(
                 <tr>
                   <td style="font-family:${FONT};vertical-align:top;">
                     <div style="font-size:15px;font-weight:600;color:${C.foreground};">${escapeHtml(r.bill.name)}</div>
-                    <div style="font-size:13px;color:${kind === "overdue" ? C.overdue : C.muted};padding-top:2px;">${escapeHtml(reminderDetail(r))}</div>
+                    <div style="font-size:13px;color:${overdue ? C.overdue : C.muted};padding-top:2px;">${escapeHtml(reminderDetail(r))}</div>
                   </td>
                   <td align="right" style="font-family:${FONT};vertical-align:top;white-space:nowrap;padding-left:12px;">
                     <div style="font-size:15px;font-weight:600;color:${C.foreground};">${escapeHtml(amount(r))}</div>
@@ -121,7 +126,7 @@ export function buildReminderEmail(
         .join("");
       return `
       <tr>
-        <td style="padding:24px 0 8px;font-family:${FONT};font-size:16px;font-weight:600;color:${color};">${groupTitle(kind, items.length)}</td>
+        <td style="padding:24px 0 8px;font-family:${FONT};font-size:16px;font-weight:600;color:${color};">${escapeHtml(sectionHeading(title, items.length))}</td>
       </tr>
       <tr>
         <td>
@@ -164,7 +169,7 @@ export function buildReminderEmail(
             <div style="font-size:14px;color:${C.muted};padding-top:4px;">${escapeHtml(dateLine)}</div>
           </td>
         </tr>
-        ${sections}
+        ${sectionsHtml}
         <tr>
           <td style="padding-top:28px;font-family:${FONT};font-size:12px;line-height:18px;color:${C.muted};">
             Avisos de 7, 3 e 1 dia antes, no dia do vencimento e, para contas atrasadas, no 1º dia e depois a cada 7 dias até o pagamento.
@@ -181,9 +186,9 @@ export function buildReminderEmail(
   const text = [
     "Resumo das contas",
     dateLine,
-    ...groups(reminders).flatMap(({ kind, items }) => [
+    ...sections(reminders).flatMap(({ title, items }) => [
       "",
-      groupTitle(kind, items.length).toUpperCase(),
+      sectionHeading(title, items.length),
       ...items.map((r) => `- ${r.bill.name}: ${amount(r)}. ${reminderDetail(r)}.\n  ${billUrl(base, r.bill.id)}`),
     ]),
     "",

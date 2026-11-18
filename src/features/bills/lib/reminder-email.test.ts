@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { billUrl, buildReminderEmail, reminderDetail, reminderSubject } from "./reminder-email";
+import { billUrl, buildReminderEmail, reminderDetail, reminderSubject, sectionHeading } from "./reminder-email";
 import type { Reminder, ReminderKind } from "./reminders";
 
 function reminder(kind: ReminderKind, overrides: { name?: string; dueDate?: string; days?: number; cents?: number | null; id?: string } = {}): Reminder {
@@ -53,12 +53,43 @@ describe("buildReminderEmail", () => {
   ];
   const email = buildReminderEmail(reminders, opts);
 
-  it("assunto, data e grupos na ordem de urgência", () => {
+  it("assunto, data e seções com a quantidade de contas", () => {
     expect(email.subject).toBe("Homebase: 1 conta atrasada · 2 vencem nos próximos dias");
     expect(email.html).toContain("terça, 17/11/2026");
-    const order = ["Atrasada", "Vence em 3 dias", "Vence em 7 dias"].map((t) => email.html.indexOf(`>${t}<`));
-    expect(order.every((i) => i > 0)).toBe(true);
-    expect([...order].sort((a, b) => a - b)).toEqual(order);
+    expect(email.html).toContain(">Atrasadas - 1 conta<");
+    // 3 e 7 dias ficam juntos em "Vence em breve".
+    expect(email.html).toContain(">Vence em breve - 2 contas<");
+    expect(email.html).not.toContain("Vence em 3 dias");
+    expect(email.html).not.toContain(">Vence hoje");
+  });
+
+  it("seções em ordem de urgência; em breve ordenado por data", () => {
+    const all = buildReminderEmail(
+      [
+        reminder("due_in_7", { name: "Internet", dueDate: "2026-11-24", id: "net" }),
+        reminder("due_in_1", { name: "Água", dueDate: "2026-11-18", days: 1, id: "agua" }),
+        reminder("due_in_3", { name: "Luz", dueDate: "2026-11-20", id: "luz" }),
+        reminder("due_today", { name: "Gás", dueDate: "2026-11-17", days: 0, id: "gas" }),
+        reminder("overdue", { name: "Aluguel", dueDate: "2026-11-10", days: 7, id: "aluguel" }),
+      ],
+      opts,
+    ).html;
+    const at = (t: string) => all.indexOf(t);
+    const headings = [
+      ">Atrasadas - 1 conta<",
+      ">Vence hoje - 1 conta<",
+      ">Vence amanhã - 1 conta<",
+      ">Vence em breve - 2 contas<",
+    ].map(at);
+    expect(headings.every((i) => i > 0)).toBe(true);
+    expect([...headings].sort((a, b) => a - b)).toEqual(headings);
+    expect(at(">Luz<")).toBeLessThan(at(">Internet<"));
+    expect(at(">Internet<")).toBeGreaterThan(headings[3]);
+  });
+
+  it("sectionHeading no singular e no plural", () => {
+    expect(sectionHeading("Vence em breve", 1)).toBe("Vence em breve - 1 conta");
+    expect(sectionHeading("Vence em breve", 3)).toBe("Vence em breve - 3 contas");
   });
 
   it("valores, valor ausente e links para cada conta", () => {
@@ -70,7 +101,7 @@ describe("buildReminderEmail", () => {
   });
 
   it("atrasada em vermelho (cor de atraso do app)", () => {
-    expect(email.html).toMatch(/color:#ff8e98;">Atrasada</);
+    expect(email.html).toMatch(/color:#ff8e98;">Atrasadas - 1 conta</);
   });
 
   it("escapa o nome da conta no HTML", () => {
@@ -80,7 +111,8 @@ describe("buildReminderEmail", () => {
   });
 
   it("texto puro com as mesmas informações", () => {
-    expect(email.text).toContain("ATRASADA");
+    expect(email.text).toContain("Atrasadas - 1 conta");
+    expect(email.text).toContain("Vence em breve - 2 contas");
     expect(email.text).toContain("- Água: R$ 150,00. Venceu em 10/11/2026 · 7 dias de atraso.");
     expect(email.text).toContain("https://homebase.example.com/bills/luz");
     expect(email.text).toContain("- Internet: valor não informado.");
