@@ -32,8 +32,8 @@ const opts = { today: "2026-11-17", appUrl: "https://homebase.example.com/" };
 
 describe("reminderSubject", () => {
   it("é fixo, só com o dia e o mês", () => {
-    expect(reminderSubject("2026-11-17")).toBe("Resumo das contas · 17/11");
-    expect(reminderSubject("2027-01-05")).toBe("Resumo das contas · 05/01");
+    expect(reminderSubject("2026-11-17")).toBe("Resumo das contas no Homebase - 17/11");
+    expect(reminderSubject("2027-01-05")).toBe("Resumo das contas no Homebase - 05/01");
   });
 });
 
@@ -92,7 +92,7 @@ describe("buildReminderEmail", () => {
   const email = buildReminderEmail(reminders, opts);
 
   it("assunto, prévia, data e card de total", () => {
-    expect(email.subject).toBe("Resumo das contas · 17/11");
+    expect(email.subject).toBe("Resumo das contas no Homebase - 17/11");
     expect(email.html).toContain(
       ">Total a pagar informado: R$ 300,00 · 1 conta atrasada · 2 vencem nos próximos dias&#847;&zwnj;&nbsp;",
     );

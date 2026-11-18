@@ -50,9 +50,9 @@ export interface ReminderEmail {
 
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
-/** Assunto fixo, só com a data: "Resumo das contas · 17/11". O conteúdo fica no corpo. */
+/** Assunto fixo, só com a data: "Resumo das contas no Homebase - 17/11". O conteúdo fica no corpo. */
 export function reminderSubject(today: PlainDate): string {
-  return `Resumo das contas · ${formatDate(today).slice(0, 5)}`;
+  return `Resumo das contas no Homebase - ${formatDate(today).slice(0, 5)}`;
 }
 
 /** Soma dos valores estimados das contas do resumo (as sem valor não entram). */
