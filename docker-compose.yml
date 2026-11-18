@@ -214,6 +214,8 @@ services:
       NEXT_PUBLIC_SUPABASE_URL: *api-url
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: *anon-key
       SUPABASE_SECRET_KEY: *service-role-key
+      # E-mails (avisos de vencimento) vão para o Mailpit: http://localhost:54324
+      MAILPIT_URL: http://mailpit:8025
     volumes:
       - .:/app
       - next-node-modules:/app/node_modules
