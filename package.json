@@ -14,7 +14,8 @@
     "seed:dev": "tsx --env-file=.env.local scripts/seed-dev.ts",
     "db:types": "docker compose exec -T meta node -e \"fetch('http://localhost:8080/generators/typescript?included_schemas=public,graphql_public&postgrest_version=16.4').then((r) => (r.ok ? r.text() : Promise.reject(r.status))).then((t) => process.stdout.write(t))\" > src/lib/supabase/database.types.ts.tmp && mv src/lib/supabase/database.types.ts.tmp src/lib/supabase/database.types.ts",
     "sync:allowed-email": "tsx --env-file=.env.local scripts/sync-allowed-email.mts",
-    "predev": "pnpm sync:allowed-email"
+    "sync:cron-secret": "tsx --env-file=.env.local scripts/sync-cron-secret.mts",
+    "predev": "pnpm sync:allowed-email && pnpm sync:cron-secret"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

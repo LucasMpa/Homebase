@@ -14,8 +14,9 @@ export function isAllowedEmail(email: string | null | undefined): boolean {
  * Rotas acessíveis sem sessão. Todo o resto exige login.
  * Ficam em src/app/(public)/; mantenha esta lista igual às pastas de lá.
  * /share: links públicos dos gastos de terceiros; a página valida o token no banco.
+ * /api/cron: jobs agendados; cada rota exige o CRON_SECRET.
  */
-export const PUBLIC_PATHS = ["/login", "/access-denied", "/auth/callback", "/share"] as const;
+export const PUBLIC_PATHS = ["/login", "/access-denied", "/auth/callback", "/share", "/api/cron"] as const;
 
 export function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
