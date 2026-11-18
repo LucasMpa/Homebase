@@ -164,7 +164,7 @@ export function buildReminderEmail(
   const dateLine = `${weekdayName(today)}, ${formatDate(today)}`;
   const base = appUrl.replace(/\/+$/, "");
   const billsUrl = escapeHtml(`${base}/bills`);
-  const { totalCents, count, withAmount } = reminderTotals(reminders);
+  const { totalCents, count } = reminderTotals(reminders);
   const groups = sections(reminders);
 
   const sectionsHtml = groups
@@ -258,7 +258,6 @@ export function buildReminderEmail(
                         </td>
                         <td align="right" valign="middle" class="stack-column-right" style="font-family:${FONT};">
                           <div style="display:inline-block;background-color:${C.primarySoft};border:1px solid ${C.primarySoftBorder};border-radius:20px;padding:5px 12px;color:${C.primary};font-size:12px;font-weight:600;">${count} ${plural(count, "conta no resumo", "contas no resumo")}</div>
-                          <div style="font-size:11px;color:${C.muted};margin-top:6px;">${withAmount} com valor definido</div>
                         </td>
                       </tr>
                     </table>
@@ -310,7 +309,7 @@ ${sectionsHtml}
     "Resumo das contas",
     dateLine,
     "",
-    `Total a pagar informado: ${formatBRL(totalCents)} (${count} ${plural(count, "conta", "contas")} no resumo, ${withAmount} com valor definido)`,
+    `Total a pagar informado: ${formatBRL(totalCents)} (${count} ${plural(count, "conta", "contas")} no resumo)`,
     ...groups.flatMap(({ title, items }) => [
       "",
       sectionHeading(title, items.length),

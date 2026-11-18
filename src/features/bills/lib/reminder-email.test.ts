@@ -99,7 +99,7 @@ describe("buildReminderEmail", () => {
     expect(email.html).toContain("terça, 17/11/2026");
     expect(email.html).toContain(">R$ 300,00</div>");
     expect(email.html).toContain(">3 contas no resumo</div>");
-    expect(email.html).toContain(">2 com valor definido</div>");
+    expect(email.html).not.toContain("com valor definido");
   });
 
   it("seções com quantidade; 3 e 7 dias juntos em \"Vence em breve\"", () => {
@@ -160,7 +160,7 @@ describe("buildReminderEmail", () => {
   });
 
   it("texto puro com as mesmas informações", () => {
-    expect(email.text).toContain("Total a pagar informado: R$ 300,00 (3 contas no resumo, 2 com valor definido)");
+    expect(email.text).toContain("Total a pagar informado: R$ 300,00 (3 contas no resumo)");
     expect(email.text).toContain("Atrasadas – 1 conta");
     expect(email.text).toContain("Vence em breve – 2 contas");
     expect(email.text).toContain("- Água: R$ 150,00. Venceu em 10/11/2026 • 7 dias de atraso.");
