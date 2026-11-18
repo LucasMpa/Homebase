@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { billUrl, buildReminderEmail, reminderDetail, reminderSubject, sectionHeading } from "./reminder-email";
+import {
+  billUrl,
+  buildReminderEmail,
+  reminderDetail,
+  reminderPreview,
+  reminderSubject,
+  sectionHeading,
+} from "./reminder-email";
 import type { Reminder, ReminderKind } from "./reminders";
 
 function reminder(kind: ReminderKind, overrides: { name?: string; dueDate?: string; days?: number; cents?: number | null; id?: string } = {}): Reminder {
@@ -20,14 +27,21 @@ function reminder(kind: ReminderKind, overrides: { name?: string; dueDate?: stri
 const opts = { today: "2026-11-17", appUrl: "https://homebase.example.com/" };
 
 describe("reminderSubject", () => {
+  it("é fixo, só com o dia e o mês", () => {
+    expect(reminderSubject("2026-11-17")).toBe("Resumo das contas · 17/11");
+    expect(reminderSubject("2027-01-05")).toBe("Resumo das contas · 05/01");
+  });
+});
+
+describe("reminderPreview", () => {
   it("resume por urgência, com singular e plural", () => {
-    expect(reminderSubject([reminder("overdue")])).toBe("Homebase: 1 conta atrasada");
-    expect(reminderSubject([reminder("overdue"), reminder("overdue"), reminder("due_today")])).toBe(
-      "Homebase: 2 contas atrasadas · 1 vence hoje",
+    expect(reminderPreview([reminder("overdue")])).toBe("1 conta atrasada");
+    expect(reminderPreview([reminder("overdue"), reminder("overdue"), reminder("due_today")])).toBe(
+      "2 contas atrasadas · 1 vence hoje",
     );
-    expect(reminderSubject([reminder("due_in_1"), reminder("due_in_7")])).toBe("Homebase: 2 vencem nos próximos dias");
-    expect(reminderSubject([reminder("due_today"), reminder("due_today"), reminder("due_in_3")])).toBe(
-      "Homebase: 2 vencem hoje · 1 vence nos próximos dias",
+    expect(reminderPreview([reminder("due_in_1"), reminder("due_in_7")])).toBe("2 vencem nos próximos dias");
+    expect(reminderPreview([reminder("due_today"), reminder("due_today"), reminder("due_in_3")])).toBe(
+      "2 vencem hoje · 1 vence nos próximos dias",
     );
   });
 });
@@ -54,7 +68,9 @@ describe("buildReminderEmail", () => {
   const email = buildReminderEmail(reminders, opts);
 
   it("assunto, data e seções com a quantidade de contas", () => {
-    expect(email.subject).toBe("Homebase: 1 conta atrasada · 2 vencem nos próximos dias");
+    expect(email.subject).toBe("Resumo das contas · 17/11");
+    // A contagem vai na prévia (texto oculto que o cliente mostra ao lado do assunto).
+    expect(email.html).toContain(">1 conta atrasada · 2 vencem nos próximos dias</div>");
     expect(email.html).toContain("terça, 17/11/2026");
     expect(email.html).toContain(">Atrasadas - 1 conta<");
     // 3 e 7 dias ficam juntos em "Vence em breve".

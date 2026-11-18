@@ -30,18 +30,27 @@ export interface ReminderEmail {
 
 const plural = (n: number, one: string, many: string) => (n === 1 ? one : many);
 
-/** "Homebase: 1 conta atrasada · 1 vence hoje · 2 vencem nos próximos dias" */
-export function reminderSubject(reminders: readonly Reminder[]): string {
+/** Assunto fixo, só com a data: "Resumo das contas · 17/11". O conteúdo fica no corpo. */
+export function reminderSubject(today: PlainDate): string {
+  return `Resumo das contas · ${formatDate(today).slice(0, 5)}`;
+}
+
+/**
+ * Prévia que os clientes de e-mail mostram ao lado do assunto:
+ * "1 conta atrasada · 1 vence hoje · 2 vencem nos próximos dias".
+ */
+export function reminderPreview(reminders: readonly Reminder[]): string {
   const count = (kinds: ReminderKind[]) => reminders.filter((r) => kinds.includes(r.kind)).length;
   const overdue = count(["overdue"]);
   const today = count(["due_today"]);
   const soon = count(["due_in_1", "due_in_3", "due_in_7"]);
-  const parts = [
+  return [
     overdue > 0 && `${overdue} ${plural(overdue, "conta atrasada", "contas atrasadas")}`,
     today > 0 && `${today} ${plural(today, "vence hoje", "vencem hoje")}`,
     soon > 0 && `${soon} ${plural(soon, "vence nos próximos dias", "vencem nos próximos dias")}`,
-  ].filter(Boolean);
-  return `Homebase: ${parts.join(" · ")}`;
+  ]
+    .filter(Boolean)
+    .join(" · ");
 }
 
 /**
@@ -95,7 +104,7 @@ export function buildReminderEmail(
   reminders: readonly Reminder[],
   { today, appUrl }: { today: PlainDate; appUrl: string },
 ): ReminderEmail {
-  const subject = reminderSubject(reminders);
+  const subject = reminderSubject(today);
   const dateLine = `${weekdayName(today)}, ${formatDate(today)}`;
   const base = appUrl.replace(/\/+$/, "");
 
@@ -148,7 +157,7 @@ export function buildReminderEmail(
 <title>${escapeHtml(subject)}</title>
 </head>
 <body style="margin:0;padding:0;background:${C.background};">
-<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(subject.replace(/^Homebase: /, ""))}</div>
+<div style="display:none;max-height:0;overflow:hidden;">${escapeHtml(reminderPreview(reminders))}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.background};">
   <tr>
     <td align="center" style="padding:24px 12px;">
