@@ -39,6 +39,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      bill_notifications: {
+        Row: {
+          bill_id: string
+          created_at: string
+          due_date: string
+          id: string
+          kind: string
+          sent_on: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          bill_id: string
+          created_at?: string
+          due_date: string
+          id?: string
+          kind: string
+          sent_on: string
+          user_id: string
+        }
+        Update: {
+          bill_id?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          kind?: string
+          sent_on?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bill_notifications_bill_id_user_id_fkey"
+            columns: ["bill_id", "user_id"]
+            referencedRelation: "bills"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
       bills: {
         Row: {
           archived_at: string | null
@@ -268,9 +306,21 @@ export type Database = {
         }
         Returns: string
       }
+      get_reminder_data: {
+        Args: { from_date: string; job_secret: string; to_date: string }
+        Returns: Json
+      }
       get_shared_report: { Args: { share_token: string }; Returns: Json }
       hook_before_user_created: { Args: { event: Json }; Returns: Json }
+      record_bill_notifications: {
+        Args: { items: Json; job_secret: string }
+        Returns: number
+      }
       set_allowed_email: { Args: { email: string }; Returns: undefined }
+      set_cron_secret_hash: {
+        Args: { secret_hash: string }
+        Returns: undefined
+      }
     }
     Enums: {
       bill_frequency: "once" | "weekly" | "monthly" | "yearly"
