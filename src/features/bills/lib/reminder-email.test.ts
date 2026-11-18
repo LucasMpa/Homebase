@@ -185,6 +185,12 @@ describe("buildReminderEmail", () => {
     expect(mobile.indexOf(".total-badge {")).toBeGreaterThan(mobile.indexOf(".stack-column-right {"));
   });
 
+  it("botão \"Ver conta\" com texto branco; botão principal mantém o texto escuro", () => {
+    expect(email.html).toMatch(/color:#ffffff;[^"]*"[^>]*>Ver conta<\/a>/);
+    expect(email.html).not.toMatch(/color:#161e2f;[^"]*"[^>]*>Ver conta<\/a>/);
+    expect(email.html).toMatch(/color:#161e2f;[^"]*"[^>]*>Gerenciar todas as contas no painel/);
+  });
+
   it("sem links para páginas que não existem", () => {
     for (const path of ["/dashboard", "/notificacoes", "/preferencias", "/unsubscribe"]) {
       expect(email.html).not.toContain(path);

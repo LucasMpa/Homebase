@@ -25,6 +25,8 @@ const C = {
   muted: "#9aa4b8",
   primary: "#5fd38d",
   primaryForeground: "#161e2f",
+  /** Texto do botão "Ver conta" (pedido explícito: branco). */
+  billButtonText: "#ffffff",
   /** Pílula "N contas no resumo": verde translúcido. */
   primarySoft: "rgba(95, 211, 141, 0.12)",
   primarySoftBorder: "rgba(95, 211, 141, 0.4)",
@@ -156,7 +158,7 @@ function billCard(r: Reminder, base: string, overdue: boolean, last: boolean): s
                       <tr>
                         <td align="left" valign="middle" style="text-align:left;font-family:${FONT};">${amount}</td>
                         <td align="right" valign="middle" style="text-align:right;padding-left:14px;white-space:nowrap;font-family:${FONT};">
-                          <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.primaryForeground};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;">Ver conta</a>
+                          <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.billButtonText};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;">Ver conta</a>
                         </td>
                       </tr>
                     </table>
