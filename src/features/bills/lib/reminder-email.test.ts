@@ -155,6 +155,12 @@ describe("buildReminderEmail", () => {
     expect(email.html).not.toContain("border-radius: 0px !important");
   });
 
+  it("celular: colunas empilhadas não passam da largura do card", () => {
+    const mobile = email.html.slice(email.html.indexOf("@media only screen"));
+    expect(mobile).toMatch(/\.stack-column \{[^}]*box-sizing: border-box !important;/);
+    expect(mobile).toMatch(/\.stack-column-right \{[^}]*box-sizing: border-box !important;[^}]*white-space: normal !important;/);
+  });
+
   it("sem links para páginas que não existem", () => {
     for (const path of ["/dashboard", "/notificacoes", "/preferencias", "/unsubscribe"]) {
       expect(email.html).not.toContain(path);

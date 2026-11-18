@@ -214,8 +214,10 @@ export function buildReminderEmail(
       .email-container { width: 100% !important; max-width: 100% !important; border-radius: 16px !important; }
       .email-footer { border-radius: 0 0 16px 16px !important; }
       .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
-      .stack-column { display: block !important; width: 100% !important; text-align: left !important; }
-      .stack-column-right { display: block !important; width: 100% !important; text-align: left !important; padding-top: 0 !important; }
+      /* border-box: sem isso, width 100% + padding da célula passa da largura do card e empurra o e-mail para fora da tela. */
+      .stack-column { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; }
+      /* normal (e não nowrap): "valor não informado" + "Ver conta" numa linha só não cabem em telas de 320px. */
+      .stack-column-right { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; padding-top: 0 !important; white-space: normal !important; }
     }
   </style>
 </head>
