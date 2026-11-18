@@ -158,7 +158,20 @@ describe("buildReminderEmail", () => {
   it("celular: colunas empilhadas não passam da largura do card", () => {
     const mobile = email.html.slice(email.html.indexOf("@media only screen"));
     expect(mobile).toMatch(/\.stack-column \{[^}]*box-sizing: border-box !important;/);
-    expect(mobile).toMatch(/\.stack-column-right \{[^}]*box-sizing: border-box !important;[^}]*white-space: normal !important;/);
+    expect(mobile).toMatch(/\.stack-column-right \{[^}]*box-sizing: border-box !important;/);
+  });
+
+  it("celular: valor à esquerda e \"Ver conta\" à direita (space-between); desktop: juntos à direita", () => {
+    expect(email.html).toMatch(
+      /<td align="left"[^>]*><span class="bill-amount"[^>]*>R\$ 150,00<\/span><\/td>\s*<td align="right"[^>]*>\s*<a [^>]*>Ver conta<\/a>/,
+    );
+    // Desktop: a coluna do valor tem a largura mínima e o valor não quebra.
+    expect(email.html).toContain('<td width="1%" style="width:1%;');
+    expect(email.html).toMatch(/class="bill-amount" style="[^"]*white-space:nowrap;/);
+    // Celular: a coluna ocupa a linha toda, alinhada à esquerda, e o valor pode quebrar.
+    const mobile = email.html.slice(email.html.indexOf("@media only screen"));
+    expect(mobile).toMatch(/\.stack-column-right \{[^}]*width: 100% !important;[^}]*text-align: left !important;/);
+    expect(mobile).toContain(".bill-amount { white-space: normal !important; }");
   });
 
   it("sem links para páginas que não existem", () => {

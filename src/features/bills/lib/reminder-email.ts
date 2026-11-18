@@ -137,9 +137,13 @@ function billCard(r: Reminder, base: string, overdue: boolean, last: boolean): s
   const cents = r.bill.estimatedAmountCents;
   const amount =
     cents === null
-      ? `<span style="font-size:14px;font-style:italic;color:${C.muted};margin-right:14px;vertical-align:middle;">valor não informado</span>`
-      : `<span style="font-size:16px;font-weight:700;color:${C.foreground};margin-right:14px;vertical-align:middle;">${formatBRL(cents)}</span>`;
+      ? `<span class="bill-amount" style="font-size:14px;font-style:italic;color:${C.muted};white-space:nowrap;">valor não informado</span>`
+      : `<span class="bill-amount" style="font-size:16px;font-weight:700;color:${C.foreground};white-space:nowrap;">${formatBRL(cents)}</span>`;
   const accent = overdue ? `border-left:3px solid ${C.overdueStrong};` : `border:1px solid ${C.border};`;
+  // Valor e botão numa tabela de duas células. No desktop a coluna tem a largura
+  // mínima (width 1%), então os dois ficam juntos à direita; no celular ela
+  // ocupa a linha toda (.stack-column-right) e vira space-between: valor à
+  // esquerda, botão à direita.
   return `
               <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color:${C.card};${accent}border-radius:12px;${last ? "" : "margin-bottom:10px;"}">
                 <tr>
@@ -147,9 +151,15 @@ function billCard(r: Reminder, base: string, overdue: boolean, last: boolean): s
                     <div style="font-size:15px;font-weight:600;color:${C.foreground};margin-bottom:4px;">${escapeHtml(r.bill.name)}</div>
                     <div style="font-size:12px;color:${overdue ? C.overdue : C.muted};">${escapeHtml(reminderDetail(r))}</div>
                   </td>
-                  <td style="padding:16px 20px;text-align:right;white-space:nowrap;font-family:${FONT};" valign="middle" class="stack-column-right">
-                    ${amount}
-                    <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.primaryForeground};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;vertical-align:middle;">Ver conta</a>
+                  <td width="1%" style="width:1%;padding:16px 20px;font-family:${FONT};" valign="middle" class="stack-column-right">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation">
+                      <tr>
+                        <td align="left" valign="middle" style="text-align:left;font-family:${FONT};">${amount}</td>
+                        <td align="right" valign="middle" style="text-align:right;padding-left:14px;white-space:nowrap;font-family:${FONT};">
+                          <a href="${escapeHtml(billUrl(base, r.bill.id))}" target="_blank" style="display:inline-block;background-color:${C.primary};color:${C.primaryForeground};font-size:13px;font-weight:700;text-decoration:none;padding:7px 14px;border-radius:8px;">Ver conta</a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>`;
@@ -216,8 +226,9 @@ export function buildReminderEmail(
       .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
       /* border-box: sem isso, width 100% + padding da célula passa da largura do card e empurra o e-mail para fora da tela. */
       .stack-column { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; }
-      /* normal (e não nowrap): "valor não informado" + "Ver conta" numa linha só não cabem em telas de 320px. */
-      .stack-column-right { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; padding-top: 0 !important; white-space: normal !important; }
+      .stack-column-right { display: block !important; width: 100% !important; box-sizing: border-box !important; text-align: left !important; padding-top: 0 !important; }
+      /* No celular o valor pode quebrar linha; no desktop fica numa linha só. */
+      .bill-amount { white-space: normal !important; }
     }
   </style>
 </head>
